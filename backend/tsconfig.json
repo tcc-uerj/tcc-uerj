@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@infra/*": ["src/infra/*"],
+      "@domain/*": ["src/domain/*"],
+      "@controllers/*": ["src/application/controllers/*"],
+      "@middlewares/*": ["src/application/middlewares/*"],
+      "@base": ["src/base/index"],
+      "@application": ["src/application/index"],
+    }
+  }
+}
