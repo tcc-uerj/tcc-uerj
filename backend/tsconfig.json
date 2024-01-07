@@ -18,12 +18,15 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@infra/*": ["src/infra/*"],
+      "@repositories/*": ["src/infra/repositories/*"],
       "@domain/*": ["src/domain/*"],
       "@controllers/*": ["src/application/controllers/*"],
       "@middlewares/*": ["src/application/middlewares/*"],
       "@base": ["src/base/index"],
-      "@application": ["src/application/index"],
+      "@application": ["src/application/app.module"],
+      "@wire-in": ["src/application/schemas/wire-in/index"],
+      "@wire-out": ["src/application/schemas/wire-out/index"],
+      "@model": ["src/application/schemas/model/index"]
     }
   }
 }

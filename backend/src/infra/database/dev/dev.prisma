@@ -16,8 +16,8 @@ model User {
   email    String
   password String
   name     String
-  points   Int
-  level    Int
+  points   Int    @default(0)
+  level    Int    @default(1)
 
   @@map("users")
 }
