@@ -19,7 +19,7 @@ export class UserService {
             throw new ConflictException('Este email já foi cadastrado.');
         }
 
-        const password = bcrypt.hash(body.password, 8);
+        const password = await bcrypt.hash(body.password, 8);
 
         const newUser = { ...body, password } as unknown as User;
 

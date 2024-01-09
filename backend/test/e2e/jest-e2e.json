@@ -1,0 +1,20 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "../../",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@middlewares(.*)$": "<rootDir>/src/application/middlewares/$1",
+    "^@model": "<rootDir>/src/application/schemas/model/index.ts",
+    "^@repositories(.*)$": "<rootDir>/src/infra/repositories/$1",
+    "^@domain(.*)$": "<rootDir>/src/domain/$1",
+    "^@controllers(.*)$": "<rootDir>/src/application/controllers/$1",
+    "^@base": "<rootDir>/src/base/index.ts",
+    "^@application": "<rootDir>/src/application/app.module",
+    "^@wire-in": "<rootDir>/src/application/schemas/wire-in/index.ts",
+    "^@wire-out": "<rootDir>/src/application/schemas/wire-out/index.ts"
+  }
+}

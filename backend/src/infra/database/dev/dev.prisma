@@ -21,3 +21,34 @@ model User {
 
   @@map("users")
 }
+
+// TODO: adicionar o challeng_id
+model Lesson {
+  id          Int          @id @default(autoincrement())
+  subject     String
+  content     String
+  lessonLinks LessonLink[]
+
+  @@map("lesson")
+}
+
+model LessonLink {
+  id       Int    @id @default(autoincrement())
+  link     String
+  lessonId Int    @map("lesson_id")
+  order    Int
+  type     String
+
+  lesson Lesson @relation(fields: [lessonId], references: [id])
+
+  @@map("lesson_link")
+}
+
+model UserLesson {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @map("user_id")
+  lessonId    Int       @map("lesson_id")
+  completedAt DateTime? @map("completed_at")
+
+  @@map("user_lesson")
+}

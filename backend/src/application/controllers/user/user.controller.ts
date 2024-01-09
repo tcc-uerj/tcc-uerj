@@ -2,7 +2,7 @@ import { UserService } from '@domain/user/user.service';
 import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateUserPayload } from '@wire-in';
-import { UserResponse } from 'src/application/schemas/wire-out/User';
+import { UserResponse } from '@wire-out';
 
 @ApiTags('User Controller')
 @Controller('/user')
