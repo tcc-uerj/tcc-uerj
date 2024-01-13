@@ -1,7 +1,8 @@
 import { BaseOption } from '@model';
-import { applyDecorators } from '@nestjs/common';
+import { UsePipes, applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { CaptalizePipe } from '../pipes/Captalize.pipe';
 
 export const IsText = (option: BaseOption) => {
     const { example } = option;

@@ -4,6 +4,7 @@ import { createNestApplication, createTestingModule, shutdownServices } from '..
 import * as request from 'supertest';
 import { CreateUserPayload } from '@wire-in';
 
+// TODO: REFAZER OS TESTES PARA REMOVER OS DESCRIBERS EXTRAS E MUDAR PARA ITS
 describe('User Route', () => {
     let app: INestApplication;
     let database: PrismaClient;
@@ -59,7 +60,7 @@ describe('User Route', () => {
         const body: CreateUserPayload = {
             email: 'johndoe@nobody.com',
             password: 'strongPassword1',
-            name: 'John Doe',
+            name: 'john doe',
         };
 
         // it('should return 400 when name is not a string', async () => {

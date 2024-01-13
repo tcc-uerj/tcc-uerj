@@ -20,6 +20,4 @@ export class LessonService {
     public async findBySubject(subject: SubjectType) {
         return this.lessonRepository.findBySubject(subject);
     }
-
-    // TODO: VERIFICAR SE O LESSON CONTENT LINK FICARÁ TAMBÉM NESSE REPOSITORY
 }

@@ -22,11 +22,12 @@
       "@domain/*": ["src/domain/*"],
       "@controllers/*": ["src/application/controllers/*"],
       "@middlewares/*": ["src/application/middlewares/*"],
-      "@base": ["src/base/index"],
+      "@pipes/*": ["src/application/pipes/*"],
+      "@core": ["src/core/index"],
       "@application": ["src/application/app.module"],
       "@wire-in": ["src/application/schemas/wire-in/index"],
       "@wire-out": ["src/application/schemas/wire-out/index"],
-      "@model": ["src/application/schemas/model/index"]
+      "@model": ["src/application/schemas/model/index"],
     }
   }
 }

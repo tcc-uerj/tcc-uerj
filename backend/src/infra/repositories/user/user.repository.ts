@@ -1,4 +1,4 @@
-import { BaseRepository } from '@base';
+import { BaseRepository } from '@core';
 import { Prisma, User } from '@prisma/client';
 
 export class UserRepository extends BaseRepository<User> {
