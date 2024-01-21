@@ -1,7 +1,27 @@
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>TCC Project</h1>
-    </main>
+    <div className="relative isolate px-6 pt-14 lg:px-8">
+      <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold tracking-tight text-white-500 sm:text-6xl">
+            Aprenda engenharia de software com facilidade
+          </h1>
+          <p className="mt-6 text-lg leading-8 text-gray-600">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus malesuada augue, et luctus quam tempor ac. Integer nec ultricies diam.
+          </p>
+          <div className="mt-10 flex items-center justify-center gap-x-6">
+            <a
+              href="#"
+              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Comece agora
+            </a>
+            <a href="#" className="text-sm font-semibold leading-6 text-white-500">
+              Saiba mais <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
