@@ -1,4 +1,4 @@
-import { IsText } from '@middlewares/IsName.decorator';
+import { IsText } from '@middlewares/IsText.decorator';
 import { validate } from 'class-validator';
 
 describe('IsText()', () => {

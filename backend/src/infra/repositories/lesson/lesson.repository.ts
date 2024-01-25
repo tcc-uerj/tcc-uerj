@@ -6,16 +6,9 @@ export class LessonRepository extends BaseRepository<Lesson> {
     private select: Prisma.LessonSelect = {
         id: true,
         content: true,
-        lessonContentLinks: true,
+        lessonLinks: true,
         subject: true,
     };
-
-    public async findById(id: number) {
-        return super.findOne<Prisma.LessonFindFirstArgs>({
-            select: this.select,
-            where: { id },
-        });
-    }
 
     public async findBySubject(subject: SubjectType) {
         return super.find<Prisma.LessonFindFirstArgs>({

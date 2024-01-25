@@ -22,7 +22,8 @@ model User {
   @@map("users")
 }
 
-// TODO: adicionar o challeng_id
+// TODO: adicionar o challenge_id
+// TODO: ALTERAR NA MIGRATION CREATE_LESSON_TABLE O CAMPO CONTENT
 model Lesson {
   id          Int          @id @default(autoincrement())
   subject     String

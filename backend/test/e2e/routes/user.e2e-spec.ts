@@ -2,9 +2,9 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { createNestApplication, createTestingModule, shutdownServices } from '../helpers/server';
 import * as request from 'supertest';
-import { CreateUserPayload } from '@wire-in';
+import { CreateUserPayload, LoginUserPayload } from '@wire-in';
+import { faker, ur } from '@faker-js/faker';
 
-// TODO: REFAZER OS TESTES PARA REMOVER OS DESCRIBERS EXTRAS E MUDAR PARA ITS
 describe('User Route', () => {
     let app: INestApplication;
     let database: PrismaClient;
@@ -20,71 +20,61 @@ describe('User Route', () => {
         await shutdownServices(app, database);
     });
 
+    const { internet, person } = faker;
+
     const baseUrl = '/api/v1/user';
+    const email = internet.email();
+    const password = internet.password({ length: 5, prefix: '5' });
 
     describe('POST /', () => {
         const body: CreateUserPayload = {
-            email: 'johndoe@nobody.com',
-            password: 'strongPassword1',
-            name: 'John Doe',
+            email,
+            password,
+            name: person.fullName(),
         };
-
-        it('should return 400 when email is in wrong format', async () => {
-            const response = await request(app.getHttpServer())
-                .post(baseUrl)
-                .send({ ...body, email: 'johndoe' });
-
-            expect(response.status).toBe(HttpStatus.BAD_REQUEST);
-            expect(response.body.message[0]).toStrictEqual('johndoe não é um email válido');
-        });
-    });
-
-    describe('POST /', () => {
-        const body: CreateUserPayload = {
-            email: 'johndoe@nobody.com',
-            password: 'strongPassword1',
-            name: 'John Doe',
-        };
-
-        it('should return 400 when password is not strong enough', async () => {
-            const response = await request(app.getHttpServer())
-                .post(baseUrl)
-                .send({ ...body, password: 'test' });
-
-            expect(response.status).toBe(HttpStatus.BAD_REQUEST);
-            expect(response.body.message[0]).toStrictEqual('password is not strong enough');
-        });
-    });
-
-    describe('POST /', () => {
-        const body: CreateUserPayload = {
-            email: 'johndoe@nobody.com',
-            password: 'strongPassword1',
-            name: 'john doe',
-        };
-
-        // it('should return 400 when name is not a string', async () => {
-        //     const response = await request(app.getHttpServer())
-        //         .post(baseUrl)
-        //         .send({ ...body, name: 1111 });
-
-        //     expect(response.status).toBe(HttpStatus.BAD_REQUEST);
-        //     expect(response.body.message[0]).toStrictEqual('1 não é uma string');
-        // });
 
         it('should return 201 when everything is correct', async () => {
             const response = await request(app.getHttpServer()).post(baseUrl).send(body);
 
-            const expectedResponse = {
-                id: expect.any(Number),
-                email: 'johndoe@nobody.com',
-                password: expect.any(String),
-                name: 'John Doe',
-                level: 1,
-                points: 0,
-            };
+            const expectedResponse = { token: expect.any(String) };
+
             expect(response.status).toBe(HttpStatus.CREATED);
-            expect(response.body).toStrictEqual(expectedResponse);
+            expect(response.body).toMatchObject(expectedResponse);
+        });
+
+        it('should return 409 when user already exists', async () => {
+            const response = await request(app.getHttpServer()).post(baseUrl).send(body);
+
+            expect(response.status).toBe(HttpStatus.CONFLICT);
+            expect(response.body.message).toStrictEqual('Este email já foi cadastrado.');
+        });
+    });
+
+    describe('POST /login', () => {
+        const url = `${baseUrl}/login`;
+
+        it('should return 200 when login is valid', async () => {
+            const body: LoginUserPayload = { email, password };
+            const response = await request(app.getHttpServer()).post(url).send(body);
+
+            expect(response.status).toBe(HttpStatus.OK);
+            expect(response.body).toMatchObject({ token: expect.any(String) });
+        });
+
+        it('should return 401 when email is not valid', async () => {
+            const body: LoginUserPayload = { email: internet.email(), password };
+            const response = await request(app.getHttpServer()).post(url).send(body);
+
+            expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
+            expect(response.body.message).toStrictEqual('Email ou senha inválidos.');
+        });
+
+        it('should return 401 when password is not valid', async () => {
+            const body: LoginUserPayload = { email, password: internet.password() };
+            const response = await request(app.getHttpServer()).post(url).send(body);
+
+            expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
+            expect(response.body.message).toStrictEqual('Email ou senha inválidos.');
         });
     });
 });

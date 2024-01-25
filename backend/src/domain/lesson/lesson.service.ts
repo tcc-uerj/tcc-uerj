@@ -13,10 +13,6 @@ export class LessonService {
         return this.lessonRepository.findAll();
     }
 
-    public async findById(lessonId: number) {
-        return this.lessonRepository.findById(lessonId);
-    }
-
     public async findBySubject(subject: SubjectType) {
         return this.lessonRepository.findBySubject(subject);
     }
