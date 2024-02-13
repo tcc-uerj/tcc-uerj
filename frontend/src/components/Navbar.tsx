@@ -7,7 +7,7 @@ const data = [
     },
     {
       title: "Área de Estudos",
-      href: "/lessons",
+      href: "/courses",
     },
     {
       title: "Jogos",
@@ -32,7 +32,7 @@ export default function Navbar() {
                             <li key={id}>
                                 <Link
                                     href={link.href}
-                                    className="font-incognito dark:text-white text-zinc-600 dark:hover:text-primary-color hover:text-zinc-900 duration-300 text-base"
+                                    className="font-semibold px-3 py-2.5 dark:text-white text-zinc-600 dark:hover:text-primary-color hover:text-indigo-500 hover:underline duration-300 text-base"
                                 >
                                     {link.title}
                                 </Link>
@@ -42,8 +42,7 @@ export default function Navbar() {
                 </nav>
 
                 <div className="">
-                    <button className="mx-3 rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white-900 hover:bg-indigo-500">Entrar</button>
-                    <button>Cadastrar</button>
+                    <button className="mx-3 rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white-900 bg-indigo-500 hover:bg-indigo-700">Entrar</button>
                 </div>
         </header>
     );
