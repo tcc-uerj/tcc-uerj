@@ -1,4 +1,5 @@
 export * from './User';
 export * from './Lesson';
 export * from './Token';
-export * from './UserLesson';
+export * from './Achievement';
+export * from './Challenge';

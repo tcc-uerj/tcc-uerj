@@ -43,7 +43,7 @@ const BearerAuth = (isAuth: boolean) => {
         return [() => {}];
     }
 
-    return [ApiBearerAuth, UseGuards(JwtAuthGuard)];
+    return [ApiBearerAuth(), UseGuards(JwtAuthGuard)];
 };
 
 export const CustomRoute = (option: RouteOption) => {

@@ -3,6 +3,7 @@ import { IsPassword } from '@middlewares/IsPassword.decorator';
 import { IsValidEmail } from '@middlewares/IsValidEmail.decorator';
 import { faker } from '@faker-js/faker';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber } from 'class-validator';
 
 export class CreateUserPayload {
     @IsValidEmail({ example: 'johndoe@nobody.com' })
@@ -21,4 +22,12 @@ export class LoginUserPayload {
 
     @ApiProperty({ example: faker.internet.password({ length: 5, prefix: '5' }) })
     password: string;
+}
+
+export class UserLessonLinkPayload {
+    @IsNumber()
+    userId: number;
+
+    @IsNumber()
+    lessonLinkId: number;
 }

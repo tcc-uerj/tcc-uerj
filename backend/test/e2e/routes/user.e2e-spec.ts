@@ -4,10 +4,13 @@ import { createNestApplication, createTestingModule, shutdownServices } from '..
 import * as request from 'supertest';
 import { CreateUserPayload, LoginUserPayload } from '@wire-in';
 import { faker, ur } from '@faker-js/faker';
+import { sign } from 'jsonwebtoken';
+import { AchievementResponse, UserAchievementResponse, UserLessonReponse } from '@wire-out';
 
 describe('User Route', () => {
     let app: INestApplication;
     let database: PrismaClient;
+    let token: string;
 
     beforeAll(async () => {
         const moduleRef = await createTestingModule();
@@ -22,7 +25,7 @@ describe('User Route', () => {
 
     const { internet, person } = faker;
 
-    const baseUrl = '/api/v1/user';
+    const baseUrl = '/api/v1/users';
     const email = internet.email();
     const password = internet.password({ length: 5, prefix: '5' });
 
@@ -35,11 +38,12 @@ describe('User Route', () => {
 
         it('should return 201 when everything is correct', async () => {
             const response = await request(app.getHttpServer()).post(baseUrl).send(body);
-
             const expectedResponse = { token: expect.any(String) };
 
             expect(response.status).toBe(HttpStatus.CREATED);
             expect(response.body).toMatchObject(expectedResponse);
+
+            token = response.body.token;
         });
 
         it('should return 409 when user already exists', async () => {
@@ -75,6 +79,83 @@ describe('User Route', () => {
 
             expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
             expect(response.body.message).toStrictEqual('Email ou senha inválidos.');
+        });
+    });
+
+    // FIXME: REFATORAR ESTE TESTE PARA A TABELA USER_LESSON_LINK
+    // describe('GET /lessons', () => {
+    //     const url = `${baseUrl}/lessons`;
+
+    //     it('should return 401 when user id does not exists', async () => {
+    //         const fakeToken = sign({ id: 0 }, 'secret');
+    //         const response = await request(app.getHttpServer())
+    //             .get(url)
+    //             .auth(fakeToken, { type: 'bearer' });
+
+    //         expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
+    //         expect(response.body.message).toStrictEqual(
+    //             'O token enviado não contém informações válidas',
+    //         );
+    //     });
+
+    //     it('should return 200 when user id exists', async () => {
+    //         const response = await request(app.getHttpServer())
+    //             .get(url)
+    //             .auth(token, { type: 'bearer' });
+
+    //         const expectedResponse: UserLessonReponse = {
+    //             completedAt: expect.any(Date),
+    //             lessonId: expect.any(Number),
+    //             userId: expect.any(Number),
+    //         };
+
+    //         expect(response.status).toBe(HttpStatus.OK);
+    //         expect(response.body).toStrictEqual([expectedResponse]);
+    //     });
+    // });
+
+    describe('POST /:achievementId/achievement', () => {
+        const url = `${baseUrl}/1/achievement`;
+
+        it('should create a new user achievement', async () => {
+            const response = await request(app.getHttpServer())
+                .post(url)
+                .auth(token, { type: 'bearer' });
+
+            expect(response.status).toBe(HttpStatus.CREATED);
+            expect(response.body).toMatchObject({});
+        });
+    });
+
+    describe('GET /achievements', () => {
+        const url = `${baseUrl}/achievements`;
+
+        it('should return 401 when user id does not exists', async () => {
+            const fakeToken = sign({ id: 0 }, 'secret');
+            const response = await request(app.getHttpServer())
+                .get(url)
+                .auth(fakeToken, { type: 'bearer' });
+
+            expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
+            expect(response.body.message).toStrictEqual(
+                'O token enviado não contém informações válidas',
+            );
+        });
+
+        it('should return 200 when user id exists', async () => {
+            const response = await request(app.getHttpServer())
+                .get(url)
+                .auth(token, { type: 'bearer' });
+
+            const expectedResponse: UserAchievementResponse = {
+                achievement: {
+                    id: expect.any(Number),
+                    type: expect.any(String),
+                },
+            };
+
+            expect(response.status).toBe(HttpStatus.OK);
+            expect(response.body).toStrictEqual([expectedResponse]);
         });
     });
 });

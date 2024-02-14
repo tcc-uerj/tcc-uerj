@@ -20,18 +20,20 @@ describe('Lesson Route', () => {
         await shutdownServices(app, database);
     });
 
-    const baseUrl = '/api/v1/lesson';
+    const baseUrl = '/api/v1/lessons';
 
-    const expectedLesson: LessonResponse = {
+    const expectedLesson = {
         id: expect.any(Number),
         content: expect.any(String),
         subject: expect.any(String),
         lessonLinks: [],
-    };
+    } as LessonResponse;
 
+    // TODO: ADICIONAR CASO DE ERRO
+    // FIXME: CORRIGIR O CASO DE TESTE PARA A ROTA DE FIND_ALL
     describe('GET /', () => {
         it('should return 200 when everything is correct', async () => {
-            const url = `${baseUrl}/${SubjectType.CLEAN_CODE}`;
+            const url = `${baseUrl}`;
             const response = await request(app.getHttpServer()).get(url);
 
             expect(response.status).toBe(HttpStatus.OK);
@@ -39,9 +41,9 @@ describe('Lesson Route', () => {
         });
     });
 
-    describe('GET /:subject', () => {
+    describe('GET /:subject/subject', () => {
         it('should throw an error when param is not SubjectType', async () => {
-            const url = `${baseUrl}/1`;
+            const url = `${baseUrl}/1/subject`;
             const response = await request(app.getHttpServer()).get(url);
 
             expect(response.status).toBe(HttpStatus.BAD_REQUEST);
@@ -51,7 +53,7 @@ describe('Lesson Route', () => {
         });
 
         it('should return 200 when everything is correct', async () => {
-            const url = `${baseUrl}/${SubjectType.CLEAN_CODE}`;
+            const url = `${baseUrl}/${SubjectType.CLEAN_CODE}/subject`;
             const response = await request(app.getHttpServer()).get(url);
 
             expect(response.status).toBe(HttpStatus.OK);

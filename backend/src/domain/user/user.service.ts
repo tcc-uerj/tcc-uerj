@@ -1,6 +1,6 @@
 import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { UserLessonRepository } from '@repositories/user-lesson/user-lesson.repository';
+import { UserLessonLinkRepository } from '@repositories/user-lesson-link/user-lesson-link.repository';
 import { UserRepository } from '@repositories/user/user.repository';
 import { CreateUserPayload, LoginUserPayload } from '@wire-in';
 import * as bcrypt from 'bcryptjs';
@@ -11,8 +11,8 @@ export class UserService {
         @Inject(UserRepository)
         private userRepository: UserRepository,
 
-        @Inject(UserLessonRepository)
-        private userLessonRepository: UserLessonRepository,
+        @Inject(UserLessonLinkRepository)
+        private userLessonLinkRepository: UserLessonLinkRepository,
     ) {}
 
     public async create(body: CreateUserPayload) {
@@ -44,7 +44,11 @@ export class UserService {
         return user;
     }
 
-    public async getUserLessons(userId: number) {
-        return this.userLessonRepository.findLessonsByUser(userId);
+    public async findById(id: number) {
+        const user = await this.userRepository.findById(id);
+
+        if (!user) {
+            throw new UnauthorizedException('Este id não pertence a nenhum usuário');
+        }
     }
 }

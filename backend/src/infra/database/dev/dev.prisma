@@ -10,7 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// TODO: adicionar achievement_id
 model User {
   id       Int    @id @default(autoincrement())
   email    String
@@ -19,16 +18,24 @@ model User {
   points   Int    @default(0)
   level    Int    @default(1)
 
+  UserLessonLink  UserLessonLink[]
+  UserAchievement UserAchievement[]
+  UserChallenge   UserChallenge[]
+
   @@map("users")
 }
 
-// TODO: adicionar o challenge_id
 // TODO: ALTERAR NA MIGRATION CREATE_LESSON_TABLE O CAMPO CONTENT
 model Lesson {
-  id          Int          @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   subject     String
   content     String
-  lessonLinks LessonLink[]
+  description String
+  imageUrl    String
+  challengeId Int    @map("challenge_id")
+
+  challenge  Challenge    @relation(fields: [challengeId], references: [id])
+  LessonLink LessonLink[]
 
   @@map("lesson")
 }
@@ -40,16 +47,111 @@ model LessonLink {
   order    Int
   type     String
 
-  lesson Lesson @relation(fields: [lessonId], references: [id])
+  lesson         Lesson           @relation(fields: [lessonId], references: [id])
+  UserLessonLink UserLessonLink[]
 
   @@map("lesson_link")
 }
 
-model UserLesson {
+// model UserLesson {
+//   id          Int       @id @default(autoincrement())
+//   userId      Int       @map("user_id")
+//   lessonId    Int       @map("lesson_id")
+//   completedAt DateTime? @map("completed_at")
+
+//   user   User   @relation(fields: [userId], references: [id])
+//   lesson Lesson @relation(fields: [lessonId], references: [id])
+
+//   @@map("user_lesson")
+// }
+
+model UserLessonLink {
+  id           Int       @id @default(autoincrement())
+  userId       Int       @map("user_id")
+  lessonLinkId Int       @map("lesson_link_id")
+  completedAt  DateTime? @map("completed_at")
+
+  user       User       @relation(fields: [userId], references: [id])
+  lessonLink LessonLink @relation(fields: [lessonLinkId], references: [id])
+
+  @@map("user_lesson_link")
+}
+
+model Achievement {
+  id              Int               @id @default(autoincrement())
+  type            String
+  UserAchievement UserAchievement[]
+
+  @@map("achievement")
+}
+
+model UserAchievement {
+  id            Int @id @default(autoincrement())
+  userId        Int @map("user_id")
+  achievementId Int @map("achievement_id")
+
+  user        User        @relation(fields: [userId], references: [id])
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@map("user_achievement")
+}
+
+model Challenge {
+  id      Int    @id @default(autoincrement())
+  subject String
+  level   String
+  points  Int
+
+  Lesson            Lesson[]
+  UserChallenge     UserChallenge[]
+  ChallengeQuestion ChallengeQuestion[]
+
+  @@map("challenge")
+}
+
+model UserChallenge {
   id          Int       @id @default(autoincrement())
   userId      Int       @map("user_id")
-  lessonId    Int       @map("lesson_id")
+  challengeId Int       @map("challenge_id")
   completedAt DateTime? @map("completed_at")
 
-  @@map("user_lesson")
+  user      User      @relation(fields: [userId], references: [id])
+  challenge Challenge @relation(fields: [challengeId], references: [id])
+
+  @@map("user_challenge")
+}
+
+model ChallengeQuestion {
+  id             Int    @id @default(autoincrement())
+  challengeId    Int    @map("challenge_id")
+  statementTitle String @map("statement_title")
+  statementCode  Bytes  @map("statement_code")
+  type           String
+
+  challenge       Challenge         @relation(fields: [challengeId], references: [id])
+  QuestionGapGame QuestionGapGame[]
+  QuestionQuiz    QuestionQuiz[]
+
+  @@map("challenge_question")
+}
+
+model QuestionGapGame {
+  id                  Int    @id @default(autoincrement())
+  content             String
+  challengeQuestionId Int    @map("challenge_question_id")
+
+  challengeQuestion ChallengeQuestion @relation(fields: [challengeQuestionId], references: [id])
+
+  @@map("question_gap_game")
+}
+
+model QuestionQuiz {
+  id                  Int     @id @default(autoincrement())
+  quiz                Bytes
+  isCorrectAnswer     Boolean @map("is_correct_answer")
+  challengeQuestionId Int     @map("challenge_question_id")
+
+  challengeQuestion ChallengeQuestion @relation(fields: [challengeQuestionId], references: [id])
+
+  @@map("question_quiz")
 }

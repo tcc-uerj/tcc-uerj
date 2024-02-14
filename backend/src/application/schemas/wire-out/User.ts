@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, IsStrongPassword, MinLength } from 'class-validator';
+import { AchievementResponse } from './Achievement';
 
 export class UserResponse {
     @ApiProperty({ example: 'johndoe@nobody.com' })
@@ -16,4 +17,20 @@ export class UserResponse {
 
     @ApiProperty({ example: 1 })
     level: number;
+}
+
+export class UserAchievementResponse {
+    @ApiProperty({ example: AchievementResponse })
+    achievement: AchievementResponse;
+}
+
+export class UserLessonLinkReponse {
+    @ApiProperty({ example: 1 })
+    userId: number;
+
+    @ApiProperty({ example: 2 })
+    lessonLinkId: number;
+
+    @ApiProperty({ example: new Date() })
+    completedAt: Date;
 }

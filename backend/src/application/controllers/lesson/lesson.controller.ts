@@ -4,7 +4,7 @@ import { SubjectType } from '@model';
 import { Inject, Param, ParseEnumPipe } from '@nestjs/common';
 import { LessonResponse } from '@wire-out';
 
-@CustomController('Lesson Controller')
+@CustomController('Lessons Controller')
 export class LessonController {
     constructor(
         @Inject(LessonService)
@@ -25,7 +25,7 @@ export class LessonController {
         method: 'GET',
         summary: 'Esta rota lista todas as aulas com o respectivo SubjectType',
         response: LessonResponse,
-        route: '/:subject',
+        route: '/:subject/subject',
     })
     public async findBySubject(
         @Param('subject', new ParseEnumPipe(SubjectType)) subject: SubjectType,

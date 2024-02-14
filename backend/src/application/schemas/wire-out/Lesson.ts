@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { LessonType, SubjectType } from '@model';
 import { LessonLinkResponse } from './LessonLink';
 
-// TODO: ADICIONAR O CAMPO DO CHALLENGE_ID
 export class LessonResponse {
     @ApiProperty({ example: 1 })
     id: number;
@@ -15,4 +14,7 @@ export class LessonResponse {
 
     @ApiProperty({ type: [LessonLinkResponse] })
     lessonLinks: LessonLinkResponse[];
+
+    @ApiProperty({ example: 2 })
+    challengeId: number;
 }

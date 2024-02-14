@@ -5,9 +5,10 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
     constructor(private jwtService: JwtService) {}
 
+    // TODO: CRIAR UM TESTE UNITÁRIO PARA A VALIDAÇÃO DO AUTH TOKEN
     private extractToken(authorization: string) {
         if (!authorization) {
-            throw new UnauthorizedException('Bearer authorization does not exists');
+            throw new UnauthorizedException('Não foi encontrado um Bearer token no header');
         }
 
         const httpHeaders: string[] = authorization.split(' ');
@@ -34,9 +35,9 @@ export class AuthService {
 
             switch (name) {
                 case 'TokenExpiredError':
-                    throw new UnauthorizedException('Token has expired');
+                    throw new UnauthorizedException('Token está expirado');
                 case 'JsnWebTokenError':
-                    throw new UnauthorizedException('Token is invalid');
+                    throw new UnauthorizedException('O token enviado não está no formato JWT');
                 default:
                     throw err;
             }
