@@ -25,7 +25,6 @@ model User {
   @@map("users")
 }
 
-// TODO: ALTERAR NA MIGRATION CREATE_LESSON_TABLE O CAMPO CONTENT
 model Lesson {
   id          Int    @id @default(autoincrement())
   subject     String
@@ -52,18 +51,6 @@ model LessonLink {
 
   @@map("lesson_link")
 }
-
-// model UserLesson {
-//   id          Int       @id @default(autoincrement())
-//   userId      Int       @map("user_id")
-//   lessonId    Int       @map("lesson_id")
-//   completedAt DateTime? @map("completed_at")
-
-//   user   User   @relation(fields: [userId], references: [id])
-//   lesson Lesson @relation(fields: [lessonId], references: [id])
-
-//   @@map("user_lesson")
-// }
 
 model UserLessonLink {
   id           Int       @id @default(autoincrement())
@@ -125,7 +112,7 @@ model ChallengeQuestion {
   id             Int    @id @default(autoincrement())
   challengeId    Int    @map("challenge_id")
   statementTitle String @map("statement_title")
-  statementCode  Bytes  @map("statement_code")
+  statementCode  String @map("statement_code")
   type           String
 
   challenge       Challenge         @relation(fields: [challengeId], references: [id])
@@ -147,7 +134,7 @@ model QuestionGapGame {
 
 model QuestionQuiz {
   id                  Int     @id @default(autoincrement())
-  quiz                Bytes
+  quiz                String
   isCorrectAnswer     Boolean @map("is_correct_answer")
   challengeQuestionId Int     @map("challenge_question_id")
 

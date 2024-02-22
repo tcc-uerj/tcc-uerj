@@ -44,6 +44,12 @@ export class ChallengeQuestionResponse {
 
     @ApiProperty({ example: QuestionType.QUIZ })
     type: QuestionType;
+
+    @ApiProperty({ type: [ChallengeQuiz] })
+    challengeQuiz: ChallengeQuiz[];
+
+    @ApiProperty({ type: [ChallengeGapGame] })
+    challengeGapGame: ChallengeGapGame[];
 }
 
 export class ChallengeResponse {
