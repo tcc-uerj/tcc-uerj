@@ -1,48 +1,27 @@
-import Quiz from "@/components/Quiz";
+import GameCard from "./_components/GameCard";
 
-const challenge_question: IChallengeQuestion = {
-  id: 1,
-  challenge_id: 1,
-  statement_title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc euismod, eros eu blandit gravida, lectus tortor condimentum eros, in pellentesque quam ex sit amet risus. Nam ullamcorper euismod magna eget posuere. Aliquam aliquam leo ac mauris finibus ornare. Donec lacinia eget odio id accumsan. Fusce dignissim vel lacus at egestas. Vestibulum posuere accumsan placerat. Pellentesque sed scelerisque est, commodo consequat eros. Nam erat mauris, volutpat eget congue ut, sodales vitae diam. Sed maximus nunc sem, sit amet auctor est volutpat sed. Cras ac lorem eu lorem fermentum efficitur ac at eros. Sed fringilla dapibus urna, id imperdiet ante hendrerit sit amet.?",
-  type: ""
-};
-
-const options: IQuestionQuiz[] = [
+const games = [
   {
-    id: 1,
-    quiz: "Lorem",
-    challenge_question_id: 1,
-    is_correct_answer: false,
+      id: 1,
+      href: "/games/trivia",
+      name: "Trivia",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis laoreet ligula arcu, non elementum nulla convallis vitae. Donec eget nulla vel eros semper placerat vel et metus. Quisque fermentum pulvinar metus eu consequat. Etiam at leo tincidunt tortor iaculis convallis. Donec quam libero, egestas non tortor ac, vestibulum lacinia lacus. Maecenas maximus est vel auctor feugiat. Interdum et malesuada fames ac ante ipsum primis in faucibus."
   },
   {
-    id: 2,
-    quiz: "ipsum",
-    challenge_question_id: 1,
-    is_correct_answer: false,
-  },
-  {
-    id: 3,
-    quiz: "dolor",
-    challenge_question_id: 1,
-    is_correct_answer: true,
-  },
-  {
-    id: 4,
-    quiz: "sit",
-    challenge_question_id: 1,
-    is_correct_answer: false,
+      id: 2,
+      href: "/games/caca-palavras",
+      name: "Caça-Palavras",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis laoreet ligula arcu, non elementum nulla convallis vitae. Donec eget nulla vel eros semper placerat vel et metus. Quisque fermentum pulvinar metus eu consequat. Etiam at leo tincidunt tortor iaculis convallis. Donec quam libero, egestas non tortor ac, vestibulum lacinia lacus. Maecenas maximus est vel auctor feugiat. Interdum et malesuada fames ac ante ipsum primis in faucibus."
   }
 ];
 
 export default function Games() {
-    
   return (
-    <div className="flex justify-center items-center">
-      <div className="w-2/3">
-        <Quiz
-            question={challenge_question}
-            options={options}
-        />
+    <div className="flex flex-col justify-center items-center">
+      <div className="w-100">
+        <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 m-10">
+          {games.map((game) => (<GameCard key={game.id} game={game} />))}
+        </div>
       </div>
     </div>
   )

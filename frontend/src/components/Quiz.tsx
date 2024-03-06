@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react";
+import { Button } from "./ui/button";
 
 export default function Quiz({ question, options }: {
     question: IChallengeQuestion,
@@ -36,13 +37,13 @@ export default function Quiz({ question, options }: {
             <h1 className="text-3xl font-bold mb-4">Selecione a resposta correta:</h1>
             <div className="grid grid-cols-1 gap-4">
                 {options && options.map((option, index) => (
-                    <button
+                    <Button
                         key={index}
                         className={`bg-blue-500 text-white p-2 rounded ${selectedOption === index ? 'selected ' + getOptionBackgroundColor() : ''} `}
                         onClick={() => handleOptionSelect(index, option.is_correct_answer)}
                     >
                         {option.quiz}
-                    </button>
+                    </Button>
                 ))}
             </div>
 
@@ -55,12 +56,11 @@ export default function Quiz({ question, options }: {
                             <p className="text-red-500 font-bold">Resposta Errada!</p>
                         )}
                         
-                        <button
-                            className="mt-2 bg-blue-500 text-white p-2 rounded"
+                        <Button
                             onClick={closeModal}
                         >
                             Close
-                        </button>
+                        </Button>
                     </div>
                 </div>
             )}
