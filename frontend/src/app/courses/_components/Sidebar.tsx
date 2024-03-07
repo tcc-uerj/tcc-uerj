@@ -2,7 +2,13 @@
 
 import { useEffect, useState } from "react";
 
-export default function Sidebar({ data, setActiveContent }) {
+interface CourseSidebarProps {
+  courseName: string,
+  data: { title: string, content?: string}[],
+  setActiveContent: (activeContent: number) => void;
+}
+
+export default function Sidebar({ courseName, data, setActiveContent }: CourseSidebarProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -11,7 +17,7 @@ export default function Sidebar({ data, setActiveContent }) {
 
   return (
     <div className="flex flex-col w-[300px] min-h-screen min-w-[300px] border-r border-gray-800 p-4 ">
-      <h1 className="pb-5 border-b border-gray-400 font-extrabold text-xl uppercase cursor-default">Clean Code</h1>
+      <h1 className="pb-5 border-b border-gray-400 font-extrabold text-xl uppercase cursor-default">{courseName}</h1>
       {data.map((item, index) => (
         <div 
           onClick={() => {

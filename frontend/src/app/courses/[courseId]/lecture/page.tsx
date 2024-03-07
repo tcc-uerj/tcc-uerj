@@ -19,12 +19,20 @@ const data = [
     }
 ]
 
-export default function Lecture() {
+const courseNames = [
+    "Clean Code", "Design Patterns"
+]
+
+interface LectureProps {
+    params: { courseId: string; }
+}
+
+export default function Lecture({ params }: LectureProps) {
     const [activeContent, setActiveContent] = useState(0);
 
     return (
         <div className="flex flex-row min-h-screen">
-            <Sidebar data={data} setActiveContent={(content) => setActiveContent(content)} />
+            <Sidebar data={data} courseName={courseNames[parseInt(params.courseId) - 1]} setActiveContent={(content) => setActiveContent(content)} />
             <div className="m-8 w-screen">
                 <h1 className="font-bold text-4xl">{data[activeContent].title}</h1>
                 <div className="text-lg mt-5">{data[activeContent].content}</div>
