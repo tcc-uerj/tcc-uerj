@@ -3,20 +3,20 @@ import { Button } from '@/components/ui/button'
 
 const data = [
     {
-      title: "Sobre",
-      href: "/about",
+        title: "Sobre",
+        href: "/about",
     },
     {
-      title: "Área de Estudos",
-      href: "/courses",
+        title: "Área de Estudos",
+        href: "/courses",
     },
     {
-      title: "Jogos",
-      href: "/games",
+        title: "Jogos",
+        href: "/games",
     },
     {
-      title: "Ranking",
-      href: "/ranking",
+        title: "Ranking",
+        href: "/ranking",
     },
 ];
 
@@ -42,8 +42,18 @@ export default function Navbar() {
                 </ul>
             </nav>
 
-            <div className="">
-                <Button>Entrar</Button>
+            <div className="flex flex-row">
+                <div className="mr-3">
+                    <Link href="/account/login">
+                        <Button variant="default">Fazer Login</Button>    
+                    </Link>
+                </div>
+
+                <div>
+                    <Link href="/account/signup">
+                        <Button variant="secondary">Cadastrar</Button>
+                    </Link>
+                </div>
             </div>
         </header>
     );
