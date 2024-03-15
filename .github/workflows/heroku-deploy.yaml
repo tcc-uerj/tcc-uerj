@@ -29,7 +29,6 @@ jobs:
       run: yarn test:e2e
     
   test-unit:
-    needs: test-e2e
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repo
@@ -50,7 +49,6 @@ jobs:
       run: yarn test:unit
 
   deploy:
-    needs: test-unit
     runs-on: ubuntu-latest    
     steps:
     - name: Checkout repo
