@@ -13,7 +13,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 const swaggerConfig = (app: INestApplication) => {
     const config = new DocumentBuilder()
         .setTitle('TCC UERJ')
-        .setDescription('Swagger da api do TCC')
+        .setDescription('Swagger da api do TCC.')
         .setVersion('1')
         .addBearerAuth()
         .build();
