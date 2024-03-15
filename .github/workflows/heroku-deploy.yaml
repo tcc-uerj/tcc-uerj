@@ -10,6 +10,9 @@ on:
 jobs:
   test-e2e:
     runs-on: ubuntu-latest
+    defaults: 
+      run:
+        working-directory: ./backend
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
@@ -30,6 +33,9 @@ jobs:
     
   test-unit:
     runs-on: ubuntu-latest
+    defaults: 
+      run:
+        working-directory: ./backend   
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
@@ -51,6 +57,9 @@ jobs:
   deploy:
     needs: [test-unit, test-e2e]
     runs-on: ubuntu-latest    
+    defaults: 
+      run:
+        working-directory: ./backend  
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
