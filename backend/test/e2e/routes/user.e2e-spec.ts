@@ -5,7 +5,7 @@ import * as request from 'supertest';
 import { CreateUserPayload, LoginUserPayload } from '@wire-in';
 import { faker, ur } from '@faker-js/faker';
 import { sign } from 'jsonwebtoken';
-import { AchievementResponse, UserAchievementResponse, UserLessonReponse } from '@wire-out';
+import { AchievementResponse, UserAchievementResponse } from '@wire-out';
 
 describe('User Route', () => {
     let app: INestApplication;
@@ -29,6 +29,7 @@ describe('User Route', () => {
     const email = internet.email();
     const password = internet.password({ length: 5, prefix: '5' });
 
+    //TODO: Corrigir teste
     describe('POST /', () => {
         const body: CreateUserPayload = {
             email,
@@ -40,6 +41,7 @@ describe('User Route', () => {
             const response = await request(app.getHttpServer()).post(baseUrl).send(body);
             const expectedResponse = { token: expect.any(String) };
 
+            console.log('response.body login: ', response.body);
             expect(response.status).toBe(HttpStatus.CREATED);
             expect(response.body).toMatchObject(expectedResponse);
 

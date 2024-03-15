@@ -1,0 +1,141 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id       Int    @id @default(autoincrement()) @db.Integer
+    email    String @db.Text
+    password String @db.Text
+    name     String @db.Text
+    points   Int    @default(0) @db.SmallInt
+    level    Int    @default(1) @db.SmallInt
+
+    UserLessonLink  UserLessonLink[]
+    UserAchievement UserAchievement[]
+    UserChallenge   UserChallenge[]
+
+    @@map("users")
+}
+
+model Lesson {
+    id          Int    @id @default(autoincrement()) @db.Integer
+    subject     String @db.Text
+    content     String @db.Text
+    description String @db.Text
+    imageUrl    String @db.Text
+    challengeId Int    @map("challenge_id") @db.Integer
+
+    challenge  Challenge    @relation(fields: [challengeId], references: [id])
+    LessonLink LessonLink[]
+
+    @@map("lesson")
+}
+
+model LessonLink {
+    id       Int    @id @default(autoincrement()) @db.Integer
+    link     String @db.Text
+    lessonId Int    @map("lesson_id") @db.Integer
+    order    Int    @db.SmallInt
+    type     String @db.Text
+
+    lesson         Lesson           @relation(fields: [lessonId], references: [id])
+    UserLessonLink UserLessonLink[]
+
+    @@map("lesson_link")
+}
+
+model UserLessonLink {
+    id           Int       @id @default(autoincrement()) @db.Integer
+    userId       Int       @map("user_id") @db.Integer
+    lessonLinkId Int       @map("lesson_link_id") @db.Integer
+    completedAt  DateTime? @map("completed_at") @db.Timestamp()
+
+    user       User       @relation(fields: [userId], references: [id])
+    lessonLink LessonLink @relation(fields: [lessonLinkId], references: [id])
+
+    @@map("user_lesson_link")
+}
+
+model Achievement {
+    id              Int               @id @default(autoincrement()) @db.Integer
+    type            String            @db.Text
+    UserAchievement UserAchievement[]
+
+    @@map("achievement")
+}
+
+model UserAchievement {
+    id            Int @id @default(autoincrement()) @db.Integer
+    userId        Int @map("user_id") @db.Integer
+    achievementId Int @map("achievement_id") @db.Integer
+
+    user        User        @relation(fields: [userId], references: [id])
+    achievement Achievement @relation(fields: [achievementId], references: [id])
+
+    @@map("user_achievement")
+}
+
+model Challenge {
+    id      Int    @id @default(autoincrement()) @db.Integer
+    subject String @db.Text
+    level   String @db.Text
+    points  Int    @db.SmallInt
+
+    Lesson            Lesson[]
+    UserChallenge     UserChallenge[]
+    ChallengeQuestion ChallengeQuestion[]
+
+    @@map("challenge")
+}
+
+model UserChallenge {
+    id          Int       @id @default(autoincrement()) @db.Integer
+    userId      Int       @map("user_id") @db.Integer
+    challengeId Int       @map("challenge_id") @db.Integer
+    completedAt DateTime? @map("completed_at") @db.Timestamp()
+
+    user      User      @relation(fields: [userId], references: [id])
+    challenge Challenge @relation(fields: [challengeId], references: [id])
+
+    @@map("user_challenge")
+}
+
+model ChallengeQuestion {
+    id             Int    @id @default(autoincrement()) @db.Integer
+    challengeId    Int    @map("challenge_id") @db.Integer
+    statementTitle String @map("statement_title") @db.Text
+    statementCode  String @map("statement_code") @db.Text
+    type           String @db.Text
+
+    challenge       Challenge         @relation(fields: [challengeId], references: [id])
+    QuestionGapGame QuestionGapGame[]
+    QuestionQuiz    QuestionQuiz[]
+
+    @@map("challenge_question")
+}
+
+model QuestionGapGame {
+    id                  Int    @id @default(autoincrement()) @db.Integer
+    content             String @db.Text
+    challengeQuestionId Int    @map("challenge_question_id") @db.Integer
+
+    challengeQuestion ChallengeQuestion @relation(fields: [challengeQuestionId], references: [id])
+
+    @@map("question_gap_game")
+}
+
+model QuestionQuiz {
+    id                  Int     @id @default(autoincrement()) @db.Integer
+    quiz                String  @db.Text
+    isCorrectAnswer     Boolean @map("is_correct_answer")
+    challengeQuestionId Int     @map("challenge_question_id") @db.Integer
+
+    challengeQuestion ChallengeQuestion @relation(fields: [challengeQuestionId], references: [id])
+
+    @@map("question_quiz")
+}
