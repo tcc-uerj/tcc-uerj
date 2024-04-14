@@ -1,12 +1,21 @@
 "use client"
 
 import Link, { LinkProps } from "next/link";
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";  
 import {
     Sheet,
     SheetContent,
     SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -30,6 +39,7 @@ const logoTitle = "TCC";
 
 export default function Navbar() {
     const [openSidebar, setOpenSidebar] = useState(false);
+    const isAuthenticated = true;
 
     return (
         <header className="flex items-center justify-between w-full px-4 md:px-6 py-4 md:py-8">
@@ -107,16 +117,32 @@ export default function Navbar() {
                     ))}
                 </nav>
             </div>
+            
+            {isAuthenticated ? (
+                <DropdownMenu>
+                    <DropdownMenuTrigger>
+                        <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-500 text-bold">
+                            JL
+                        </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>Perfil</DropdownMenuItem>
+                        <DropdownMenuItem>Sair</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            ) : (
+                <div className="flex items-center space-x-4">
+                    <Link href="/account/login">
+                        <Button variant="default">Fazer Login</Button>    
+                    </Link>
 
-            <div className="flex items-center gap-4">
-                <Link href="/account/login">
-                    <Button variant="default">Fazer Login</Button>    
-                </Link>
-
-                <Link href="/account/signup">
-                    <Button variant="secondary">Cadastrar</Button>
-                </Link>
-            </div>
+                    <Link href="/account/signup">
+                        <Button variant="secondary">Cadastrar</Button>
+                    </Link>
+                </div>
+            )}
         </header>
     );
 }
