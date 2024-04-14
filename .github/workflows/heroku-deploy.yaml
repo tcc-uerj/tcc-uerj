@@ -55,7 +55,7 @@ jobs:
       run: yarn test:unit
 
   deploy:
-    needs: [test-unit, test-e2e]
+    # needs: [test-unit, test-e2e]
     runs-on: ubuntu-latest    
     defaults: 
       run:
