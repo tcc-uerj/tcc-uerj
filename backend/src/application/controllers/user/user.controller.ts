@@ -1,12 +1,13 @@
 import { CustomController, CustomRoute } from '@core';
 import { UserService } from '@domain/user/user.service';
 import { Body, HttpStatus, Inject, Param } from '@nestjs/common';
-import { CreateUserPayload, LoginUserPayload } from '@wire-in';
+import { CreateUserPayload, LoginUserPayload, UpdateUserPayload } from '@wire-in';
 import {
     AchievementResponse,
     ChallengeResponse,
     TokenResponse,
     UserLessonLinkReponse,
+    UserResponse,
 } from '@wire-out';
 import { AuthService } from '@core';
 import { UserLessonLinkService } from '@domain/user-lesson-link/user-lesson-link.service';
@@ -34,6 +35,16 @@ export class UserController {
     ) {}
 
     @CustomRoute({
+        method: 'GET',
+        summary: 'Esta rota busca as informações de um usuário.',
+        response: UserResponse,
+        isAuth: true,
+    })
+    public async findById(@UserId() id: number) {
+        return this.userService.findById(id);
+    }
+
+    @CustomRoute({
         method: 'POST',
         summary: 'Esta rota cria um novo usuário',
         body: CreateUserPayload,
@@ -41,7 +52,20 @@ export class UserController {
     })
     public async create(@Body() body: CreateUserPayload) {
         const user = await this.userService.create(body);
-        return this.authService.generateToken(user);
+        const { token } = this.authService.generateToken(user);
+        return { user, token };
+    }
+
+    @CustomRoute({
+        method: 'PATCH',
+        summary: 'Esta rota edita um usuário',
+        body: UpdateUserPayload,
+        response: UserResponse,
+        isAuth: true,
+        code: HttpStatus.OK,
+    })
+    public async update(@UserId() id: number, @Body() body: UpdateUserPayload) {
+        return await this.userService.update(id, body);
     }
 
     @CustomRoute({
@@ -54,7 +78,8 @@ export class UserController {
     })
     public async login(@Body() body: LoginUserPayload) {
         const user = await this.userService.login(body);
-        return this.authService.generateToken(user);
+        const { token } = this.authService.generateToken(user);
+        return { user, token };
     }
 
     @CustomRoute({

@@ -3,11 +3,11 @@ import { IsEmail, IsNotEmpty, IsString, IsStrongPassword, MinLength } from 'clas
 import { AchievementResponse } from './Achievement';
 
 export class UserResponse {
+    @ApiProperty({ example: 1 })
+    id: number;
+
     @ApiProperty({ example: 'johndoe@nobody.com' })
     email: string;
-
-    @ApiProperty({ example: 'strongPassword1' })
-    password: string;
 
     @ApiProperty({ example: 'John Doe' })
     name: string;
@@ -17,6 +17,9 @@ export class UserResponse {
 
     @ApiProperty({ example: 1 })
     level: number;
+
+    @ApiProperty({ example: 10 })
+    gamesCount: number;
 }
 
 export class UserAchievementResponse {
