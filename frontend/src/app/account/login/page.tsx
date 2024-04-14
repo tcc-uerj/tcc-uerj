@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { useContext } from 'react';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,8 +8,11 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, For
 import { useForm } from 'react-hook-form';
 import { LoginSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AuthContext } from '@/contexts/AuthContext';
 
 export default function Login() {
+    const { login } = useContext(AuthContext);
+
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -19,7 +22,7 @@ export default function Login() {
     });
 
     async function handleLogin(data: z.infer<typeof LoginSchema>) {
-        console.log(data);
+        await login(data);
     }
 
     return (

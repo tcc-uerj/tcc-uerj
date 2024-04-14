@@ -22,7 +22,6 @@ export default function SignUp() {
     });
 
     function handleSignUp(data: z.infer<typeof SignUpSchema>) {
-        console.log(data);
     }
 
     return (

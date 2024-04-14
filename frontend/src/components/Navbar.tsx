@@ -2,7 +2,6 @@
 
 import Link, { LinkProps } from "next/link";
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,9 +15,10 @@ import {
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { AuthContext } from "@/contexts/AuthContext";
 
 const data = [
     {
@@ -39,7 +39,7 @@ const logoTitle = "TCC";
 
 export default function Navbar() {
     const [openSidebar, setOpenSidebar] = useState(false);
-    const isAuthenticated = true;
+    const { user, isAuthenticated, logout } = useContext(AuthContext);
 
     return (
         <header className="flex items-center justify-between w-full px-4 md:px-6 py-4 md:py-8">
@@ -119,19 +119,22 @@ export default function Navbar() {
             </div>
             
             {isAuthenticated ? (
-                <DropdownMenu>
-                    <DropdownMenuTrigger>
-                        <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-500 text-bold">
-                            JL
-                        </div>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>Perfil</DropdownMenuItem>
-                        <DropdownMenuItem>Sair</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex row items-center space-x-4">
+                    <div>Bem-vindo, {user?.name}</div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-500 text-bold">
+                                {user?.name.charAt(0).toUpperCase()}
+                            </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>Perfil</DropdownMenuItem>
+                            <DropdownMenuItem onClick={logout}>Sair</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             ) : (
                 <div className="flex items-center space-x-4">
                     <Link href="/account/login">

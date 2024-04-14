@@ -1,0 +1,1 @@
+export const BACKEND_URL = "https://tcc-backend-dunhao-bfed51b1d8d1.herokuapp.com/api/v1";
