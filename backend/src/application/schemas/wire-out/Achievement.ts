@@ -7,4 +7,7 @@ export class AchievementResponse {
 
     @ApiProperty({ example: AchievementType.CHALLENGE_CLEAN_CODE_LVL_2 })
     type: AchievementType;
+
+    @ApiProperty({ example: '100 jogos completados.' })
+    description: string;
 }

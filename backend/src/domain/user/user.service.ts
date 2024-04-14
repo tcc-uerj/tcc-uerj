@@ -2,7 +2,7 @@ import { ConflictException, Inject, Injectable, UnauthorizedException } from '@n
 import { User } from '@prisma/client';
 import { UserLessonLinkRepository } from '@repositories/user-lesson-link/user-lesson-link.repository';
 import { UserRepository } from '@repositories/user/user.repository';
-import { CreateUserPayload, LoginUserPayload } from '@wire-in';
+import { CreateUserPayload, LoginUserPayload, UpdateUserPayload } from '@wire-in';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -28,6 +28,11 @@ export class UserService {
         return this.userRepository.create(newUser);
     }
 
+    public async update(id: number, body: UpdateUserPayload) {
+        const { password } = await this.userRepository.findById(id);
+        return this.userRepository.update(id, { id, password, ...body });
+    }
+
     public async login(body: LoginUserPayload) {
         const user = await this.userRepository.findByEmail(body.email);
 
@@ -50,5 +55,7 @@ export class UserService {
         if (!user) {
             throw new UnauthorizedException('Este id não pertence a nenhum usuário');
         }
+
+        return user;
     }
 }

@@ -31,3 +31,23 @@ export class UserLessonLinkPayload {
     @IsNumber()
     lessonLinkId: number;
 }
+
+export class UpdateUserPayload {
+    @IsValidEmail({ example: faker.internet.email() })
+    email: string;
+
+    @IsText({ example: 'John Doe' })
+    name: string;
+
+    @IsNumber()
+    @ApiProperty({ example: 1 })
+    points: number;
+
+    @IsNumber()
+    @ApiProperty({ example: 1 })
+    level: number;
+
+    @IsNumber()
+    @ApiProperty({ example: 10 })
+    gamesCount: number;
+}
