@@ -3,6 +3,7 @@ import { CardHeader, CardContent, Card } from "@/components/ui/card"
 import { Progress } from '@/components/ui/progress';
 import { api } from "@/services/api";
 import { useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton"
 
 const user = {
     name: "Nome",
@@ -34,16 +35,26 @@ const achievements = [
 interface ProfileProps {}
 
 export default function Profile(props: ProfileProps) {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<IUser | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
     
     const fetchUser = async () => {
-        const { data } = await api.get('/users');
+        setIsLoading(true);
+        const data = await api.get('/users')
+            .then(res => res.data)
+            .finally(() => setIsLoading(false));
         setUser(data);
     }
 
     useEffect(() => {
         fetchUser();
     }, []);
+
+    if (isLoading) {
+        return (
+            <Skeleton className="w-full max-w-3xl m-auto mt-5"></Skeleton>
+        );
+    }
 
     return (
         <Card className="w-full max-w-3xl m-auto mt-5">
@@ -77,7 +88,7 @@ export default function Profile(props: ProfileProps) {
                     </div>
                     <div className="space-y-2">
                         <h2 className="text-lg font-bold">Próximo Nível</h2>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Você precisa de {levelXP - userXP} XP para chegar no level {user?.level + 1}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Você precisa de {levelXP - userXP} XP para chegar no level {user == null ? 1 : user?.level + 1}</p>
                         <div className="h-2 bg-gray-100 rounded-md dark:bg-gray-800">
                             <Progress value={xp * 100} />
                         </div>
@@ -102,7 +113,7 @@ export default function Profile(props: ProfileProps) {
     )
 }
 
-function AwardIcon(props) {
+function AwardIcon(props: any) {
     return (
         <svg
             {...props}
