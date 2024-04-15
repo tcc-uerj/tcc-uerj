@@ -15,5 +15,5 @@ export async function setCookie(name: string, value: string) {
 }
 
 export async function deleteCookie(name: string) {
-    cookies().delete(name);
+    cookies().set(name, '')
 }
