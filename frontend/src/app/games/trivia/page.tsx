@@ -1,9 +1,20 @@
+"use client";
+
 import { Button } from '@/components/ui/button'
+import { useSession } from '@/hooks/useSession';
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 export default function Trivia() {
+    const { isAuthenticated } = useSession();
+    const router = useRouter();
+
+    if (!isAuthenticated) {
+        router.push('/account/login')
+    }
+    
     return (
         <div className="flex bg-gray-500 items-center flex-col p-6 rounded-lg shadow-lg mt-[100px]">
             <div className='max-w-screen-xl mx-auto p-4'>

@@ -1,5 +1,8 @@
+"use client"
 import { CardHeader, CardContent, Card } from "@/components/ui/card"
 import { Progress } from '@/components/ui/progress';
+import { api } from "@/services/api";
+import { useEffect, useState } from "react";
 
 const user = {
     name: "Nome",
@@ -31,17 +34,28 @@ const achievements = [
 interface ProfileProps {}
 
 export default function Profile(props: ProfileProps) {
+    const [user, setUser] = useState(null);
+    
+    const fetchUser = async () => {
+        const { data } = await api.get('/users');
+        setUser(data);
+    }
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
     return (
         <Card className="w-full max-w-3xl m-auto mt-5">
             <CardHeader>
                 <div className="flex items-center space-x-4">
                     <div className="flex items-center space-x-3">
-                        <div className="text-2xl font-bold">{user.name}</div>
+                        <div className="text-2xl font-bold">{user?.name}</div>
                     </div>
                     <div className="grid items-center gap-1 text-sm sm:grid-cols-2">
                         <div className="flex items-center space-x-1">
                             <span className="font-medium">Level</span>
-                            <span className="text-gray-500 dark:text-gray-400">{user.level}</span>
+                            <span className="text-gray-500 dark:text-gray-400">{user?.level}</span>
                         </div>
                         <div className="flex items-center space-x-1">
                             <span className="font-medium">XP</span>
@@ -63,7 +77,7 @@ export default function Profile(props: ProfileProps) {
                     </div>
                     <div className="space-y-2">
                         <h2 className="text-lg font-bold">Próximo Nível</h2>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Você precisa de {levelXP - userXP} XP para chegar no level {user.level + 1}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Você precisa de {levelXP - userXP} XP para chegar no level {user?.level + 1}</p>
                         <div className="h-2 bg-gray-100 rounded-md dark:bg-gray-800">
                             <Progress value={xp * 100} />
                         </div>

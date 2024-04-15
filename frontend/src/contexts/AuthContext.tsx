@@ -1,8 +1,9 @@
 import { createContext, useEffect, useState } from 'react';
-import { BACKEND_URL } from '@/lib/consts';
+import { BACKEND_BASE_URL } from '@/lib/consts';
 import { LoginSchema } from '@/schemas';
 import * as z from 'zod';
-import { deleteCookie, getCookie, setCookie } from '@/actions';
+import { deleteCookie, getCookie, setCookie } from '@/actions/cookies';
+import { api } from '@/services/api';
 
 type AuthContextType = {
     user: IUser | null;
@@ -34,7 +35,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function retrieveAndSetUser(token: string | undefined) {
         if (!token) return;
 
-        const response = await fetch(`${BACKEND_URL}/users`, {
+        api.defaults.headers['Authorization'] = `Bearer ${token}`;
+
+        const response = await fetch(`${BACKEND_BASE_URL}/users`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -54,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         if (!safeParse.success) return;
 
-        const response = await fetch(`${BACKEND_URL}/users/login`, {
+        const response = await fetch(`${BACKEND_BASE_URL}/users/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -71,11 +74,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(user);
         setToken(token);
         setCookie('session-token', token);
+        window.location.href = '/';
     }
 
     async function logout() {
         setUser(null);
         deleteCookie('session-token');
+        window.location.href = '/';
     }
 
     return (

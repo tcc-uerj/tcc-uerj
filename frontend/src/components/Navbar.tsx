@@ -17,8 +17,9 @@ import {
 } from "@/components/ui/sheet";
 import { useContext, useState } from "react";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { AuthContext } from "@/contexts/AuthContext";
+import { useSession } from "@/hooks/useSession";
 
 const data = [
     {
@@ -39,7 +40,8 @@ const logoTitle = "TCC";
 
 export default function Navbar() {
     const [openSidebar, setOpenSidebar] = useState(false);
-    const { user, isAuthenticated, logout } = useContext(AuthContext);
+    const { user, isAuthenticated, logout } = useSession();
+    const router = useRouter();
 
     return (
         <header className="flex items-center justify-between w-full px-4 md:px-6 py-4 md:py-8">
@@ -130,7 +132,7 @@ export default function Navbar() {
                         <DropdownMenuContent>
                             <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>Perfil</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => router.push('/account/profile')}>Perfil</DropdownMenuItem>
                             <DropdownMenuItem onClick={logout}>Sair</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

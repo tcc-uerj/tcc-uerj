@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react'
 import Sidebar from '../../_components/Sidebar'
+import { useSession } from '@/hooks/useSession';
+import { useRouter } from 'next/navigation';
 
 const data = [
     {
@@ -29,6 +31,12 @@ interface LectureProps {
 
 export default function Lecture({ params }: LectureProps) {
     const [activeContent, setActiveContent] = useState(0);
+    const { isAuthenticated } = useSession();
+    const router = useRouter();
+
+    if (!isAuthenticated) {
+        router.push('/account/login')
+    }
 
     return (
         <div className="flex flex-row min-h-screen">
