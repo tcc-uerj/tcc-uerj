@@ -4,6 +4,7 @@ import { LoginSchema } from '@/schemas';
 import * as z from 'zod';
 import { deleteCookie, getCookie, setCookie } from '@/actions/cookies';
 import { api } from '@/services/api';
+import { useRouter } from 'next/navigation';
 
 type AuthContextType = {
     user: IUser | null;
@@ -18,6 +19,7 @@ export const AuthContext = createContext({} as AuthContextType)
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<IUser | null>(null)
     const [token, setToken] = useState<string | null>(null);
+    const router = useRouter();
     const isAuthenticated = !!user;
 
     useEffect(() => {
@@ -74,13 +76,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(user);
         setToken(token);
         setCookie('session-token', token);
-        window.location.href = '/';
+        router.push('/');
     }
 
     async function logout() {
         setUser(null);
         deleteCookie('session-token');
-        window.location.href = '/';
+        router.push('/');
     }
 
     return (
