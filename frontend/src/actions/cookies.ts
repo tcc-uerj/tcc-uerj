@@ -8,7 +8,9 @@ export async function getCookie(name: string) {
 export async function setCookie(name: string, value: string) {
     cookies().set({
         name,
-        value
+        value,
+        httpOnly: true,
+        path: '/'
     });
 }
 
