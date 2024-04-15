@@ -1,18 +1,18 @@
 "use client";
 
+import React from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { useSession } from '@/hooks/useSession';
 import { cn } from '@/lib/utils'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import React from 'react'
+import { redirect, useRouter } from 'next/navigation'
 
 export default function Trivia() {
     const { isAuthenticated } = useSession();
     const router = useRouter();
 
     if (!isAuthenticated) {
-        router.push('/account/login')
+        redirect('/account/login')
     }
     
     return (
