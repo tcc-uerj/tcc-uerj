@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useTransition } from 'react';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
@@ -16,7 +16,8 @@ import { FormError } from '@/components/FormError';
 export default function SignUp() {
     const { login } = useSession();
     const [error, setError] = useState("");
-
+    const [isPending, startTransition] = useTransition();
+    
     const form = useForm<z.infer<typeof SignUpSchema>>({
         resolver: zodResolver(SignUpSchema),
         defaultValues: {
@@ -28,16 +29,18 @@ export default function SignUp() {
     });
 
     async function handleSignUp(data: z.infer<typeof SignUpSchema>) {
-        try {
-            const { user, token, error } = await signUp(data);
-
-            if (error) {
-                setError(error);
-                return;
-            }
-
-            await login({ email: data.email, password: data.password });
-        } catch (error) {}
+        startTransition(async () => {
+            try {
+                const { user, token, error } = await signUp(data);
+    
+                if (error) {
+                    setError(error);
+                    return;
+                }
+    
+                await login({ email: data.email, password: data.password });
+            } catch (error) {}
+        })
     }
 
     return (
@@ -57,7 +60,7 @@ export default function SignUp() {
                                         <FormItem>
                                             <FormLabel>Nome</FormLabel>
                                             <FormControl>
-                                                <Input {...field} type="text" placeholder="Seu nome" />
+                                                <Input {...field} type="text" placeholder="Seu nome" disabled={isPending} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -70,7 +73,7 @@ export default function SignUp() {
                                         <FormItem>
                                             <FormLabel>E-mail</FormLabel>
                                             <FormControl>
-                                                <Input {...field} type="email" placeholder="Seu e-mail" />
+                                                <Input {...field} type="email" placeholder="Seu e-mail" disabled={isPending} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -83,7 +86,7 @@ export default function SignUp() {
                                         <FormItem>
                                             <FormLabel>Senha</FormLabel>
                                             <FormControl>
-                                                <Input {...field} type="password" placeholder="******" />
+                                                <Input {...field} type="password" placeholder="******" disabled={isPending} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -96,7 +99,7 @@ export default function SignUp() {
                                         <FormItem>
                                             <FormLabel>Confirme a senha</FormLabel>
                                             <FormControl>
-                                                <Input {...field} type="password" placeholder="******" />
+                                                <Input {...field} type="password" placeholder="******" disabled={isPending} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -104,7 +107,7 @@ export default function SignUp() {
                                 />
                             </div>
                             <FormError message={error} />
-                            <Button type="submit" className="w-full">Criar conta</Button>
+                            <Button type="submit" className="w-full" disabled={isPending}>Criar conta</Button>
                         </form>
                     </Form>
                 </CardContent>

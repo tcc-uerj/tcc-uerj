@@ -3,6 +3,7 @@ import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Providers } from '@/components/Providers'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata: Metadata = {
   title: 'TCC Project',
@@ -19,7 +20,8 @@ export default function RootLayout({
       <body className="h-screen bg-background">
         <Providers>
           <Navbar />
-          {children}
+            <main>{children}</main>
+            <Toaster />
           <Footer />
         </Providers>
       </body>

@@ -1,5 +1,5 @@
 "use client"
-import React, { useContext } from 'react';
+import React, { useContext, useState, useTransition } from 'react';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,9 +9,12 @@ import { useForm } from 'react-hook-form';
 import { LoginSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthContext } from '@/contexts/AuthContext';
+import { FormError } from '@/components/FormError';
 
 export default function Login() {
     const { login } = useContext(AuthContext);
+    const [error, setError] = useState<string>("");
+    const [isPending, startTransition] = useTransition();
 
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
@@ -22,7 +25,14 @@ export default function Login() {
     });
 
     async function handleLogin(data: z.infer<typeof LoginSchema>) {
-        await login(data);
+        startTransition(async () => {
+            const result = await login(data);
+    
+            if (result?.error) {
+                setError(result.error);
+                return;
+            }
+        })
     }
 
     return (
@@ -42,7 +52,7 @@ export default function Login() {
                                         <FormItem>
                                             <FormLabel>E-mail</FormLabel>
                                             <FormControl>
-                                                <Input {...field} type="email" placeholder="Seu e-mail" />
+                                                <Input {...field} type="email" placeholder="Seu e-mail" disabled={isPending} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -55,14 +65,15 @@ export default function Login() {
                                         <FormItem>
                                             <FormLabel>Senha</FormLabel>
                                             <FormControl>
-                                                <Input {...field} type="password" placeholder="******" />
+                                                <Input {...field} type="password" placeholder="******" disabled={isPending} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
                             </div>
-                            <Button type="submit" className="w-full">Entrar</Button>
+                            <FormError message={error} />
+                            <Button type="submit" className="w-full" disabled={isPending}>Entrar</Button>
                         </form>
                     </Form>
                 </CardContent>
