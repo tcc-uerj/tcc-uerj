@@ -11,3 +11,8 @@ CREATE TABLE "challenge_question" (
 
 -- AddForeignKey
 ALTER TABLE "challenge_question" ADD CONSTRAINT "challenge_question_challenge_id_fkey" FOREIGN KEY ("challenge_id") REFERENCES "challenge"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+insert into challenge_question (id, challenge_id, statement_title, statement_code, type)
+values 
+    ((select nextval('challenge_question_id_seq')), 1, 'Titulo', 'codigo', 'QUIZ'),
+    ((select nextval('challenge_question_id_seq')), 2, 'Titulo', 'codigo', 'GAP_GAME'),

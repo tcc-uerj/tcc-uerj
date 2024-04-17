@@ -11,12 +11,13 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String
-  password String
-  name     String
-  points   Int    @default(0)
-  level    Int    @default(1)
+  id         Int    @id @default(autoincrement())
+  email      String
+  password   String
+  name       String
+  points     Int    @default(0)
+  level      Int    @default(1)
+  gamesCount Int    @default(0) @map("games_count")
 
   UserLessonLink  UserLessonLink[]
   UserAchievement UserAchievement[]

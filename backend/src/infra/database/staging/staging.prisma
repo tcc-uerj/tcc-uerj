@@ -8,12 +8,13 @@ datasource db {
 }
 
 model User {
-    id       Int    @id @default(autoincrement()) @db.Integer
-    email    String @db.Text
-    password String @db.Text
-    name     String @db.Text
-    points   Int    @default(0) @db.SmallInt
-    level    Int    @default(1) @db.SmallInt
+    id         Int    @id @default(autoincrement()) @db.Integer
+    email      String @db.Text
+    password   String @db.Text
+    name       String @db.Text
+    points     Int    @default(0) @db.SmallInt
+    level      Int    @default(1) @db.SmallInt
+    gamesCount Int    @default(0) @map("games_count") @db.SmallInt
 
     UserLessonLink  UserLessonLink[]
     UserAchievement UserAchievement[]
@@ -62,8 +63,10 @@ model UserLessonLink {
 }
 
 model Achievement {
-    id              Int               @id @default(autoincrement()) @db.Integer
-    type            String            @db.Text
+    id          Int    @id @default(autoincrement()) @db.Integer
+    type        String @db.Text
+    description String @db.Text
+
     UserAchievement UserAchievement[]
 
     @@map("achievement")
