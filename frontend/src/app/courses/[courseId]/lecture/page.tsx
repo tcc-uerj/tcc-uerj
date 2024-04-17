@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react'
 import Sidebar from '../../_components/Sidebar'
+import { useSession } from '@/hooks/useSession';
+import { redirect } from 'next/navigation';
 
 const data = [
     {
@@ -29,6 +31,11 @@ interface LectureProps {
 
 export default function Lecture({ params }: LectureProps) {
     const [activeContent, setActiveContent] = useState(0);
+    const { isAuthenticated } = useSession();
+
+    if (!isAuthenticated) {
+        redirect('/account/login')
+    }
 
     return (
         <div className="flex flex-row min-h-screen">

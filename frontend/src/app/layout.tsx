@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import { ThemeProvider } from '@/components/ThemeProvider'
+import { Providers } from '@/components/Providers'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata: Metadata = {
   title: 'TCC Project',
@@ -17,16 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="h-screen bg-background">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <Providers>
           <Navbar />
-          {children}
+            <main>{children}</main>
+            <Toaster />
           <Footer />
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   )
