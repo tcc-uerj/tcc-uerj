@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TriviaQuestion from '../_components/TriviaQuestion';
 import TriviaResult from '../_components/TriviaResult';
+
+import { getChallenges } from '@/services/challenges'
 
 const question1: IChallengeQuestion = {
     id: 1,
@@ -86,6 +88,15 @@ const data: ITriviaQuestion[] = [
 export default function TriviaGameHome() {
     const [correctAnswersQntity, setCorrectAnswersQntity] = useState(0);
     const [currentQuestion, setCurrentQuestion] = useState(0);
+
+    useEffect(() => {
+        const loadChallenges = async () => {
+            const tmp = await getChallenges()
+            console.log('tmp: ', tmp.data);
+        }
+
+        loadChallenges()
+    }, [])
 
     return (
         <div className="flex bg-gray-500 items-center flex-col p-6 rounded-lg shadow-lg mt-[100px]">
