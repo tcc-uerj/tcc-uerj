@@ -2,16 +2,20 @@ import { BaseRepository } from '@core';
 import { Prisma, UserChallenge } from '@prisma/client';
 
 export class UserChallengeRepository extends BaseRepository<UserChallenge> {
-    private select: Prisma.UserChallengeSelect = {
-        challengeId: false,
-        userId: false,
-        completedAt: true,
-        challenge: true,
-    };
+    protected get select(): { select: Prisma.UserChallengeSelect } {
+        const select: Prisma.UserChallengeSelect = {
+            challengeId: false,
+            userId: false,
+            completedAt: true,
+            challenge: true,
+        };
+
+        return { select };
+    }
 
     public async listChallengeByUser(userId: number) {
         return super.find<Prisma.UserChallengeFindFirstArgs>({
-            select: this.select,
+            ...this.select,
             where: { userId },
         });
     }

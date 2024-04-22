@@ -2,15 +2,19 @@ import { BaseRepository } from '@core';
 import { Prisma, UserLessonLink } from '@prisma/client';
 
 export class UserLessonLinkRepository extends BaseRepository<UserLessonLink> {
-    private select: Prisma.UserLessonLinkSelect = {
-        userId: false,
-        lessonLink: true,
-        completedAt: true,
-    };
+    protected get select(): { select: Prisma.UserLessonLinkSelect } {
+        const select: Prisma.UserLessonLinkSelect = {
+            userId: false,
+            lessonLink: true,
+            completedAt: true,
+        };
+
+        return { select };
+    }
 
     public async listLessonsLinksByUser(userId: number) {
         return super.find<Prisma.UserLessonLinkFindFirstArgs>({
-            select: this.select,
+            ...this.select,
             where: { userId },
         });
     }
