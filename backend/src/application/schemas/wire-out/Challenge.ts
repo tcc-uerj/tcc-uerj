@@ -1,22 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Level, QuestionType, SubjectType } from '../model/Enum';
 
-export class ChallengeGapGame {
-    @ApiProperty({ example: 1 })
-    id: number;
-
-    @ApiProperty({ example: 2 })
-    challengeQuestionId: number;
-
-    // TODO: Verificar como vai ficar o tipo deste campo (Tipo BLOB no banco)
-    @ApiProperty({ example: 'código da alternativa.' })
-    quiz: string;
-
-    @ApiProperty({ example: true })
-    isCorrectAnswer: boolean;
-}
-
-export class ChallengeQuiz {
+export class ChallengeOptions {
     @ApiProperty({ example: 1 })
     id: number;
 
@@ -45,11 +30,8 @@ export class ChallengeQuestionResponse {
     @ApiProperty({ example: QuestionType.QUIZ })
     type: QuestionType;
 
-    @ApiProperty({ type: [ChallengeQuiz] })
-    challengeQuiz: ChallengeQuiz[];
-
-    @ApiProperty({ type: [ChallengeGapGame] })
-    challengeGapGame: ChallengeGapGame[];
+    @ApiProperty({ type: [ChallengeOptions] })
+    challengeOptions: ChallengeOptions[];
 }
 
 export class ChallengeResponse {

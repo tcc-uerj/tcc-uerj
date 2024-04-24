@@ -6,6 +6,7 @@ CREATE TABLE "users" (
     "name" TEXT NOT NULL,
     "points" SMALLINT NOT NULL DEFAULT 0,
     "level" SMALLINT NOT NULL DEFAULT 1,
+    "games_count" SMALLINT NOT NULL DEFAULT 0,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );

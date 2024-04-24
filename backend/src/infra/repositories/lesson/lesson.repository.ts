@@ -5,7 +5,7 @@ import { Lesson, Prisma } from '@prisma/client';
 export class LessonRepository extends BaseRepository<Lesson> {
     protected get select(): { select: Prisma.LessonSelect } {
         const select: Prisma.LessonSelect = {
-            challenge: true,
+            Challenge: true,
             content: true,
             id: true,
             description: true,

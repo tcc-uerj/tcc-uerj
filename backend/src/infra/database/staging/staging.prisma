@@ -31,8 +31,8 @@ model Lesson {
     imageUrl    String @db.Text
     challengeId Int    @map("challenge_id") @db.Integer
 
-    challenge  Challenge    @relation(fields: [challengeId], references: [id])
     LessonLink LessonLink[]
+    Challenge  Challenge    @relation(fields: [challengeId], references: [id])
 
     @@map("lesson")
 }
@@ -116,23 +116,12 @@ model ChallengeQuestion {
     type           String @db.Text
 
     challenge       Challenge         @relation(fields: [challengeId], references: [id])
-    QuestionGapGame QuestionGapGame[]
-    QuestionQuiz    QuestionQuiz[]
+    QuestionOptions QuestionOptions[]
 
     @@map("challenge_question")
 }
 
-model QuestionGapGame {
-    id                  Int    @id @default(autoincrement()) @db.Integer
-    content             String @db.Text
-    challengeQuestionId Int    @map("challenge_question_id") @db.Integer
-
-    challengeQuestion ChallengeQuestion @relation(fields: [challengeQuestionId], references: [id])
-
-    @@map("question_gap_game")
-}
-
-model QuestionQuiz {
+model QuestionOptions {
     id                  Int     @id @default(autoincrement()) @db.Integer
     quiz                String  @db.Text
     isCorrectAnswer     Boolean @map("is_correct_answer")
@@ -140,5 +129,5 @@ model QuestionQuiz {
 
     challengeQuestion ChallengeQuestion @relation(fields: [challengeQuestionId], references: [id])
 
-    @@map("question_quiz")
+    @@map("question_options")
 }
