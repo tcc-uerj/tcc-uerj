@@ -21,7 +21,7 @@ export class UserLessonLinkService {
         );
 
         if (userLessonLink) {
-            throw new ConflictException('Esta aula já está cadastra para este usuário');
+            throw new ConflictException('Esta aula já está cadastrada para este usuário');
         }
 
         const newUserLessonLink = {

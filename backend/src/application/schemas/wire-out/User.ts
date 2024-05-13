@@ -27,6 +27,17 @@ export class UserAchievementResponse {
     achievement: AchievementResponse;
 }
 
+export class UserLessonResponse {
+    @ApiProperty({ example: 1 })
+    userId: number;
+
+    @ApiProperty({ example: 2 })
+    lessonId: number;
+
+    @ApiProperty({ example: false })
+    challengeCompleted: boolean;
+}
+
 export class UserLessonLinkReponse {
     @ApiProperty({ example: 1 })
     userId: number;

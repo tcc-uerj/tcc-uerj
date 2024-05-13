@@ -19,6 +19,7 @@ model User {
     UserLessonLink  UserLessonLink[]
     UserAchievement UserAchievement[]
     UserChallenge   UserChallenge[]
+    UserLesson      UserLesson[]
 
     @@map("users")
 }
@@ -33,6 +34,7 @@ model Lesson {
 
     LessonLink LessonLink[]
     Challenge  Challenge    @relation(fields: [challengeId], references: [id])
+    UserLesson UserLesson[]
 
     @@map("lesson")
 }
@@ -48,6 +50,18 @@ model LessonLink {
     UserLessonLink UserLessonLink[]
 
     @@map("lesson_link")
+}
+
+model UserLesson {
+    id                 Int     @id @default(autoincrement()) @db.Integer
+    userId             Int     @map("user_id") @db.Integer
+    lessonId           Int     @map("lesson_id") @db.Integer
+    challengeCompleted Boolean @map("challenge_completed") @db.Boolean
+
+    user   User   @relation(fields: [userId], references: [id])
+    lesson Lesson @relation(fields: [lessonId], references: [id])
+
+    @@map("user_lesson")
 }
 
 model UserLessonLink {
