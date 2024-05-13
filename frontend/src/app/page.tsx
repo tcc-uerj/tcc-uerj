@@ -9,7 +9,7 @@ export default function Home() {
             Aprenda engenharia de software com facilidade
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus malesuada augue, et luctus quam tempor ac. Integer nec ultricies diam.
+            Plataforma de ensino dedicada à Engenharia de Software, projetada para estudantes, profissionais e entusiastas da área.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link
