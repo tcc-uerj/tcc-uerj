@@ -1,4 +1,5 @@
 import { BaseRepository } from '@core';
+import { AchievementType } from '@model';
 import { Prisma, UserAchievement } from '@prisma/client';
 
 export class UserAchievementRepository extends BaseRepository<UserAchievement> {

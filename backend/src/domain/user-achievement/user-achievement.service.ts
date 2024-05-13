@@ -1,5 +1,5 @@
 import { ConflictException, Inject } from '@nestjs/common';
-import { Achievement, UserAchievement } from '@prisma/client';
+import { UserAchievement } from '@prisma/client';
 import { UserAchievementRepository } from '@repositories/user-achievement/user-achievement.repository';
 
 export class UserAchievementService {
@@ -24,5 +24,9 @@ export class UserAchievementService {
 
         const newUserAchievement = { userId, achievementId } as UserAchievement;
         return this.userAchievementRepository.create(newUserAchievement);
+    }
+
+    public async findOne(userId: number, achievementId: number) {
+        return this.userAchievementRepository.findAchievementByUserId(userId, achievementId);
     }
 }

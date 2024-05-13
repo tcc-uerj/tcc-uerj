@@ -28,7 +28,7 @@ model Lesson {
     subject     String @db.Text
     content     String @db.Text
     description String @db.Text
-    imageUrl    String @db.Text
+    imageUrl    String @map("image_url") @db.Text
     challengeId Int    @map("challenge_id") @db.Integer
 
     LessonLink LessonLink[]
