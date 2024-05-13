@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import Image from "next/image"
 
 export default function GameCard({ game }: { 
     game: { 
@@ -14,12 +13,12 @@ export default function GameCard({ game }: {
 }) {
   return (
     <Link href={game.href} className="m-3">
-        <div className="hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">
+        <div className="hover:shadow-sm transition overflow-hidden border bg-indigo-800 hover:bg-indigo-600 rounded-lg p-3 h-full w-[400px]">
             <div className="flex flex-col">
-                <div className="text-lg md:text-base font-medium group-hover:text-sky-700 transition line-clamp-2">
+                <div className="text-xl font-medium group-hover:text-sky-700 transition line-clamp-2">
                     {game.name}
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                     {game.description}
                 </p>
             </div>
