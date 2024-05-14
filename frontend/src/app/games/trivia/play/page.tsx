@@ -1,8 +1,11 @@
 'use client';
 
 import React, { useState } from 'react'
-import TriviaQuestion from '../_components/TriviaQuestion';
-import TriviaResult from '../_components/TriviaResult';
+import TriviaQuestion from '@/app/games/trivia/_components/TriviaQuestion';
+import TriviaResult from '@/app/games/trivia/_components/TriviaResult';
+import { QuestionType } from '@/enums/QuestionType';
+import IChallengeQuestion from '@/interfaces/IChallengeQuestion';
+import ITriviaQuestion from '@/interfaces/ITriviaQuestion';
 
 const question1: IChallengeQuestion = {
     id: 1,

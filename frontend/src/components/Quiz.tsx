@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "./ui/button";
+import IChallengeQuestion from "@/interfaces/IChallengeQuestion";
+import IQuestionOptions from "@/interfaces/IQuestionQuiz";
 
 export default function Quiz({ question, options }: {
     question: IChallengeQuestion,

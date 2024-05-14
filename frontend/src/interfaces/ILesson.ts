@@ -1,4 +1,4 @@
-interface ILesson {
+export default interface ILesson {
     id: number;
     subject: SubjectType;
     content: string;

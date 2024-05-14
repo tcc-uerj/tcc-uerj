@@ -1,3 +1,4 @@
+import { IGetAllUserLessonsResponse } from "@/interfaces/responses/IGetAllUserLessonsResponse";
 import { BACKEND_BASE_URL } from "@/lib/consts";
 import { api } from "@/services/api";
 

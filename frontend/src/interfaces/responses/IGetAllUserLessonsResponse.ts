@@ -1,5 +1,7 @@
-interface IGetAllUserLessonsResponse {
+import IUserLesson from "@/interfaces/IUserLesson";
+
+export interface IGetAllUserLessonsResponse {
     data: IGetAllUserLessonsDataResponse[];
 }
 
-interface IGetAllUserLessonsDataResponse extends IUserLesson {}
+export interface IGetAllUserLessonsDataResponse extends IUserLesson {}

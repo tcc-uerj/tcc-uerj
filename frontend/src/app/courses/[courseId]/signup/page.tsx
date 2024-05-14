@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/hooks/useSession";
+import { IGetCourseByIdDataResponse } from "@/interfaces/responses/IGetCourseByIdResponse";
 import { getCourseById } from "@/services/courses";
 import { getAllUserLessons } from "@/services/users";
 import Link from "next/link";

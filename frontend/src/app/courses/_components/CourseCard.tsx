@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import ILesson from "@/interfaces/ILesson"
 
 export default function CourseCard({ course }: { course: ILesson }) {
     return (

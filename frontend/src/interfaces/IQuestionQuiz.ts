@@ -1,4 +1,4 @@
-interface IQuestionOptions {
+export default interface IQuestionOptions {
     id: number;
     quiz: string;
     isCorrectAnswer: boolean;

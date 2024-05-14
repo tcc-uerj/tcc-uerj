@@ -1,3 +1,5 @@
+import IQuestionOptions from '@/interfaces/IQuestionQuiz';
+import ITriviaQuestion from '@/interfaces/ITriviaQuestion';
 import React from 'react'
 
 interface TriviaQuestionItemProps {
