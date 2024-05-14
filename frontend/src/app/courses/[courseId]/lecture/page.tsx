@@ -7,18 +7,12 @@ import { redirect } from 'next/navigation';
 
 const data = [
     {
-        title: "Leitura",
+        title: "Aula",
         content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut orci est. Etiam bibendum pretium iaculis. Aenean bibendum justo sit amet viverra vulputate. Cras facilisis leo et suscipit interdum. Fusce nunc ligula, varius a eros eget, facilisis tincidunt leo. Nunc quis arcu risus. Nunc lacus leo, malesuada ac dolor et, ornare vulputate enim."
     },
     {
-        title: "Video Aula 1"
+        title: "Desafio"
     },
-    {
-        title: "Video Aula 2"
-    },
-    {
-        title: "Teste seu conhecimento"
-    }
 ]
 
 const courseNames = [

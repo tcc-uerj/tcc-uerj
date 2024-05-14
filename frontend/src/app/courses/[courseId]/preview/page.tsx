@@ -1,22 +1,53 @@
-'use client'
+"use client"
 
 import { Button } from "@/components/ui/button";
+import { useSession } from "@/hooks/useSession";
+import { ILesson } from "@/interfaces/ILesson";
+import { getCourseById } from "@/services/courses";
+import { getAllUserLessons } from "@/services/users";
 import Link from "next/link";
+import { redirect, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface CoursePreviewProps {
   params: { courseId: string; }
 }
 
 export default function CoursePreview({ params }: CoursePreviewProps) {
+  const [course, setCourse] = useState<ILesson>({} as any);
+  const router = useRouter();
+  const { isAuthenticated } = useSession();
+
+  if (!isAuthenticated) {
+      redirect('/account/login')
+  }
+  
+  async function handleUserLessons() {
+    const { data } = await getAllUserLessons();
+    
+    if (data == null || data.length === 0) {
+      handleCourse();
+      return;
+    }
+    
+    router.replace(`/courses/${params.courseId}/lecture`);
+  }
+
+  async function handleCourse() {
+    const { data } = await getCourseById(parseInt(params.courseId));
+    setCourse(data);
+  }
+
+  useEffect(() => {
+    handleUserLessons();
+  }, []);
+
   return (
     <div className="flex justify-center">
       <div className="w-3/6 h-fit mt-5 p-5">
-          <h2 className="text-[20px] font-medium">Nome do Curso</h2>
-          <div className="flex items-center gap-2 mt-2">
-              <h2 className="text-[12px] text-gray-400">Duração: XXhrs</h2>
-          </div>
+          <h2 className="text-[20px] font-medium">{course.subject?.split("_").join(" ")}</h2>
           <p className="mt-5 text-gray-500">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam a orci tincidunt, id molestie diam sollicitudin. Nulla facilisi. Proin sodales sapien erat, ac placerat mi euismod et. Vestibulum porta laoreet urna, non sollicitudin tellus. Ut hendrerit ullamcorper ligula vel fermentum. Proin porttitor, mauris in commodo mattis, augue metus pellentesque tellus, dignissim luctus tellus velit venenatis nisl. Proin commodo, ante vitae dictum cursus, libero nisi gravida neque, in commodo nisl nibh ac metus. Etiam pulvinar vehicula massa, imperdiet luctus quam tincidunt sed. Duis vel porttitor enim. Integer nec pellentesque ante, sed euismod ex. Vivamus justo tellus, finibus ac dui non, fermentum rhoncus ex. Aenean consectetur risus eget ultrices imperdiet. Curabitur ullamcorper eu turpis luctus bibendum. Morbi nec blandit nisl. Mauris molestie tincidunt lectus, quis suscipit massa condimentum at. Nunc ultricies ipsum sit amet nulla pellentesque iaculis.
+            {course.description}
           </p>
           <div className="mt-5">
             <Link href={`lecture`}>
