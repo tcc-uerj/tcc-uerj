@@ -23,6 +23,16 @@ export class LessonController {
 
     @CustomRoute({
         method: 'GET',
+        summary: 'Esta rota busca as informações de uma aula',
+        response: LessonResponse,
+        route: '/:lessonId',
+    })
+    public async findById(@Param('lessonId') lessonId: number) {
+        return this.lessonService.findById(lessonId);
+    }
+
+    @CustomRoute({
+        method: 'GET',
         summary: 'Esta rota lista todas as aulas com o respectivo SubjectType',
         response: LessonResponse,
         route: '/:subject/subject',

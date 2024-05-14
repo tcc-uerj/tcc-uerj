@@ -37,7 +37,7 @@ export abstract class BaseRepository<TEntity> {
     }
 
     public async findById(id: number): Promise<TEntity> {
-        return this.database[this.entityName].findFirst({ where: { id } });
+        return this.database[this.entityName].findFirst({ ...this.select, where: { id } });
     }
 
     public async findAll(): Promise<TEntity[]> {

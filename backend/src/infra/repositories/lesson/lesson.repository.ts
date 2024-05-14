@@ -5,7 +5,24 @@ import { Lesson, Prisma } from '@prisma/client';
 export class LessonRepository extends BaseRepository<Lesson> {
     protected get select(): { select: Prisma.LessonSelect } {
         const select: Prisma.LessonSelect = {
-            Challenge: true,
+            Challenge: {
+                select: {
+                    id: true,
+                    level: true,
+                    points: true,
+                    subject: true,
+                    ChallengeQuestion: {
+                        select: {
+                            id: true,
+                            challengeId: true,
+                            statementCode: true,
+                            statementTitle: true,
+                            type: true,
+                            QuestionOptions: true,
+                        },
+                    },
+                },
+            },
             content: true,
             id: true,
             description: true,
@@ -18,7 +35,7 @@ export class LessonRepository extends BaseRepository<Lesson> {
     }
 
     public async findBySubject(subject: SubjectType) {
-        return super.find<Prisma.LessonFindFirstArgs>({
+        return super.findOne<Prisma.LessonFindFirstArgs>({
             ...this.select,
             where: { subject },
         });
