@@ -5,14 +5,14 @@ import { Challenge, Prisma } from '@prisma/client';
 export class ChallengeRepository extends BaseRepository<Challenge> {
     protected get select(): { select: Prisma.ChallengeSelect } {
         const select: Prisma.ChallengeSelect = {
-            ChallengeQuestion: {
+            challengeQuestions: {
                 select: {
                     id: true,
                     challengeId: true,
                     statementCode: true,
                     statementTitle: true,
                     type: true,
-                    QuestionOptions: true,
+                    questionOptions: true,
                 },
             },
             id: true,

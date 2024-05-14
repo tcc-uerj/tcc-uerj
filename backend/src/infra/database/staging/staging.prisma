@@ -16,10 +16,10 @@ model User {
     level      Int    @default(1) @db.SmallInt
     gamesCount Int    @default(0) @map("games_count") @db.SmallInt
 
-    UserLessonLink  UserLessonLink[]
-    UserAchievement UserAchievement[]
-    UserChallenge   UserChallenge[]
-    UserLesson      UserLesson[]
+    userLessonLinks  UserLessonLink[]
+    userAchievements UserAchievement[]
+    userChallenges   UserChallenge[]
+    userLessons      UserLesson[]
 
     @@map("users")
 }
@@ -32,9 +32,9 @@ model Lesson {
     imageUrl    String @map("image_url") @db.Text
     challengeId Int    @map("challenge_id") @db.Integer
 
-    LessonLink LessonLink[]
-    Challenge  Challenge    @relation(fields: [challengeId], references: [id])
-    UserLesson UserLesson[]
+    lessonLinks LessonLink[]
+    challenge   Challenge    @relation(fields: [challengeId], references: [id])
+    userLessons UserLesson[]
 
     @@map("lesson")
 }
@@ -46,8 +46,8 @@ model LessonLink {
     order    Int    @db.SmallInt
     type     String @db.Text
 
-    lesson         Lesson           @relation(fields: [lessonId], references: [id])
-    UserLessonLink UserLessonLink[]
+    lesson          Lesson           @relation(fields: [lessonId], references: [id])
+    userLessonLinks UserLessonLink[]
 
     @@map("lesson_link")
 }
@@ -81,7 +81,7 @@ model Achievement {
     type        String @db.Text
     description String @db.Text
 
-    UserAchievement UserAchievement[]
+    userAchievements UserAchievement[]
 
     @@map("achievement")
 }
@@ -103,9 +103,9 @@ model Challenge {
     level   String @db.Text
     points  Int    @db.SmallInt
 
-    Lesson            Lesson[]
-    UserChallenge     UserChallenge[]
-    ChallengeQuestion ChallengeQuestion[]
+    lessons            Lesson[]
+    userChallenges     UserChallenge[]
+    challengeQuestions ChallengeQuestion[]
 
     @@map("challenge")
 }
@@ -130,7 +130,7 @@ model ChallengeQuestion {
     type           String @db.Text
 
     challenge       Challenge         @relation(fields: [challengeId], references: [id])
-    QuestionOptions QuestionOptions[]
+    questionOptions QuestionOptions[]
 
     @@map("challenge_question")
 }
