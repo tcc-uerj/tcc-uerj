@@ -1,6 +1,3 @@
-import { IGetAllCoursesResponse } from "@/interfaces/responses/IGetAllCoursesResponse";
-import { IGetCourseByIdResponse } from "@/interfaces/responses/IGetCourseByIdResponse";
-import { IGetCourseBySubjectResponse } from "@/interfaces/responses/IGetCourseBySubjectResponse";
 import { BACKEND_BASE_URL } from "@/lib/consts";
 import { api } from "@/services/api";
 

@@ -1,4 +1,4 @@
-export interface IUserLesson {
+interface IUserLesson {
     id: number;
     userId: number;
     lessonId: number;

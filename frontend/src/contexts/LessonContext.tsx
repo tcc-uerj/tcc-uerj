@@ -1,4 +1,3 @@
-import { IGetCourseByIdDataResponse } from "@/interfaces/responses/IGetCourseByIdResponse";
 import { getCourseById } from "@/services/courses";
 import { createContext, useEffect, useState } from "react";
 

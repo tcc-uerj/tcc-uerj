@@ -1,12 +1,8 @@
-import { ILessonLink } from "@/interfaces/ILessonLink";
-import { ILesson } from "@/interfaces/ILesson";
-import { IChallenge } from "@/interfaces/IChallenge";
-
-export interface IGetCourseByIdResponse {
+interface IGetCourseByIdResponse {
     data: IGetCourseByIdDataResponse;
 }
 
-export interface IGetCourseByIdDataResponse extends ILesson {
-    LessonLink: ILessonLink[];
+interface IGetCourseByIdDataResponse extends ILesson {
+    lessonLinks: ILessonLink[];
     challenge: IChallenge;
 }

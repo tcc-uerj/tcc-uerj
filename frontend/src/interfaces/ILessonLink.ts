@@ -1,4 +1,4 @@
-export interface ILessonLink {
+interface ILessonLink {
     id: number;
     link: string;
     lesson_id: number;

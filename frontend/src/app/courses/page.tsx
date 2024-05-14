@@ -2,7 +2,6 @@
 import { getAllCourses } from "@/services/courses";
 import CourseCard from "./_components/CourseCard";
 import { useEffect, useState } from "react";
-import { IGetAllCoursesDataResponse } from "@/interfaces/responses/IGetAllCoursesResponse";
 
 export default function Courses() {
     const [courses, setCourses] = useState<IGetAllCoursesDataResponse[]>([]);

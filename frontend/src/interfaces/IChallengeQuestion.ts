@@ -1,7 +1,8 @@
 interface IChallengeQuestion {
-    id: number,
-    challenge_id: number,
-    statement_title?: string,
-    statement_code?: Blob,
-    type: string,
+    id: number;
+    challengeId: number;
+    statementTitle?: string;
+    statementCode?: Blob;
+    type: QuestionType;
+    questionOptions: IQuestionOptions[];
 };

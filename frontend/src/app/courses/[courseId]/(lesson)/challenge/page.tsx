@@ -1,12 +1,11 @@
 "use client"
 
+import Quiz from "@/components/Quiz";
 import { LessonContext, LessonContextType } from "@/contexts/LessonContext";
 import { useContext } from "react";
 
 export default function Challenge() {
     const { lesson } = useContext<LessonContextType>(LessonContext);
-
-    console.log(lesson)
 
     return (
         <div className="flex">
@@ -18,11 +17,8 @@ export default function Challenge() {
                     Demonstre que você aprendeu e responda corretamente a pergunta abaixo para concluir o curso. Boa sorte!
                 </div>
                 <div className="mt-5">
-                    {lesson?.Challenge.ChallengeQuestion.map((question, index) => (
-                        <div key={question.id}>
-                            <div>{question.statementTitle}</div>
-                            <div>{question.statementCode}</div>
-                        </div>
+                    {lesson?.challenge.challengeQuestions.map((question, index) => (
+                        <Quiz key={question.id} question={question} options={question.questionOptions} />
                     ))}
                 </div>
             </div>
