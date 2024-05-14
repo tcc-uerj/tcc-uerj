@@ -6,16 +6,16 @@ interface TriviaQuestionItemProps {
 }
 
 export default function TriviaQuestionItem({ triviaQuestion, onNext }: TriviaQuestionItemProps) {
-    const [selectedAnswer, setSelectedAnswer] = React.useState<IQuestionQuiz | null>(null);
+    const [selectedAnswer, setSelectedAnswer] = React.useState<IQuestionOptions | null>(null);
 
-    function submitAnswer(answer: IQuestionQuiz) {
+    function submitAnswer(answer: IQuestionOptions) {
         setSelectedAnswer(answer);
     }
 
     React.useEffect(() => {
         if (selectedAnswer) {
             const interval = setInterval(() => {
-                onNext(selectedAnswer.is_correct_answer);
+                onNext(selectedAnswer.isCorrectAnswer);
             }, 1000);
             return () => { clearInterval(interval); };
         }
@@ -26,18 +26,18 @@ export default function TriviaQuestionItem({ triviaQuestion, onNext }: TriviaQue
             <div
                 className='font-medium lg:text-3xl md:text-2xl sm:text-xl'
             >
-                {triviaQuestion.question.statement_title}
+                {triviaQuestion.question.statementTitle}
             </div>
             <div className='flex flex-col gap-5'>
-            {triviaQuestion.options.map((option) => (
+            {triviaQuestion.question.questionOptions.map((option) => (
                 <button
                     key={option.id}
                     className={`bg-gray-200 p-5 text-black font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-1000 ${
                         selectedAnswer && selectedAnswer === option
-                        ? selectedAnswer.is_correct_answer
+                        ? selectedAnswer.isCorrectAnswer
                             ? 'bg-green-400'
                             : 'bg-red-400'
-                        : selectedAnswer && option.is_correct_answer
+                        : selectedAnswer && option.isCorrectAnswer
                         ? 'bg-green-400'
                         : 'bg-gray-200'
                     }`}

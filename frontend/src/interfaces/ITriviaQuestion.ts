@@ -1,4 +1,3 @@
 interface ITriviaQuestion {
-    question: IChallengeQuestion,
-    options: IQuestionQuiz[]
+    question: IChallengeQuestion
 }
