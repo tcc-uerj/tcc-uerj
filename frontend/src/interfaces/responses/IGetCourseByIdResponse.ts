@@ -7,6 +7,6 @@ export interface IGetCourseByIdResponse {
 }
 
 export interface IGetCourseByIdDataResponse extends ILesson {
-    lessonLinks: ILessonLink[];
+    LessonLink: ILessonLink[];
     challenge: IChallenge;
 }

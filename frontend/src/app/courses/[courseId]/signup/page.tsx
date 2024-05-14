@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/hooks/useSession";
 import { ILesson } from "@/interfaces/ILesson";
+import { IGetCourseByIdDataResponse } from "@/interfaces/responses/IGetCourseByIdResponse";
 import { getCourseById } from "@/services/courses";
 import { getAllUserLessons } from "@/services/users";
 import Link from "next/link";
@@ -14,7 +15,7 @@ interface CoursePreviewProps {
 }
 
 export default function CoursePreview({ params }: CoursePreviewProps) {
-  const [course, setCourse] = useState<ILesson>({} as any);
+  const [course, setCourse] = useState<IGetCourseByIdDataResponse>({} as any);
   const router = useRouter();
   const { isAuthenticated } = useSession();
 

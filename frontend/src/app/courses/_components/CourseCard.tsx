@@ -6,7 +6,7 @@ import { ILesson } from "@/interfaces/ILesson"
 
 export default function CourseCard({ course }: { course: ILesson }) {
     return (
-        <Link href={`courses/${course.id}/preview`}>
+        <Link href={`courses/${course.id}/signup`}>
             <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">
                 <div className="relative w-full aspect-video round-md overflow-hidden">
                     <Image 
