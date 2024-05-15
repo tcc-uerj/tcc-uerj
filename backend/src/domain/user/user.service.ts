@@ -116,4 +116,8 @@ export class UserService {
         const newUserAchievement = { userId, achievementId } as UserAchievement;
         await this.userAchievementRepository.create(newUserAchievement);
     }
+
+    public async getRanking() {
+        return this.userRepository.getRanking();
+    }
 }

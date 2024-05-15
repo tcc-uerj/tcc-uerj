@@ -188,4 +188,15 @@ export class UserController {
         await this.userService.findById(id);
         return this.userChallengeService.findAll(id);
     }
+
+    @CustomRoute({
+        method: 'GET',
+        summary: 'Esta rota busca o ranking de usuários.',
+        response: [UserResponse],
+        route: '/ranking',
+        isAuth: true,
+    })
+    public async ranking() {
+        return this.userService.getRanking();
+    }
 }

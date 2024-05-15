@@ -7,4 +7,11 @@ export class UserRepository extends BaseRepository<User> {
             where: { email },
         });
     }
+
+    public async getRanking() {
+        return super.find<Prisma.UserFindFirstArgs>({
+            orderBy: { points: 'desc' },
+            take: 10,
+        });
+    }
 }
