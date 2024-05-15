@@ -1,27 +1,24 @@
-const data = [
-    {
-        name: "Alice",
-        points: 300
-    },
-    {
-        name: "Bob",
-        points: 250
-    },
-    {
-        name: "Charlie",
-        points: 200
-    },
-    {
-        name: "David",
-        points: 150
-    },
-    {
-        name: "Evee",
-        points: 100
-    }
-];
+"use client"
+
+import { IRankingUser } from "@/interfaces/responses/IGetRankingResponse";
+import { getRanking } from "@/services/users";
+import { useEffect, useState } from "react";
 
 export default function Ranking() {
+    const [ranking, setRanking] = useState<IRankingUser[]>([]);
+
+    async function fetchRanking() {
+        const { data } = await getRanking();
+
+        if (data) {
+            setRanking(data);
+        }
+    }
+
+    useEffect(() => {
+        fetchRanking();
+    }, []);
+
     return (
         <div className="w-full py-6">
             <div className="container px-4 md:px-6">
@@ -36,7 +33,7 @@ export default function Ranking() {
                             <div className="text-sm font-bold text-right md:text-center">Pontuação</div>
                         </div>
                         <div className="divide-y">
-                            {data.map((user, index) => (
+                            {ranking.map((user, index) => (
                                 <div key={index} className="grid w-full grid-cols-2 items-stretch justify-center p-4 md:grid-cols-3">
                                     <div className="text-sm">{user.name}</div>
                                     <div className="text-sm font-medium text-right md:text-center">{user.points}</div>
