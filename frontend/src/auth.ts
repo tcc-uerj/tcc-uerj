@@ -12,7 +12,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 email: {},
                 password: {},
             },
-            async authorize(credentials) {
+            async authorize(credentials): Promise<any> {
                 const safeParse = LoginSchema.safeParse(credentials);
 
                 if (!safeParse.success) {

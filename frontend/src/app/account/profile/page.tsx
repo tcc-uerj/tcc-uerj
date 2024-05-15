@@ -4,6 +4,7 @@ import { Progress } from '@/components/ui/progress';
 import { api } from "@/services/api";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton"
+import IUser from "@/interfaces/IUser";
 
 const user = {
     name: "Nome",
