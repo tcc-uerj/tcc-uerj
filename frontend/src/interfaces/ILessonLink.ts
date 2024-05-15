@@ -1,4 +1,4 @@
-export interface ILessonLink {
+export default interface ILessonLink {
     id: number;
     link: string;
     lesson_id: number;

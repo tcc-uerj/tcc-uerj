@@ -1,4 +1,4 @@
-import { IUserLesson } from "@/interfaces/IUserLesson";
+import IUserLesson from "@/interfaces/IUserLesson";
 
 export interface IGetAllUserLessonsResponse {
     data: IGetAllUserLessonsDataResponse[];

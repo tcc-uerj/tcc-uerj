@@ -1,4 +1,5 @@
-interface ITriviaQuestion {
-    question: IChallengeQuestion,
-    options: IQuestionQuiz[]
+import IChallengeQuestion from "./IChallengeQuestion";
+
+export default interface ITriviaQuestion {
+    question: IChallengeQuestion
 }

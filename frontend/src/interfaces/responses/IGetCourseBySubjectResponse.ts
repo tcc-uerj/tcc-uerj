@@ -1,6 +1,6 @@
-import { ILessonLink } from "@/interfaces/ILessonLink";
-import { ILesson } from "@/interfaces/ILesson";
-import { IChallenge } from "@/interfaces/IChallenge";
+import ILessonLink from "@/interfaces/ILessonLink";
+import IChallenge from "@/interfaces/IChallenge";
+import ILesson from "@/interfaces/ILesson";
 
 export interface IGetCourseBySubjectResponse {
     data: IGetCourseBySubjectDataResponse;
