@@ -1,6 +1,6 @@
-import { getCookie } from '@/actions/cookies';
-import { BACKEND_BASE_URL } from '@/lib/consts';
 import axios from 'axios';
+import { getSession } from 'next-auth/react';
+import { BACKEND_BASE_URL } from '@/lib/consts';
 
 export function getAPIClient() {
     const api = axios.create({
@@ -9,12 +9,9 @@ export function getAPIClient() {
 
     api.interceptors.request.use(async (config) => {
         if (config.url?.includes("auth")) return config
-
-        const response = await fetch('/api/auth/token');
-
-        if (!response.ok) return config;
-
-        const token = await response.json();
+        
+        const session = await getSession();
+        const token = session?.backendToken;
 
         if (token) {
             config.headers!['Authorization'] = "Bearer " + token

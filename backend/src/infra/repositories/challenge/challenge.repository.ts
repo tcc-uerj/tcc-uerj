@@ -3,17 +3,30 @@ import { Level, SubjectType } from '@model';
 import { Challenge, Prisma } from '@prisma/client';
 
 export class ChallengeRepository extends BaseRepository<Challenge> {
-    private select: Prisma.ChallengeSelect = {
-        ChallengeQuestion: true,
-        id: true,
-        level: true,
-        points: true,
-        subject: true,
-    };
+    protected get select(): { select: Prisma.ChallengeSelect } {
+        const select: Prisma.ChallengeSelect = {
+            challengeQuestions: {
+                select: {
+                    id: true,
+                    challengeId: true,
+                    statementCode: true,
+                    statementTitle: true,
+                    type: true,
+                    questionOptions: true,
+                },
+            },
+            id: true,
+            level: true,
+            points: true,
+            subject: true,
+        };
+
+        return { select };
+    }
 
     public async findBySubjectAndLevel(subject: SubjectType, level: Level) {
         return super.find<Prisma.ChallengeFindFirstArgs>({
-            select: this.select,
+            ...this.select,
             where: { subject, level },
         });
     }

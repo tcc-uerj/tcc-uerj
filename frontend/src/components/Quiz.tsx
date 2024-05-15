@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { Button } from "./ui/button";
+import IChallengeQuestion from "@/interfaces/IChallengeQuestion";
+import IQuestionOptions from "@/interfaces/IQuestionQuiz";
 
 export default function Quiz({ question, options }: {
     question: IChallengeQuestion,
-    options: IQuestionQuiz[]
+    options: IQuestionOptions[]
 }) {
     const [showModal, setShowModal] = useState(false);
     const [isCorrectAnswer, setIsCorrectAnswer] = useState<boolean | null>(null);
@@ -31,16 +33,17 @@ export default function Quiz({ question, options }: {
     }
 
     return (
-        <div className="p-4">
+        <div className="p-4 h-full">
             <h1 className="text-3xl font-bold mb-4">Quiz:</h1>
-            <h2 className="text-1xl font-bold mb-4">{question.statement_title}</h2>
+            <h2 className="text-1xl font-bold mb-4">{question.statementTitle}</h2>
+            <h2 className="text-1xl font-bold mb-4">{String(question.statementCode)}</h2>
             <h1 className="text-3xl font-bold mb-4">Selecione a resposta correta:</h1>
             <div className="grid grid-cols-1 gap-4">
                 {options && options.map((option, index) => (
                     <Button
                         key={index}
                         className={`bg-blue-500 text-white p-2 rounded ${selectedOption === index ? 'selected ' + getOptionBackgroundColor() : ''} `}
-                        onClick={() => handleOptionSelect(index, option.is_correct_answer)}
+                        onClick={() => handleOptionSelect(index, option.isCorrectAnswer)}
                     >
                         {option.quiz}
                     </Button>

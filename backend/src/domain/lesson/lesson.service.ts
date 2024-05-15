@@ -1,5 +1,5 @@
 import { SubjectType } from '@model';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { LessonRepository } from '@repositories/lesson/lesson.repository';
 
 @Injectable()
@@ -11,6 +11,16 @@ export class LessonService {
 
     public async findAll() {
         return this.lessonRepository.findAll();
+    }
+
+    public async findById(id: number) {
+        const lesson = await this.lessonRepository.findById(id);
+
+        if (!lesson) {
+            throw new UnauthorizedException('Este id não pertence a nenhuma aula.');
+        }
+
+        return lesson;
     }
 
     public async findBySubject(subject: SubjectType) {

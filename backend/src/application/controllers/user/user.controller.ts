@@ -7,6 +7,7 @@ import {
     ChallengeResponse,
     TokenResponse,
     UserLessonLinkReponse,
+    UserLessonResponse,
     UserResponse,
 } from '@wire-out';
 import { AuthService } from '@core';
@@ -14,6 +15,7 @@ import { UserLessonLinkService } from '@domain/user-lesson-link/user-lesson-link
 import { UserId } from '@middlewares/UserId.decorator';
 import { UserAchievementService } from '@domain/user-achievement/user-achievement.service';
 import { UserChallengeService } from '@domain/user-challenge/user-challenge.service';
+import { UserLessonService } from '@domain/user-lesson/user-lesson.service';
 
 @CustomController('Users Controller')
 export class UserController {
@@ -29,6 +31,9 @@ export class UserController {
 
         @Inject(UserChallengeService)
         private userChallengeService: UserChallengeService,
+
+        @Inject(UserLessonService)
+        private userLessonService: UserLessonService,
 
         @Inject(AuthService)
         private authService: AuthService,
@@ -84,7 +89,7 @@ export class UserController {
 
     @CustomRoute({
         method: 'POST',
-        summary: 'Esta rota adiciona uma conquista a um usuário.',
+        summary: 'Esta rota vincula uma aula a um usuário.',
         route: '/:lessonLinkId/lesson-link',
         isAuth: true,
     })
@@ -107,6 +112,29 @@ export class UserController {
     public async findLessonsLinksById(@UserId() id: number) {
         await this.userService.findById(id);
         return this.userLessonLinkService.findAll(id);
+    }
+
+    @CustomRoute({
+        method: 'GET',
+        summary: 'Esta rota lista os cursos de um usuário.',
+        route: '/lesson',
+        response: [UserLessonResponse],
+        isAuth: true,
+    })
+    public async findLessonById(@UserId() userId: number) {
+        await this.userService.findById(userId);
+        return this.userLessonService.findAll(userId);
+    }
+
+    @CustomRoute({
+        method: 'POST',
+        summary: 'Esta rota vincula um curso a um usuário.',
+        route: '/:lessonId/lesson',
+        isAuth: true,
+    })
+    public async createLesson(@UserId() userId: number, @Param('lessonId') lessonId: number) {
+        await this.userService.findById(userId);
+        return this.userLessonService.create(userId, lessonId);
     }
 
     @CustomRoute({
@@ -159,5 +187,16 @@ export class UserController {
     public async findChallengesById(@UserId() id: number) {
         await this.userService.findById(id);
         return this.userChallengeService.findAll(id);
+    }
+
+    @CustomRoute({
+        method: 'GET',
+        summary: 'Esta rota busca o ranking de usuários.',
+        response: [UserResponse],
+        route: '/ranking',
+        isAuth: true,
+    })
+    public async ranking() {
+        return this.userService.getRanking();
     }
 }

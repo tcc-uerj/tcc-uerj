@@ -1,6 +1,8 @@
+import { AchievementType } from '@model';
 import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from '@prisma/client';
-import { UserLessonLinkRepository } from '@repositories/user-lesson-link/user-lesson-link.repository';
+import { User, UserAchievement } from '@prisma/client';
+import { AchievementRepository } from '@repositories/achievement/achievement.repository';
+import { UserAchievementRepository } from '@repositories/user-achievement/user-achievement.repository';
 import { UserRepository } from '@repositories/user/user.repository';
 import { CreateUserPayload, LoginUserPayload, UpdateUserPayload } from '@wire-in';
 import * as bcrypt from 'bcryptjs';
@@ -11,8 +13,11 @@ export class UserService {
         @Inject(UserRepository)
         private userRepository: UserRepository,
 
-        @Inject(UserLessonLinkRepository)
-        private userLessonLinkRepository: UserLessonLinkRepository,
+        @Inject(AchievementRepository)
+        private achievementRepository: AchievementRepository,
+
+        @Inject(UserAchievementRepository)
+        private userAchievementRepository: UserAchievementRepository,
     ) {}
 
     public async create(body: CreateUserPayload) {
@@ -30,6 +35,9 @@ export class UserService {
 
     public async update(id: number, body: UpdateUserPayload) {
         const { password } = await this.userRepository.findById(id);
+
+        this.updateGameAchievement(id, body);
+
         return this.userRepository.update(id, { id, password, ...body });
     }
 
@@ -57,5 +65,59 @@ export class UserService {
         }
 
         return user;
+    }
+
+    public async updateGameAchievement(id: number, body: UpdateUserPayload) {
+        const achievements = [
+            AchievementType.GAMES_COMPLETED_100,
+            AchievementType.GAMES_COMPLETED_50,
+            AchievementType.GAMES_COMPLETED_10,
+        ];
+
+        for (const achievementType of achievements) {
+            const achievement = await this.findAchievementByType(achievementType);
+            const userAchievement = await this.findUserAchievement(id, achievement.id);
+
+            if (!userAchievement && body.gamesCount >= this.getAchievementGoal(achievementType)) {
+                await this.createUserAchievement(id, achievement.id);
+            }
+        }
+    }
+
+    private getAchievementGoal(achievementType: AchievementType) {
+        switch (achievementType) {
+            case AchievementType.GAMES_COMPLETED_10:
+                return 10;
+            case AchievementType.GAMES_COMPLETED_50:
+                return 50;
+            default:
+                return 100;
+        }
+    }
+
+    private async findAchievementByType(type: AchievementType) {
+        return this.achievementRepository.findByType(type);
+    }
+
+    private async findUserAchievement(userId: number, achievementId: number) {
+        return this.userAchievementRepository.findAchievementByUserId(userId, achievementId);
+    }
+
+    private async createUserAchievement(userId: number, achievementId: number) {
+        const userAchievement = await this.userAchievementRepository.findAchievementByUserId(
+            userId,
+            achievementId,
+        );
+
+        if (userAchievement) {
+            throw new ConflictException('Esta conquista já está cadastra para este usuário');
+        }
+
+        const newUserAchievement = { userId, achievementId } as UserAchievement;
+        await this.userAchievementRepository.create(newUserAchievement);
+    }
+
+    public async getRanking() {
+        return this.userRepository.getRanking();
     }
 }

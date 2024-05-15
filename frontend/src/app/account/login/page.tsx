@@ -4,15 +4,16 @@ import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input'
-import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { LoginSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AuthContext } from '@/contexts/AuthContext';
 import { FormError } from '@/components/FormError';
+import { login } from '@/actions/login';
+import { toast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
-    const { login } = useContext(AuthContext);
     const [error, setError] = useState<string>("");
     const [isPending, startTransition] = useTransition();
 
@@ -24,14 +25,26 @@ export default function Login() {
         }
     });
 
+    const router = useRouter();
+
     async function handleLogin(data: z.infer<typeof LoginSchema>) {
         startTransition(async () => {
-            const result = await login(data);
-    
-            if (result?.error) {
-                setError(result.error);
-                return;
-            }
+            try {
+                const response = await login(data);
+
+                if (response?.error) {
+                    setError(response.error);
+                    return;
+                }
+                
+                toast({
+                    variant: "success",
+                    title: "Você entrou no sistema!",
+                    description: "Divirta-se e aprenda bastante.",
+                    forceMount: true,
+                    duration: 2000
+                })
+            } catch (error) {}
         })
     }
 

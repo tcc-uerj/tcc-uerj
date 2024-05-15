@@ -16,9 +16,10 @@ model User {
     level      Int    @default(1) @db.SmallInt
     gamesCount Int    @default(0) @map("games_count") @db.SmallInt
 
-    UserLessonLink  UserLessonLink[]
-    UserAchievement UserAchievement[]
-    UserChallenge   UserChallenge[]
+    userLessonLinks  UserLessonLink[]
+    userAchievements UserAchievement[]
+    userChallenges   UserChallenge[]
+    userLessons      UserLesson[]
 
     @@map("users")
 }
@@ -28,11 +29,12 @@ model Lesson {
     subject     String @db.Text
     content     String @db.Text
     description String @db.Text
-    imageUrl    String @db.Text
+    imageUrl    String @map("image_url") @db.Text
     challengeId Int    @map("challenge_id") @db.Integer
 
-    challenge  Challenge    @relation(fields: [challengeId], references: [id])
-    LessonLink LessonLink[]
+    lessonLinks LessonLink[]
+    challenge   Challenge    @relation(fields: [challengeId], references: [id])
+    userLessons UserLesson[]
 
     @@map("lesson")
 }
@@ -44,10 +46,22 @@ model LessonLink {
     order    Int    @db.SmallInt
     type     String @db.Text
 
-    lesson         Lesson           @relation(fields: [lessonId], references: [id])
-    UserLessonLink UserLessonLink[]
+    lesson          Lesson           @relation(fields: [lessonId], references: [id])
+    userLessonLinks UserLessonLink[]
 
     @@map("lesson_link")
+}
+
+model UserLesson {
+    id                 Int     @id @default(autoincrement()) @db.Integer
+    userId             Int     @map("user_id") @db.Integer
+    lessonId           Int     @map("lesson_id") @db.Integer
+    challengeCompleted Boolean @map("challenge_completed") @db.Boolean
+
+    user   User   @relation(fields: [userId], references: [id])
+    lesson Lesson @relation(fields: [lessonId], references: [id])
+
+    @@map("user_lesson")
 }
 
 model UserLessonLink {
@@ -67,7 +81,7 @@ model Achievement {
     type        String @db.Text
     description String @db.Text
 
-    UserAchievement UserAchievement[]
+    userAchievements UserAchievement[]
 
     @@map("achievement")
 }
@@ -89,9 +103,9 @@ model Challenge {
     level   String @db.Text
     points  Int    @db.SmallInt
 
-    Lesson            Lesson[]
-    UserChallenge     UserChallenge[]
-    ChallengeQuestion ChallengeQuestion[]
+    lessons            Lesson[]
+    userChallenges     UserChallenge[]
+    challengeQuestions ChallengeQuestion[]
 
     @@map("challenge")
 }
@@ -116,23 +130,12 @@ model ChallengeQuestion {
     type           String @db.Text
 
     challenge       Challenge         @relation(fields: [challengeId], references: [id])
-    QuestionGapGame QuestionGapGame[]
-    QuestionQuiz    QuestionQuiz[]
+    questionOptions QuestionOptions[]
 
     @@map("challenge_question")
 }
 
-model QuestionGapGame {
-    id                  Int    @id @default(autoincrement()) @db.Integer
-    content             String @db.Text
-    challengeQuestionId Int    @map("challenge_question_id") @db.Integer
-
-    challengeQuestion ChallengeQuestion @relation(fields: [challengeQuestionId], references: [id])
-
-    @@map("question_gap_game")
-}
-
-model QuestionQuiz {
+model QuestionOptions {
     id                  Int     @id @default(autoincrement()) @db.Integer
     quiz                String  @db.Text
     isCorrectAnswer     Boolean @map("is_correct_answer")
@@ -140,5 +143,5 @@ model QuestionQuiz {
 
     challengeQuestion ChallengeQuestion @relation(fields: [challengeQuestionId], references: [id])
 
-    @@map("question_quiz")
+    @@map("question_options")
 }

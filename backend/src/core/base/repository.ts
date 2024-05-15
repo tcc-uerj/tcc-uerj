@@ -13,6 +13,10 @@ export abstract class BaseRepository<TEntity> {
         return entityName.replace(entityName[0], entityName[0].toLowerCase());
     }
 
+    protected get select() {
+        return {};
+    }
+
     protected async find<TFilter>(option: TFilter): Promise<TEntity[]> {
         return this.database[this.entityName].findMany({ ...option });
     }
@@ -33,11 +37,13 @@ export abstract class BaseRepository<TEntity> {
     }
 
     public async findById(id: number): Promise<TEntity> {
-        return this.database[this.entityName].findFirst({ where: { id } });
+        return this.database[this.entityName].findFirst({ ...this.select, where: { id } });
     }
 
     public async findAll(): Promise<TEntity[]> {
-        return this.database[this.entityName].findMany();
+        return this.database[this.entityName].findMany({
+            ...this.select,
+        });
     }
 
     public async delete(id: number): Promise<TEntity> {

@@ -1,16 +1,21 @@
 import { BaseRepository } from '@core';
+import { AchievementType } from '@model';
 import { Prisma, UserAchievement } from '@prisma/client';
 
 export class UserAchievementRepository extends BaseRepository<UserAchievement> {
-    private select: Prisma.UserAchievementSelect = {
-        achievementId: false,
-        userId: false,
-        achievement: true,
-    };
+    protected get select(): { select: Prisma.UserAchievementSelect } {
+        const select: Prisma.UserAchievementSelect = {
+            achievementId: false,
+            userId: false,
+            achievement: true,
+        };
+
+        return { select };
+    }
 
     public async listAchievementByUser(userId: number) {
         return super.find<Prisma.UserAchievementFindFirstArgs>({
-            select: this.select,
+            ...this.select,
             where: { userId },
         });
     }

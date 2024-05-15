@@ -2,6 +2,7 @@ import React from 'react'
 import { useInterval } from 'usehooks-ts';
 import TriviaQuestionItem from './TriviaQuestionItem';
 import { Progress } from '@/components/ui/progress';
+import ITriviaQuestion from '@/interfaces/ITriviaQuestion';
 
 interface TriviaQuestionProps {
     correctAnswers: number;
