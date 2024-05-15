@@ -3,17 +3,23 @@ import { useInterval } from 'usehooks-ts';
 import TriviaQuestionItem from './TriviaQuestionItem';
 import { Progress } from '@/components/ui/progress';
 import ITriviaQuestion from '@/interfaces/ITriviaQuestion';
+import IChallengeQuestion from '@/interfaces/IChallengeQuestion';
+import IChallenge from '@/interfaces/IChallenge';
 
 interface TriviaQuestionProps {
     correctAnswers: number;
     currentQuestion: number;
     totalQuestions: number;
-    question: ITriviaQuestion;
+    question: IChallenge;
     onNext: (isCorrect: boolean) => void;
 }
 
 export default function TriviaQuestion(props: TriviaQuestionProps) {
     const [seconds, setSeconds] = React.useState(0);
+
+    console.log('props triviaQuestion: ', props);
+    
+
     useInterval(
         () => {
         setSeconds(seconds + 1);
@@ -37,8 +43,8 @@ export default function TriviaQuestion(props: TriviaQuestionProps) {
                 />
             </div>
             <TriviaQuestionItem
-                key={props.question.question.id}
-                triviaQuestion={props.question}
+                key={props.question.id}
+                triviaQuestion={props.question.challengeQuestions}
                 onNext={props.onNext}
             />
         </div>
