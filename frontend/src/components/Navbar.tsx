@@ -15,11 +15,11 @@ import {
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { redirect, useRouter } from "next/navigation";
-import { AuthContext } from "@/contexts/AuthContext";
-import { useSession } from "@/hooks/useSession";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { logout } from "@/actions/logout";
 
 const data = [
     {
@@ -40,7 +40,7 @@ const logoTitle = "TCC";
 
 export default function Navbar() {
     const [openSidebar, setOpenSidebar] = useState(false);
-    const { user, isAuthenticated, logout } = useSession();
+    const session = useSession();
     const router = useRouter();
 
     return (
@@ -120,20 +120,20 @@ export default function Navbar() {
                 </nav>
             </div>
             
-            {isAuthenticated ? (
+            {session.status === "authenticated" ? (
                 <div className="flex row items-center space-x-4">
-                    <div>Bem-vindo, {user?.name}</div>
+                    <div>Bem-vindo, {session.data.user.name}</div>
                     <DropdownMenu>
                         <DropdownMenuTrigger>
                             <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-500 text-bold">
-                                {user?.name.charAt(0).toUpperCase()}
+                                {session.data.user.name.charAt(0).toUpperCase()}
                             </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => router.push('/account/profile')}>Perfil</DropdownMenuItem>
-                            <DropdownMenuItem onClick={logout}>Sair</DropdownMenuItem>
+                            <DropdownMenuItem onClick={async () => logout()}>Sair</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

@@ -4,5 +4,5 @@ export default interface IUser {
     email: string;
     points: number;
     level: number;
-    games_count: number;
+    gamesCount: number;
 }

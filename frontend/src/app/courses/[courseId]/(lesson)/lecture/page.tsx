@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useContext } from 'react'
-import { useSession } from '@/hooks/useSession';
-import { redirect } from 'next/navigation';
 import { LessonContext, LessonContextType } from '@/contexts/LessonContext';
 
 interface LectureProps {
@@ -10,12 +8,7 @@ interface LectureProps {
 }
 
 export default function Lecture({ params }: LectureProps) {
-    const { isAuthenticated } = useSession();
     const { lesson } = useContext<LessonContextType>(LessonContext);
-
-    if (!isAuthenticated) {
-        redirect('/account/login')
-    }
 
     return (
         <div className="flex">

@@ -6,6 +6,7 @@ import { deleteCookie, getCookie, setCookie } from '@/actions/cookies';
 import { api } from '@/services/api';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
+import IUser from '@/interfaces/IUser';
 
 type AuthContextType = {
     user: IUser | null;

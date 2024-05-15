@@ -1,12 +1,11 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { useSession } from "@/hooks/useSession";
 import { IGetCourseByIdDataResponse } from "@/interfaces/responses/IGetCourseByIdResponse";
 import { getCourseById } from "@/services/courses";
 import { getAllUserLessons } from "@/services/users";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface CoursePreviewProps {
@@ -16,11 +15,6 @@ interface CoursePreviewProps {
 export default function CoursePreview({ params }: CoursePreviewProps) {
   const [course, setCourse] = useState<IGetCourseByIdDataResponse>({} as any);
   const router = useRouter();
-  const { isAuthenticated } = useSession();
-
-  if (!isAuthenticated) {
-      redirect('/account/login')
-  }
   
   async function handleUserLessons() {
     const { data } = await getAllUserLessons();

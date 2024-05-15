@@ -11,15 +11,13 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
-        <AuthProvider>
-            <ThemeProvider
-                attribute="class"
-                defaultTheme="dark"
-                enableSystem
-                disableTransitionOnChange
-            >
-                {children}
-            </ThemeProvider>
-        </AuthProvider>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+        >
+            {children}
+        </ThemeProvider>
     );
 }
