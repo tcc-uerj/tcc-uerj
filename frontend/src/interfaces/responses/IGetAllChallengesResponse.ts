@@ -1,5 +1,5 @@
-import IChallengeQuestion from "../IChallengeQuestion";
+import IChallenge from "../IChallenge";
 
 export interface IGetAllChallengesResponse {
-    data: IChallengeQuestion[];
+    data: IChallenge[];
 }

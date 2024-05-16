@@ -1,10 +1,9 @@
 import IChallengeQuestion from '@/interfaces/IChallengeQuestion';
 import IQuestionOptions from '@/interfaces/IQuestionQuiz';
-import ITriviaQuestion from '@/interfaces/ITriviaQuestion';
 import React from 'react'
 
 interface TriviaQuestionItemProps {
-    triviaQuestion: IChallengeQuestion[],
+    triviaQuestion: IChallengeQuestion,
     onNext: (isCorrect: boolean) => void;
 }
 
@@ -16,8 +15,6 @@ export default function TriviaQuestionItem({ triviaQuestion, onNext }: TriviaQue
     }
 
     React.useEffect(() => {
-        console.log('triviaQuestion: ', triviaQuestion);
-        
         if (selectedAnswer) {
             const interval = setInterval(() => {
                 onNext(selectedAnswer.isCorrectAnswer);
@@ -29,12 +26,14 @@ export default function TriviaQuestionItem({ triviaQuestion, onNext }: TriviaQue
     return (
         <div className='grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-5 mt-5'>
             <div
-                className='font-medium lg:text-3xl md:text-2xl sm:text-xl'
+                className='font-medium lg:text-xl md:text-lg sm:text-base'
             >
-                {triviaQuestion[0].statementTitle}
+                <p className="text-justify mt-3">
+                    {triviaQuestion.statementCode}
+                </p>
             </div>
             <div className='flex flex-col gap-5'>
-            {triviaQuestion[0].questionOptions.map((option) => (
+            {triviaQuestion.questionOptions.map((option) => (
                 <button
                     key={option.id}
                     className={`bg-gray-200 p-5 text-black font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-1000 ${

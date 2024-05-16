@@ -3,23 +3,30 @@
 import React, { useEffect, useState } from 'react'
 import TriviaQuestion from '@/app/games/trivia/_components/TriviaQuestion';
 import TriviaResult from '@/app/games/trivia/_components/TriviaResult';
-import { QuestionType } from '@/enums/QuestionType';
-import IChallengeQuestion from '@/interfaces/IChallengeQuestion';
-import ITriviaQuestion from '@/interfaces/ITriviaQuestion';
 import { getChallenges } from '@/services/challenges';
+import IChallenge from '@/interfaces/IChallenge';
+import IChallengeQuestion from '@/interfaces/IChallengeQuestion';
 
 export default function TriviaGameHome() {
-    const [challenges, setChallenges] = useState<IChallengeQuestion[]>([]);
+    const [questions, setQuestions] = useState<IChallengeQuestion[]>([]);
 
     const [correctAnswersQntity, setCorrectAnswersQntity] = useState(0);
     const [currentQuestion, setCurrentQuestion] = useState(0);
 
-
-    const fetchChallenges = async () => {
+    async function fetchChallenges() {
         const { data } = await getChallenges()
-        setChallenges(data)
-        console.log('challenges: ', data);
-        
+        const challengeQuestions = data.flatMap(challenge => challenge.challengeQuestions);        
+        setQuestions(challengeQuestions)
+    }
+
+    function getRandomQuestionIndex(currentIndex: number) {
+        let newIndex;
+
+        do {
+            newIndex = Math.floor(Math.random() * questions.length);
+        } while (newIndex === currentIndex);
+
+        return newIndex;
     }
 
     useEffect(() => {
@@ -29,24 +36,23 @@ export default function TriviaGameHome() {
     return (
         <div className="flex bg-gray-500 items-center flex-col p-6 rounded-lg shadow-lg mt-[100px]">
             {
-                currentQuestion < challenges.length ? (
+                currentQuestion < questions.length ? (
                     <TriviaQuestion
                         correctAnswers={correctAnswersQntity}
                         currentQuestion={currentQuestion}
-                        totalQuestions={challenges.length}
-                        question={challenges[currentQuestion]}
+                        totalQuestions={questions.length}
+                        question={questions[currentQuestion]}
                         onNext={(isCorrect) => {
                             if (isCorrect) {
                                 setCorrectAnswersQntity(correctAnswersQntity + 1);
                             }
-                            setCurrentQuestion(currentQuestion + 1);
+                            setCurrentQuestion(getRandomQuestionIndex(currentQuestion));
                         }}
                     />
                 ) : (
                     <TriviaResult correctAnswersQntity={correctAnswersQntity} />
                 )
             }
-
         </div>
     )
 }
