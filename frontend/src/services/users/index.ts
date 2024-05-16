@@ -1,5 +1,6 @@
 import { IGetAllUserLessonsResponse } from "@/interfaces/responses/IGetAllUserLessonsResponse";
 import { IGetRankingResponse } from "@/interfaces/responses/IGetRankingResponse";
+import { IGetUserAchievementsResponse } from "@/interfaces/responses/IGetUserAchievementsResponse";
 import { IGetUserLessonLinksResponse } from "@/interfaces/responses/IGetUserLessonLinksResponse";
 import { BACKEND_BASE_URL } from "@/lib/consts";
 import { api } from "@/services/api";
@@ -18,4 +19,8 @@ export async function getUserLessonLinks(): Promise<IGetUserLessonLinksResponse>
 
 export async function insertUserLessonLink(lessonLinkId: number): Promise<void> {
     await api.post(`${BACKEND_BASE_URL}/users/${lessonLinkId}/lesson-link`);
+}
+
+export async function getUserAchievements(): Promise<IGetUserAchievementsResponse> {
+    return await api.get(`${BACKEND_BASE_URL}/users/achievements`);
 }

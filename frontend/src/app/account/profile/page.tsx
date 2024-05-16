@@ -1,59 +1,105 @@
 "use client"
 import { CardHeader, CardContent, Card } from "@/components/ui/card"
 import { Progress } from '@/components/ui/progress';
-import { api } from "@/services/api";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Skeleton } from "@/components/ui/skeleton"
-import IUser from "@/interfaces/IUser";
-
-const user = {
-    name: "Nome",
-    level: 12,
-}
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { getUserAchievements } from "@/services/users";
+import { IAchievement } from "@/interfaces/IAchievement";
 
 const levelXP = 5000;
 const userXP = 2000;
 const xp = userXP / levelXP;
 
-const statistics = [
-    {
-        title: "Jogos Jogados",
-        value: 50,
-    }
-];
+export default function Profile() {
+    const [isPending, startTransition] = useTransition();
+    const user = useCurrentUser();
+    const [achievements, setAchievements] = useState<IAchievement[]>([]);
 
-const achievements = [
-    { 
-        title: "Campeão",
-        description: "Jogou mais de 10 jogos"
-    },
-    { 
-        title: "Veterano",
-        description: "Jogou mais de 100 jogos"
-    },
-];
 
-interface ProfileProps {}
 
-export default function Profile(props: ProfileProps) {
-    const [user, setUser] = useState<IUser | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    
-    const fetchUser = async () => {
-        setIsLoading(true);
-        const data = await api.get('/users')
-            .then(res => res.data)
-            .finally(() => setIsLoading(false));
-        setUser(data);
+    async function fetchAchievements() {
+        startTransition(async () => {
+            const { data } = await getUserAchievements();
+
+            if (data) {
+                setAchievements(data);
+            }
+        });
     }
 
     useEffect(() => {
-        fetchUser();
+        fetchAchievements();
     }, []);
 
-    if (isLoading) {
-        return (
-            <Skeleton className="w-full max-w-3xl m-auto mt-5"></Skeleton>
+    if (true) {
+        return (              
+            <div className="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-3xl m-auto mt-5"> 
+                <div className="flex flex-col space-y-1.5 p-6">                    
+                    <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-3">
+                            <Skeleton className="h-7 w-[200px]" />
+                        </div>
+                        <div className="grid items-center gap-1 text-sm sm:grid-cols-2">
+                            <div className="flex items-center space-x-1">
+                                <Skeleton className="h-2 w-[100px]" />
+                                <Skeleton className="h-1 w-[30px]" />
+                            </div>
+                            <div className="flex items-center space-x-1">
+                                <Skeleton className="h-2 w-[60px]" />
+                                <Skeleton className="h-2 w-[100px]" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="p-6 pt-0 space-y-4">
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-[200px]" />
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                            <div>
+                                <Skeleton className="h-3 w-[200px]" />
+                                <Skeleton className="h-4 w-[80px]" />
+                            </div>
+                        </div>
+                        <div className="space-y-4">
+                            <Skeleton className="h-2 w-[200px]" />
+                            <Skeleton className="h-3 w-[100px]" />
+                            <div className="h-2 bg-gray-100 rounded-md dark:bg-gray-800">
+                                <Skeleton className="h-3 w-[500px]" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-[200px]" />
+                        <div className="grid gap-4 sm:grid-cols-2">
+                            <div className="flex items-center space-x-2">
+                                <Skeleton className="h-4 w-[50px]" />
+                                <div className="">
+                                    <Skeleton className="h-3 w-[200px]" />
+                                </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <Skeleton className="h-4 w-[50px]" />
+                                <div className="">
+                                    <Skeleton className="h-3 w-[200px]" />
+                                </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <Skeleton className="h-4 w-[50px]" />
+                                <div className="">
+                                    <Skeleton className="h-3 w-[200px]" />
+                                </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <Skeleton className="h-4 w-[50px]" />
+                                <div className="">
+                                    <Skeleton className="h-3 w-[200px]" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         );
     }
 
@@ -80,12 +126,10 @@ export default function Profile(props: ProfileProps) {
                 <div className="space-y-2">
                     <h2 className="text-lg font-bold">Estatísticas</h2>
                     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                        {statistics.map((statistic, idx) => (
-                            <div key={idx}>
-                                <div className="text-sm text-gray-500 dark:text-gray-400">{statistic.title}</div>
-                                <div className="text-xl font-bold">{statistic.value}</div>
-                            </div>
-                        ))}
+                        <div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">Jogos Jogados</div>
+                            <div className="text-xl font-bold">{user?.gamesCount}</div>
+                        </div>
                     </div>
                     <div className="space-y-2">
                         <h2 className="text-lg font-bold">Próximo Nível</h2>
@@ -99,10 +143,9 @@ export default function Profile(props: ProfileProps) {
                     <h2 className="text-lg font-bold">Conquistas</h2>
                     <div className="grid gap-4 sm:grid-cols-2">
                         {achievements.map((achievement, idx) => (
-                            <div key={idx} className="flex items-start space-x-4">
-                                <AwardIcon className="w-8 h-8" />
-                                <div className="space-y-1.5">
-                                    <h3 className="font-bold">{achievement.title}</h3>
+                            <div key={achievement.description} className="flex items-center space-x-2">
+                                <AwardIcon className="w-6 h-6" />
+                                <div className="">
                                     <p className="text-sm text-gray-500 dark:text-gray-400">{achievement.description}</p>
                                 </div>
                             </div>
