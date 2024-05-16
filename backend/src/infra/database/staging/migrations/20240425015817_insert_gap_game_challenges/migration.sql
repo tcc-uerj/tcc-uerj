@@ -11,16 +11,16 @@ values
     (nextval('challenge_question_id_seq'), 3, 'Funções com propósito único', 'Em clean code, é recomendado que cada função tenha um único ____________, fazendo apenas uma coisa e fazendo bem.', 'GAP_GAME'),
     (nextval('challenge_question_id_seq'), 3, 'Evitando acoplamento forte', 'Um dos princípios do clean code é evitar o acoplamento ____________, onde as classes dependem muito umas das outras.', 'GAP_GAME'),
     (nextval('challenge_question_id_seq'), 3, 'Ênfase em testes automáticos', 'O clean code enfatiza a importância de escrever testes ____________, que garantem que o código funcione conforme o esperado.', 'GAP_GAME'),
-    (nextval('challenge_question_id_seq'), 1, 'Padrão Factory', 'O padrão ____________ é usado para criar objetos de um tipo específico sem expor a lógica de criação diretamente ao cliente.', 'GAP_GAME'),
-    (nextval('challenge_question_id_seq'), 1, 'Organização em árvore hierárquica', 'No padrão ____________, objetos são organizados em uma árvore hierárquica, onde cada nó pode ter zero ou mais nós filhos.', 'GAP_GAME'),
-    (nextval('challenge_question_id_seq'), 1, 'Padrão Visitor', 'O padrão ____________ é usado para representar uma operação a ser realizada nos elementos de uma estrutura de objetos.', 'GAP_GAME'),
-    (nextval('challenge_question_id_seq'), 2, 'Garantindo uma única instância', 'O padrão ____________ é usado para garantir que um objeto tenha apenas uma instância e fornecer um ponto global de acesso a essa instância.', 'GAP_GAME'),
-    (nextval('challenge_question_id_seq'), 2, 'Encapsulando algoritmos intercambiáveis', 'O padrão ____________ é usado para definir uma família de algoritmos, encapsular cada um deles e torná-los intercambiáveis.', 'GAP_GAME'),
-    (nextval('challenge_question_id_seq'), 2, 'Fornecendo uma interface unificada', 'O padrão ____________ é usado para fornecer uma interface unificada para um conjunto de interfaces em um subsistema.', 'GAP_GAME'),
-    (nextval('challenge_question_id_seq'), 3, 'Encapsulamento de comportamento', 'No padrão ____________, um objeto é usado para encapsular todos os detalhes de um comportamento em particular.', 'GAP_GAME'),
-    (nextval('challenge_question_id_seq'), 3, 'Alterando comportamento conforme estado interno', 'O padrão ____________ é usado para permitir que um objeto altere seu comportamento quando seu estado interno muda.', 'GAP_GAME'),
-    (nextval('challenge_question_id_seq'), 3, 'Controlando acesso a objetos', 'No padrão ____________, um objeto representa outro objeto para controlar o acesso a ele.', 'GAP_GAME'),
-    (nextval('challenge_question_id_seq'), 3, 'Separando lógica de negócios e representação', 'O padrão ____________ é usado para separar a lógica de negócios de uma aplicação de sua representação.', 'GAP_GAME');
+    (nextval('challenge_question_id_seq'), 4, 'Padrão Factory', 'O padrão ____________ é usado para criar objetos de um tipo específico sem expor a lógica de criação diretamente ao cliente.', 'GAP_GAME'),
+    (nextval('challenge_question_id_seq'), 4, 'Organização em árvore hierárquica', 'No padrão ____________, objetos são organizados em uma árvore hierárquica, onde cada nó pode ter zero ou mais nós filhos.', 'GAP_GAME'),
+    (nextval('challenge_question_id_seq'), 4, 'Padrão Visitor', 'O padrão ____________ é usado para representar uma operação a ser realizada nos elementos de uma estrutura de objetos.', 'GAP_GAME'),
+    (nextval('challenge_question_id_seq'), 5, 'Garantindo uma única instância', 'O padrão ____________ é usado para garantir que um objeto tenha apenas uma instância e fornecer um ponto global de acesso a essa instância.', 'GAP_GAME'),
+    (nextval('challenge_question_id_seq'), 5, 'Encapsulando algoritmos intercambiáveis', 'O padrão ____________ é usado para definir uma família de algoritmos, encapsular cada um deles e torná-los intercambiáveis.', 'GAP_GAME'),
+    (nextval('challenge_question_id_seq'), 5, 'Fornecendo uma interface unificada', 'O padrão ____________ é usado para fornecer uma interface unificada para um conjunto de interfaces em um subsistema.', 'GAP_GAME'),
+    (nextval('challenge_question_id_seq'), 6, 'Encapsulamento de comportamento', 'No padrão ____________, um objeto é usado para encapsular todos os detalhes de um comportamento em particular.', 'GAP_GAME'),
+    (nextval('challenge_question_id_seq'), 6, 'Alterando comportamento conforme estado interno', 'O padrão ____________ é usado para permitir que um objeto altere seu comportamento quando seu estado interno muda.', 'GAP_GAME'),
+    (nextval('challenge_question_id_seq'), 6, 'Controlando acesso a objetos', 'No padrão ____________, um objeto representa outro objeto para controlar o acesso a ele.', 'GAP_GAME'),
+    (nextval('challenge_question_id_seq'), 6, 'Separando lógica de negócios e representação', 'O padrão ____________ é usado para separar a lógica de negócios de uma aplicação de sua representação.', 'GAP_GAME');
 
 insert into question_options (id, quiz, is_correct_answer, challenge_question_id)
 values
