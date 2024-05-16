@@ -32,7 +32,7 @@ export default function Profile() {
         fetchAchievements();
     }, []);
 
-    if (true) {
+    if (isPending) {
         return (              
             <div className="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-3xl m-auto mt-5"> 
                 <div className="flex flex-col space-y-1.5 p-6">                    
