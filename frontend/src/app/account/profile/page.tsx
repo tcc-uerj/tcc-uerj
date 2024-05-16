@@ -16,8 +16,6 @@ export default function Profile() {
     const user = useCurrentUser();
     const [achievements, setAchievements] = useState<IAchievement[]>([]);
 
-
-
     async function fetchAchievements() {
         startTransition(async () => {
             const { data } = await getUserAchievements();
@@ -141,6 +139,11 @@ export default function Profile() {
                 </div>
                 <div className="space-y-2">
                     <h2 className="text-lg font-bold">Conquistas</h2>
+                    {achievements.length === 0 && (
+                        <div className="flex flex-col">
+                            <div className="text-sm">Você não possui conquistas.</div>
+                        </div>
+                    )}
                     <div className="grid gap-4 sm:grid-cols-2">
                         {achievements.map((achievement, idx) => (
                             <div key={achievement.description} className="flex items-center space-x-2">
