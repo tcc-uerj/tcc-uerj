@@ -7,14 +7,12 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { getUserAchievements } from "@/services/users";
 import { IAchievement } from "@/interfaces/IAchievement";
 
-const levelXP = 5000;
-const userXP = 2000;
-const xp = userXP / levelXP;
-
 export default function Profile() {
     const [isPending, startTransition] = useTransition();
     const user = useCurrentUser();
     const [achievements, setAchievements] = useState<IAchievement[]>([]);
+
+    const POINTS_PER_LEVEL = 2000;
 
     async function fetchAchievements() {
         startTransition(async () => {
@@ -101,63 +99,65 @@ export default function Profile() {
         );
     }
 
-    return (
-        <Card className="w-full max-w-3xl m-auto mt-5">
-            <CardHeader>
-                <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-3">
-                        <div className="text-2xl font-bold">{user?.name}</div>
-                    </div>
-                    <div className="grid items-center gap-1 text-sm sm:grid-cols-2">
-                        <div className="flex items-center space-x-1">
-                            <span className="font-medium">Level</span>
-                            <span className="text-gray-500 dark:text-gray-400">{user?.level}</span>
+    if (user) {
+        return (
+            <Card className="w-full max-w-3xl m-auto mt-5">
+                <CardHeader>
+                    <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-3">
+                            <div className="text-2xl font-bold">{user?.name}</div>
                         </div>
-                        <div className="flex items-center space-x-1">
-                            <span className="font-medium">XP</span>
-                            <span className="text-gray-500 dark:text-gray-400">{userXP} / {levelXP}</span>
+                        <div className="grid items-center gap-1 text-sm sm:grid-cols-2">
+                            <div className="flex items-center space-x-1">
+                                <span className="font-medium">Level</span>
+                                <span className="text-gray-500 dark:text-gray-400">{user?.level}</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                                <span className="font-medium">Pontos</span>
+                                <span className="text-gray-500 dark:text-gray-400">{user?.points} / {user?.level * POINTS_PER_LEVEL}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <div className="space-y-2">
-                    <h2 className="text-lg font-bold">Estatísticas</h2>
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                        <div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">Jogos Jogados</div>
-                            <div className="text-xl font-bold">{user?.gamesCount}</div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                        <h2 className="text-lg font-bold">Estatísticas</h2>
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                            <div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">Jogos Jogados</div>
+                                <div className="text-xl font-bold">{user?.gamesCount}</div>
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <h2 className="text-lg font-bold">Próximo Nível</h2>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Você precisa de {(user?.level * POINTS_PER_LEVEL) - user?.points} pontos para chegar no level {user == null ? 1 : user?.level + 1}</p>
+                            <div className="h-2 bg-gray-100 rounded-md dark:bg-gray-800">
+                                <Progress value={(user?.points / (user?.level * POINTS_PER_LEVEL)) * 100} />
+                            </div>
                         </div>
                     </div>
                     <div className="space-y-2">
-                        <h2 className="text-lg font-bold">Próximo Nível</h2>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Você precisa de {levelXP - userXP} XP para chegar no level {user == null ? 1 : user?.level + 1}</p>
-                        <div className="h-2 bg-gray-100 rounded-md dark:bg-gray-800">
-                            <Progress value={xp * 100} />
-                        </div>
-                    </div>
-                </div>
-                <div className="space-y-2">
-                    <h2 className="text-lg font-bold">Conquistas</h2>
-                    {achievements.length === 0 && (
-                        <div className="flex flex-col">
-                            <div className="text-sm">Você não possui conquistas.</div>
-                        </div>
-                    )}
-                    <div className="grid gap-4 sm:grid-cols-2">
-                        {achievements.map((achievement, idx) => (
-                            <div key={achievement.description} className="flex items-center space-x-2">
-                                <AwardIcon className="w-6 h-6" />
-                                <div className="">
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">{achievement.description}</p>
-                                </div>
+                        <h2 className="text-lg font-bold">Conquistas</h2>
+                        {achievements.length === 0 && (
+                            <div className="flex flex-col">
+                                <div className="text-sm">Você não possui conquistas.</div>
                             </div>
-                        ))}
+                        )}
+                        <div className="grid gap-4 sm:grid-cols-2">
+                            {achievements.map((achievement, idx) => (
+                                <div key={achievement.description} className="flex items-center space-x-2">
+                                    <AwardIcon className="w-6 h-6" />
+                                    <div className="">
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">{achievement.description}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
-            </CardContent>
-        </Card>
-    )
+                </CardContent>
+            </Card>
+        )
+    }
 }
 
 function AwardIcon(props: any) {
