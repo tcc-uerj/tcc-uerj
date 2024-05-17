@@ -5,9 +5,11 @@ import { Button } from "./ui/button";
 import IChallengeQuestion from "@/interfaces/IChallengeQuestion";
 import IQuestionOptions from "@/interfaces/IQuestionQuiz";
 
-export default function Quiz({ question, options }: {
+export default function Quiz({ question, options, handleCorrectAnswer, handleWrongAnswer }: {
     question: IChallengeQuestion | undefined,
-    options: IQuestionOptions[] | undefined
+    options: IQuestionOptions[] | undefined,
+    handleCorrectAnswer?: () => void,
+    handleWrongAnswer?: () => void,
 }) {
     const [showModal, setShowModal] = useState(false);
     const [isCorrectAnswer, setIsCorrectAnswer] = useState<boolean | null>(null);
@@ -18,6 +20,20 @@ export default function Quiz({ question, options }: {
         setShowModal(true);
         setIsCorrectAnswer(isCorrectAnwer);
     };
+
+    const handleQuizCorrectAnswer = () => {
+        if (handleCorrectAnswer) {
+            handleCorrectAnswer();
+        }
+        closeModal();
+    }
+
+    const handleQuizWrongAnswer = () => {
+        if (handleWrongAnswer) {
+            handleWrongAnswer();
+        }
+        closeModal();
+    }
 
     const closeModal = () => {
         setShowModal(false);
@@ -33,11 +49,11 @@ export default function Quiz({ question, options }: {
     }
 
     return (
-        <div className="p-4 h-full">
-            <h1 className="text-3xl font-bold mb-4">Quiz:</h1>
-            <h2 className="text-1xl font-bold mb-4">{question?.statementTitle}</h2>
-            <h2 className="text-1xl font-bold mb-4">{String(question?.statementCode)}</h2>
-            <h1 className="text-3xl font-bold mb-4">Selecione a resposta correta:</h1>
+        <div className="border border-gray-700 rounded p-5">
+            <h1 className="text-3xl font-bold mb-4">Questão</h1>
+            <h2 className="text-1xl font-bold mb-4">Objetivo: {question?.statementTitle}</h2>
+            <h2 className="text-1xl font-bold mb-4">Pergunta: {String(question?.statementCode)}</h2>
+            <h1 className="text-2xl font-bold mb-4">Selecione a resposta correta:</h1>
             <div className="grid grid-cols-1 gap-4">
                 {options && options.map((option, index) => (
                     <Button
@@ -51,19 +67,41 @@ export default function Quiz({ question, options }: {
             </div>
 
             {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-4 rounded-md">
-                        {isCorrectAnswer ? (
-                            <p className="text-green-500 font-bold">Resposta Certa!</p>
-                        ) : (
-                            <p className="text-red-500 font-bold">Resposta Errada!</p>
-                        )}
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70">
+                    <div className="bg-white p-5 rounded-md">
+                        <div>
+                            {isCorrectAnswer ? (
+                                <div className="space-y-8">
+                                    <div className="space-y-2">
+                                        <p className="text-green-500 text-3xl font-bold">Resposta Certa!</p>
+                                        <div className="text-green-700 font-bold">Q: {String(question?.statementCode)}</div>
+                                        <div className="text-green-700 font-bold">R: "{selectedOption != null ? options?.at(selectedOption)?.quiz : ''}"</div>
+                                        <div className="text-gray-500 text-2xl">Parabéns! Você acertou! Agora você demonstrou que aprendeu e pode concluir o curso!</div>
+                                    </div>
+                                    <Button
+                                        onClick={handleQuizCorrectAnswer}
+                                    >
+                                        Concluir curso
+                                    </Button>
+                                </div>
+                            ) : (
+                                <div className="space-y-8">
+                                    <div className="space-y-2">
+                                        <p className="text-red-500 text-3xl font-bold">Resposta Errada!</p>
+                                        <div className="text-red-700 font-bold">Q: {String(question?.statementCode)}</div>
+                                        <div className="text-red-700 font-bold">R: "{selectedOption != null ? options?.at(selectedOption)?.quiz : ''}"</div>
+                                        <div className="text-gray-500 text-2xl">Essa não é a resposta correta. Não desanime, tente novamente!</div>
+                                    </div>
+                                    <Button
+                                        onClick={handleQuizWrongAnswer}
+                                    >
+                                        Tentar novamente
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
                         
-                        <Button
-                            onClick={closeModal}
-                        >
-                            Close
-                        </Button>
+
                     </div>
                 </div>
             )}
