@@ -26,13 +26,17 @@ export abstract class BaseRepository<TEntity> {
     }
 
     public async create(data: TEntity): Promise<TEntity> {
-        return this.database[this.entityName].create({ data });
+        return this.database[this.entityName].create({
+            ...this.select,
+            data,
+        });
     }
 
     public async update(id: number, data: TEntity): Promise<TEntity> {
         return this.database[this.entityName].update({
-            data,
+            ...this.select,
             where: { id },
+            data,
         });
     }
 
