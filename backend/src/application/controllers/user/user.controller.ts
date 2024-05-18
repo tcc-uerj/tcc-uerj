@@ -1,7 +1,12 @@
 import { CustomController, CustomRoute } from '@core';
 import { UserService } from '@domain/user/user.service';
 import { Body, HttpStatus, Inject, Param } from '@nestjs/common';
-import { CreateUserPayload, LoginUserPayload, UpdateUserPayload } from '@wire-in';
+import {
+    CreateUserPayload,
+    LoginUserPayload,
+    UpdateUserPayload,
+    UserLessonPayload,
+} from '@wire-in';
 import {
     AchievementResponse,
     ChallengeResponse,
@@ -135,6 +140,22 @@ export class UserController {
     public async createLesson(@UserId() userId: number, @Param('lessonId') lessonId: number) {
         await this.userService.findById(userId);
         return this.userLessonService.create(userId, lessonId);
+    }
+
+    @CustomRoute({
+        method: 'PATCH',
+        summary: 'Esta rota edita o vinculo de um curso de um usuário.',
+        body: UserLessonPayload,
+        response: UserLessonResponse,
+        route: '/:userLessonId/lesson',
+        isAuth: true,
+        code: HttpStatus.OK,
+    })
+    public async updateLesson(
+        @Param('userLessonId') userLessonId: number,
+        @Body() body: UserLessonPayload,
+    ) {
+        return await this.userLessonService.update(userLessonId, body);
     }
 
     @CustomRoute({
