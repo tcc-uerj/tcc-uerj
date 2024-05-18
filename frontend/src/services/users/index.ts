@@ -24,3 +24,7 @@ export async function insertUserLessonLink(lessonLinkId: number): Promise<void> 
 export async function getUserAchievements(): Promise<IGetUserAchievementsResponse> {
     return await api.get(`${BACKEND_BASE_URL}/users/achievements`);
 }
+
+export async function associateUserLesson(lessonId: number) {
+    return await api.post(`${BACKEND_BASE_URL}/users/${lessonId}/lesson`);
+}

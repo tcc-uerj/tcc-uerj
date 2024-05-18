@@ -2,45 +2,42 @@
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { IGetCourseByIdDataResponse } from "@/interfaces/responses/IGetCourseByIdResponse";
-import { getCourseById } from "@/services/courses";
-import { getAllUserLessons } from "@/services/users";
-import Link from "next/link";
+import { useToast } from "@/components/ui/use-toast";
+import { LessonContext, LessonContextType } from "@/contexts/LessonContext";
+import { associateUserLesson } from "@/services/users";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useContext, useTransition } from "react";
 
 interface CoursePreviewProps {
   params: { courseId: string; }
 }
 
 export default function CoursePreview({ params }: CoursePreviewProps) {
-  const [course, setCourse] = useState<IGetCourseByIdDataResponse | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const { lesson, userLesson, isPending } = useContext<LessonContextType>(LessonContext);
+  const [isLoading, startTransition] = useTransition();
   const router = useRouter();
+  const { toast } = useToast()
+
+  async function subscribeUserToLesson() {
+    try {
+      startTransition(async () => {
+        if (lesson == null) return;
   
-  async function handleUserLessons() {
-    startTransition(async () => {
-      const { data } = await getAllUserLessons();
+        await associateUserLesson(lesson?.id);
+        
+        toast({
+          variant: "success",
+          title: `Inscrição no curso ${lesson?.subject.split("_").join(" ").toLowerCase()} realizado com sucesso!`,
+          description: "Divirta-se e aprenda bastante.",
+          duration: 2000
+        })
       
-      if (data == null || data.length === 0) {
-        handleCourse();
-        return;
-      }
-      
-      router.replace(`/courses/${params.courseId}/lecture`);
-    });
-  }
+        router.push(`/courses/${params.courseId}/lecture`);
+      });
+    } catch (error) {
 
-  async function handleCourse() {
-    startTransition(async () => {
-      const { data } = await getCourseById(parseInt(params.courseId));
-      setCourse(data);
-    })
+    }
   }
-
-  useEffect(() => {
-    handleUserLessons();
-  }, []);
 
   if (isPending) {
     return (
@@ -59,21 +56,24 @@ export default function CoursePreview({ params }: CoursePreviewProps) {
       </div>
     )
   }
+
+  if (userLesson) {
+    router.replace(`/courses/${params.courseId}/lecture`);
+    return;
+  }
   
-  if (course && !isPending) {
+  if (lesson) {
     return (
       <div className="flex justify-center">
         <div className="w-3/6 h-fit mt-5 p-5">
-            <h2 className="text-[20px] font-medium">{course.subject?.split("_").join(" ")}</h2>
+            <h2 className="text-[20px] font-medium">{lesson.subject?.split("_").join(" ")}</h2>
             <p className="mt-5 text-gray-500">
-              {course.description}
+              {lesson.description}
             </p>
             <div className="mt-5">
-              <Link href={`lecture`}>
-                <Button>
-                      Me inscrever
-                  </Button>
-              </Link>
+              <Button disabled={isLoading} onClick={() => subscribeUserToLesson()}>
+                Me inscrever
+              </Button>
             </div>
         </div>
       </div>
