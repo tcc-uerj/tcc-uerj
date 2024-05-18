@@ -1,26 +1,34 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useInterval } from 'usehooks-ts';
 import TriviaQuestionItem from './TriviaQuestionItem';
 import { Progress } from '@/components/ui/progress';
-import ITriviaQuestion from '@/interfaces/ITriviaQuestion';
 import IChallengeQuestion from '@/interfaces/IChallengeQuestion';
 
 interface TriviaQuestionProps {
     correctAnswers: number;
     currentQuestion: number;
-    totalQuestions: number;
+    questionPoints: number;
     question: IChallengeQuestion;
-    onNext: (isCorrect: boolean) => void;
+    updateUserPoints: () => void;
+    onNext: (isCorrect: boolean, points: number) => void;
 }
 
 export default function TriviaQuestion(props: TriviaQuestionProps) {
+    const TOTAL_QUESTIONS = 1;
     const [seconds, setSeconds] = React.useState(0);
+
     useInterval(
         () => {
         setSeconds(seconds + 1);
         },
-        props.currentQuestion < props.totalQuestions ? 1000 : null
+        props.correctAnswers < TOTAL_QUESTIONS ? 1000 : null
     );
+
+    useEffect(() => {
+        if (props.correctAnswers === TOTAL_QUESTIONS) {
+            props.updateUserPoints();
+        }
+    }, [props.correctAnswers])
     
     return (
         <div className='max-w-screen-xl mx-auto p-4'>
@@ -34,12 +42,13 @@ export default function TriviaQuestion(props: TriviaQuestionProps) {
             </div>
             <div className='flex flex-row justify-between w-full pt-5 pb-5'>
                 <Progress
-                    value={(props.currentQuestion * 100) / props.totalQuestions}
+                    value={(props.correctAnswers * 100) / TOTAL_QUESTIONS}
                 />
             </div>
             <TriviaQuestionItem
                 key={props.question.id}
                 triviaQuestion={props.question}
+                questionPoints={props.questionPoints}
                 onNext={props.onNext}
             />
         </div>

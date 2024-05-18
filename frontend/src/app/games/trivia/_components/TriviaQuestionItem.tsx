@@ -4,10 +4,11 @@ import React from 'react'
 
 interface TriviaQuestionItemProps {
     triviaQuestion: IChallengeQuestion,
-    onNext: (isCorrect: boolean) => void;
+    questionPoints: number;
+    onNext: (isCorrect: boolean, points: number) => void;
 }
 
-export default function TriviaQuestionItem({ triviaQuestion, onNext }: TriviaQuestionItemProps) {
+export default function TriviaQuestionItem({ triviaQuestion, questionPoints ,onNext }: TriviaQuestionItemProps) {
     const [selectedAnswer, setSelectedAnswer] = React.useState<IQuestionOptions | null>(null);
 
     function submitAnswer(answer: IQuestionOptions) {
@@ -17,7 +18,7 @@ export default function TriviaQuestionItem({ triviaQuestion, onNext }: TriviaQue
     React.useEffect(() => {
         if (selectedAnswer) {
             const interval = setInterval(() => {
-                onNext(selectedAnswer.isCorrectAnswer);
+                onNext(selectedAnswer.isCorrectAnswer, questionPoints);
             }, 1000);
             return () => { clearInterval(interval); };
         }
