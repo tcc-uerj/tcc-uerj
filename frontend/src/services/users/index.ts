@@ -13,7 +13,7 @@ export async function getRanking(): Promise<IGetRankingResponse> {
     return await api.get(`${BACKEND_BASE_URL}/users/ranking`);
 }
 
-export async function getUserLessonLinks(): Promise<IGetUserLessonLinksResponse> {
+export async function getUserLessonsLinks(): Promise<IGetUserLessonLinksResponse> {
     return await api.get(`${BACKEND_BASE_URL}/users/lessons-links`);
 }
 

@@ -73,7 +73,7 @@ export default function Quiz({ question, options, handleCorrectAnswer, handleWro
                             {isCorrectAnswer ? (
                                 <div className="space-y-8">
                                     <div className="space-y-2">
-                                        <p className="text-green-500 text-3xl font-bold">Resposta Certa!</p>
+                                        <p className="text-green-500 text-3xl font-bold">🎉 Resposta Certa!</p>
                                         <div className="text-green-700 font-bold">Q: {String(question?.statementCode)}</div>
                                         <div className="text-green-700 font-bold">R: "{selectedOption != null ? options?.at(selectedOption)?.quiz : ''}"</div>
                                         <div className="text-gray-500 text-2xl">Parabéns! Você acertou! Agora você demonstrou que aprendeu e pode concluir o curso!</div>
@@ -87,7 +87,7 @@ export default function Quiz({ question, options, handleCorrectAnswer, handleWro
                             ) : (
                                 <div className="space-y-8">
                                     <div className="space-y-2">
-                                        <p className="text-red-500 text-3xl font-bold">Resposta Errada!</p>
+                                        <p className="text-red-500 text-3xl font-bold">👎 Resposta Errada!</p>
                                         <div className="text-red-700 font-bold">Q: {String(question?.statementCode)}</div>
                                         <div className="text-red-700 font-bold">R: "{selectedOption != null ? options?.at(selectedOption)?.quiz : ''}"</div>
                                         <div className="text-gray-500 text-2xl">Essa não é a resposta correta. Não desanime, tente novamente!</div>
