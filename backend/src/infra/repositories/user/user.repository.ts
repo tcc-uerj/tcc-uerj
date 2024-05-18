@@ -17,7 +17,6 @@ export class UserRepository extends BaseRepository<User> {
 
     public async findByEmail(email: string) {
         return super.findOne<Prisma.UserFindFirstArgs>({
-            ...this.select,
             where: { email },
         });
     }
