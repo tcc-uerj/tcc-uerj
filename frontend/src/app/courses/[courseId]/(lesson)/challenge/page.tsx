@@ -17,9 +17,7 @@ export default function Challenge() {
                     Demonstre que você aprendeu e responda corretamente a pergunta abaixo para concluir o curso. Boa sorte!
                 </div>
                 <div className="mt-5">
-                    {lesson?.challenge.challengeQuestions.map((question, index) => (
-                        <Quiz key={question.id} question={question} options={question.questionOptions} />
-                    ))}
+                    <Quiz key={lesson?.challengeQuestion.id} question={lesson?.challengeQuestion} options={lesson?.challengeQuestion.questionOptions} />
                 </div>
             </div>
         </div>

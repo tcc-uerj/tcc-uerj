@@ -3,6 +3,7 @@
 import { LessonContext, LessonContextType } from "@/contexts/LessonContext";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 
 interface CourseSidebarProps {
@@ -26,6 +27,12 @@ const data = [
 export default function Sidebar() {
   const [activeIndex, setActiveIndex] = useState(0);
   const { lesson, isAllLessonLinksCompleted } = useContext<LessonContextType>(LessonContext);
+  const pathname = usePathname()
+
+  function getActualSuffixPathname() {
+    const pathnameSplittedBySlash = pathname.split("/");
+    return `/${pathnameSplittedBySlash[pathnameSplittedBySlash.length - 1]}`;
+  }
 
   return (
     <div className="flex flex-col min-h-screen min-w-[300px] border-r border-gray-800 p-4 ">
@@ -51,7 +58,7 @@ export default function Sidebar() {
             onClick={() => { setActiveIndex(index); }}
             className={cn(
               'cursor-pointer mt-4 text-indigo-100 hover:text-indigo-500 font-bold', 
-              activeIndex == index && 'text-indigo-400',
+              getActualSuffixPathname() == item.href && 'text-indigo-400',
               !isAllLessonLinksCompleted && item.blockedByLecture && 'pointer-events-none cursor-not-allowed'
             )} 
             href={`/courses/${lesson?.id}/${item.href}`}
