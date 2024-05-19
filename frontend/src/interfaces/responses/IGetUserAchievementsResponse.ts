@@ -1,5 +1,9 @@
 import { IAchievement } from "@/interfaces/IAchievement";
 
 export interface IGetUserAchievementsResponse {
-    data: IAchievement[];
+    data: IGetUserAchievementsDataResponse[];
+}
+
+export interface IGetUserAchievementsDataResponse {
+    achievement: IAchievement;
 }

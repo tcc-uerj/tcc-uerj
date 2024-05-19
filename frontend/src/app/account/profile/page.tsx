@@ -19,7 +19,7 @@ export default function Profile() {
             const { data } = await getUserAchievements();
 
             if (data) {
-                setAchievements(data);
+                setAchievements(data.map(item => item.achievement));
             }
         });
     }
@@ -114,25 +114,25 @@ export default function Profile() {
                             </div>
                             <div className="flex items-center space-x-1">
                                 <span className="font-medium">Pontos</span>
-                                <span className="text-gray-500 dark:text-gray-400">{user?.points} / {user?.level * POINTS_PER_LEVEL}</span>
+                                <span className="text-gray-500 dark:text-gray-400">{user?.points} / {(user?.level + 1) * POINTS_PER_LEVEL}</span>
                             </div>
                         </div>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
-                        <h2 className="text-lg font-bold">Estatísticas</h2>
+                        <h2 className="text-xl font-bold">Estatísticas</h2>
                         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                             <div>
-                                <div className="text-sm text-gray-500 dark:text-gray-400">Jogos Jogados</div>
-                                <div className="text-xl font-bold">{user?.gamesCount}</div>
+                                <div className="text-md text-gray-500 dark:text-gray-400">Jogos Jogados</div>
+                                <div className="text-lg font-bold">{user?.gamesCount}</div>
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <h2 className="text-lg font-bold">Próximo Nível</h2>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Você precisa de {(user?.level * POINTS_PER_LEVEL) - user?.points} pontos para chegar no level {user == null ? 1 : user?.level + 1}</p>
+                            <h2 className="text-xl font-bold">Próximo Nível</h2>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Você precisa de {((user?.level + 1) * POINTS_PER_LEVEL) - user?.points} pontos para chegar no level {user == null ? 1 : user?.level + 1}</p>
                             <div className="h-2 bg-gray-100 rounded-md dark:bg-gray-800">
-                                <Progress value={(user?.points / (user?.level * POINTS_PER_LEVEL)) * 100} />
+                                <Progress value={(user?.points / ((user?.level + 1) * POINTS_PER_LEVEL)) * 100} />
                             </div>
                         </div>
                     </div>
@@ -145,7 +145,7 @@ export default function Profile() {
                         )}
                         <div className="grid gap-4 sm:grid-cols-2">
                             {achievements.map((achievement, idx) => (
-                                <div key={achievement.description} className="flex items-center space-x-2">
+                                <div key={`${achievement.description}`} className="flex items-center space-x-2">
                                     <AwardIcon className="w-6 h-6" />
                                     <div className="">
                                         <p className="text-sm text-gray-500 dark:text-gray-400">{achievement.description}</p>
