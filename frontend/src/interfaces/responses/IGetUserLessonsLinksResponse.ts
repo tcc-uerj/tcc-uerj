@@ -1,6 +1,6 @@
 import ILessonLink from "@/interfaces/ILessonLink";
 
-export interface IGetUserLessonLinksResponse {
+export interface IGetUserLessonsLinksResponse {
     data: IGetUserLessonLinksDataResponse[];
 }
 

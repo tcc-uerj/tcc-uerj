@@ -1,7 +1,7 @@
 import IUserLesson from "@/interfaces/IUserLesson";
 import { IGetAllUserLessonsDataResponse } from "@/interfaces/responses/IGetAllUserLessonsResponse";
 import { IGetCourseByIdDataResponse } from "@/interfaces/responses/IGetCourseByIdResponse";
-import { IGetUserLessonLinksDataResponse } from "@/interfaces/responses/IGetUserLessonLinksResponse";
+import { IGetUserLessonLinksDataResponse } from "@/interfaces/responses/IGetUserLessonsLinksResponse";
 import { getCourseById } from "@/services/courses";
 import { getAllUserLessons, getUserLessonsLinks } from "@/services/users";
 import { createContext, useEffect, useState, useTransition } from "react";

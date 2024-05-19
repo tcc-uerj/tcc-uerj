@@ -1,9 +1,7 @@
-import IUser from "@/interfaces/IUser";
 import {IGetAllUserLessonsResponse} from "@/interfaces/responses/IGetAllUserLessonsResponse";
 import {IGetRankingResponse} from "@/interfaces/responses/IGetRankingResponse";
 import {IGetUserAchievementsResponse} from "@/interfaces/responses/IGetUserAchievementsResponse";
-import {IGetUserLessonLinksResponse} from "@/interfaces/responses/IGetUserLessonLinksResponse";
-import {IPatchUserResponse} from "@/interfaces/responses/IPatchUserResponse";
+import {IGetUserLessonsLinksResponse} from "@/interfaces/responses/IGetUserLessonsLinksResponse";
 import {BACKEND_BASE_URL} from "@/lib/consts";
 import {api} from "@/services/api";
 
@@ -15,7 +13,7 @@ export async function getRanking(): Promise<IGetRankingResponse> {
     return await api.get(`${BACKEND_BASE_URL}/users/ranking`);
 }
 
-export async function getUserLessonLinks(): Promise<IGetUserLessonLinksResponse> {
+export async function getUserLessonsLinks(): Promise<IGetUserLessonsLinksResponse> {
     return await api.get(`${BACKEND_BASE_URL}/users/lessons-links`);
 }
 
