@@ -1,5 +1,5 @@
 -- Insert initial data
-insert into lesson (id, subject, content, description, image_url, challenge_id)
+insert into lesson (id, subject, content, description, image_url, challenge_question_id)
 VALUES (
         (select nextval('lesson_id_seq')),
         'CLEAN_CODE',
@@ -9,7 +9,7 @@ VALUES (
         Outros princípios do clean code incluem a eliminação de código duplicado, a escrita de testes automatizados abrangentes para verificar o funcionamento do código e a prática de refatoração constante para melhorar a estrutura e a legibilidade do código. Ao seguir esses princípios básicos, os programadores iniciantes podem começar a desenvolver um estilo de codificação que promove a clareza, a manutenibilidade e a eficiência em seus projetos.',
         'Clean code é um estilo de programação que enfatiza a legibilidade, manutenibilidade e eficiência do código-fonte. Ele se concentra em escrever código claro, conciso e bem organizado, seguindo princípios e práticas que facilitam a compreensão e a colaboração entre os membros da equipe de desenvolvimento. O código limpo promove uma melhor qualidade do software, reduzindo bugs, facilitando a depuração e permitindo escalabilidade a longo prazo.',
         'https://hermes.dio.me/articles/cover/f5ce5d6c-a6c8-4dda-890f-746d2f3ad772.jpg',
-        8
+        10
        ),
        (
         (select nextval('lesson_id_seq')),

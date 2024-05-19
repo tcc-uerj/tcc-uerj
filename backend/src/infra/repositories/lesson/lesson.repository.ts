@@ -5,22 +5,14 @@ import { Lesson, Prisma } from '@prisma/client';
 export class LessonRepository extends BaseRepository<Lesson> {
     protected get select(): { select: Prisma.LessonSelect } {
         const select: Prisma.LessonSelect = {
-            challenge: {
+            challengeQuestion: {
                 select: {
                     id: true,
-                    level: true,
-                    points: true,
-                    subject: true,
-                    challengeQuestions: {
-                        select: {
-                            id: true,
-                            challengeId: true,
-                            statementCode: true,
-                            statementTitle: true,
-                            type: true,
-                            questionOptions: true,
-                        },
-                    },
+                    challengeId: true,
+                    statementCode: true,
+                    statementTitle: true,
+                    type: true,
+                    questionOptions: true,
                 },
             },
             content: true,

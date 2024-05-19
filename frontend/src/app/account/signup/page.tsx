@@ -4,17 +4,16 @@ import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { SignUpSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signUp } from '@/actions/signup';
-import { useSession } from '@/hooks/useSession';
 import { FormError } from '@/components/FormError';
+import { login } from '@/actions/login';
+import { toast } from '@/components/ui/use-toast';
 
 export default function SignUp() {
-    const { login } = useSession();
     const [error, setError] = useState("");
     const [isPending, startTransition] = useTransition();
     
@@ -39,6 +38,14 @@ export default function SignUp() {
                 }
     
                 await login({ email: data.email, password: data.password });
+
+                toast({
+                    variant: "success",
+                    title: "Cadastro realizado com sucesso!",
+                    description: "Divirta-se e aprenda bastante.",
+                    forceMount: true,
+                    duration: 2000
+                })
             } catch (error) {}
         })
     }

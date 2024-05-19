@@ -51,3 +51,17 @@ export class UpdateUserPayload {
     @ApiProperty({ example: 10 })
     gamesCount: number;
 }
+
+export class UserLessonPayload {
+    @ApiProperty({ example: 1 })
+    id: number;
+
+    @ApiProperty({ example: 2 })
+    userId: number;
+
+    @ApiProperty({ example: 3 })
+    lessonId: number;
+
+    @ApiProperty({ example: false })
+    challengeCompleted: boolean;
+}

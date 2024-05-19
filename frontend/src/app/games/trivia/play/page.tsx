@@ -10,6 +10,8 @@ import { useSession } from 'next-auth/react';
 import { updateUser } from '@/services/users';
 import IUser from '@/interfaces/IUser';
 import { useRouter } from 'next/navigation';
+import { Session } from 'next-auth';
+import { toast } from '@/components/ui/use-toast';
 
 interface IChallengePointsState {
     id: number,
@@ -51,17 +53,22 @@ export default function TriviaGameHome() {
         
         const newUser: IUser = { 
             ...sessionData?.user,
-            points: correctAnswersPoints
+            points: correctAnswersPoints,
+            gamesCount: sessionData.user.gamesCount + correctAnswersQntity
         }
 
         await updateUser(newUser)
-        const tmp = await sessionUpdate({
-            ...sessionData,
-            user: newUser
-        })
-        console.log('tmp: ', tmp);
-        
-        router.push('/')
+        await sessionUpdate((data: Session) => ({ ...data, user: newUser}))
+
+        router.push('/');
+
+        toast({
+            variant: "success",
+            title: "Desafios finalizados.",
+            description: "Parabéns, você completou os desafios! Se desejar enfrentar novos desafios, clique em 'Jogar' novamente",
+            forceMount: true,
+            duration: 2000
+        });
     }
 
     function handleOnNext(isCorrect: boolean, points: number) {

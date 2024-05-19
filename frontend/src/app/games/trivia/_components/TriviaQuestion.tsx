@@ -14,7 +14,7 @@ interface TriviaQuestionProps {
 }
 
 export default function TriviaQuestion(props: TriviaQuestionProps) {
-    const TOTAL_QUESTIONS = 1;
+    const TOTAL_QUESTIONS = 7;
     const [seconds, setSeconds] = React.useState(0);
 
     useInterval(
