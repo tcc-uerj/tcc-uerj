@@ -28,3 +28,11 @@ export async function getUserAchievements(): Promise<IGetUserAchievementsRespons
 export async function associateUserLesson(lessonId: number) {
     return await api.post(`${BACKEND_BASE_URL}/users/${lessonId}/lesson`);
 }
+
+export async function updateUser(body: { email?: string, name?: string, points?: number, level?: number, gamesCount?: number }) {
+    return await api.patch(`${BACKEND_BASE_URL}/users`, body);
+}
+
+export async function updateUserLesson(userLessonId: number, body: { id?: number, userId?: number, lessonId?: number, challengeCompleted?: boolean }) {
+    return await api.patch(`${BACKEND_BASE_URL}/users/${userLessonId}/lesson`, body);
+}
