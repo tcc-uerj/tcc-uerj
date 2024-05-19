@@ -1,112 +1,114 @@
 'use client';
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TriviaQuestion from '@/app/games/trivia/_components/TriviaQuestion';
 import TriviaResult from '@/app/games/trivia/_components/TriviaResult';
-import { QuestionType } from '@/enums/QuestionType';
+import { getChallenges } from '@/services/challenges';
 import IChallengeQuestion from '@/interfaces/IChallengeQuestion';
-import ITriviaQuestion from '@/interfaces/ITriviaQuestion';
+import { Button } from '@/components/ui/button';
+import { useSession } from 'next-auth/react';
+import { updateUser } from '@/services/users';
+import IUser from '@/interfaces/IUser';
+import { useRouter } from 'next/navigation';
+import { Session } from 'next-auth';
+import { toast } from '@/components/ui/use-toast';
 
-const question1: IChallengeQuestion = {
-    id: 1,
-    challengeId: 1,
-    statementTitle: "Questao 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc euismod, eros eu blandit gravida, lectus tortor condimentum eros, in pellentesque quam ex sit amet risus. Nam ullamcorper euismod magna eget posuere. Aliquam aliquam leo ac mauris finibus ornare. Donec lacinia eget odio id accumsan. Fusce dignissim vel lacus at egestas. Vestibulum posuere accumsan placerat. Pellentesque sed scelerisque est, commodo consequat eros. Nam erat mauris, volutpat eget congue ut, sodales vitae diam. Sed maximus nunc sem, sit amet auctor est volutpat sed. Cras ac lorem eu lorem fermentum efficitur ac at eros. Sed fringilla dapibus urna, id imperdiet ante hendrerit sit amet.?",
-    type: QuestionType.QUIZ,
-    questionOptions: [
-        {
-            id: 1,
-            quiz: "Lorem",
-            challengeQuestionId: 1,
-            isCorrectAnswer: false,
-        },
-        {
-            id: 2,
-            quiz: "ipsum",
-            challengeQuestionId: 1,
-            isCorrectAnswer: false,
-        },
-        {
-            id: 3,
-            quiz: "dolor",
-            challengeQuestionId: 1,
-            isCorrectAnswer: true,
-        },
-        {
-            id: 4,
-            quiz: "sit",
-            challengeQuestionId: 1,
-            isCorrectAnswer: false,
-        }
-    ]
-};
-
-const question2: IChallengeQuestion = {
-    id: 2,
-    challengeId: 2,
-    statementTitle: "Questao 2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc euismod, eros eu blandit gravida, lectus tortor condimentum eros, in pellentesque quam ex sit amet risus. Nam ullamcorper euismod magna eget posuere. Aliquam aliquam leo ac mauris finibus ornare. Donec lacinia eget odio id accumsan. Fusce dignissim vel lacus at egestas. Vestibulum posuere accumsan placerat. Pellentesque sed scelerisque est, commodo consequat eros. Nam erat mauris, volutpat eget congue ut, sodales vitae diam. Sed maximus nunc sem, sit amet auctor est volutpat sed. Cras ac lorem eu lorem fermentum efficitur ac at eros. Sed fringilla dapibus urna, id imperdiet ante hendrerit sit amet.?",
-    type: QuestionType.QUIZ,
-    questionOptions: [
-        {
-            id: 5,
-            quiz: "Lorem",
-            challengeQuestionId: 2,
-            isCorrectAnswer: false,
-        },
-        {
-            id: 6,
-            quiz: "ipsum",
-            challengeQuestionId: 2,
-            isCorrectAnswer: false,
-        },
-        {
-            id: 7,
-            quiz: "dolor",
-            challengeQuestionId: 2,
-            isCorrectAnswer: false,
-        },
-        {
-            id: 8,
-            quiz: "sit",
-            challengeQuestionId: 2,
-            isCorrectAnswer: true,
-        }
-    ]
-};
-
-const data: ITriviaQuestion[] = [
-    {
-        question: question1
-    },
-    {
-        question: question2
-    }
-];
+interface IChallengePointsState {
+    id: number,
+    points: number
+}
 
 export default function TriviaGameHome() {
+    const router = useRouter();
+    const session = useSession();
+
+    const { data: sessionData, update: sessionUpdate } = session
+
+    const [questions, setQuestions] = useState<IChallengeQuestion[]>([]);
     const [correctAnswersQntity, setCorrectAnswersQntity] = useState(0);
+    const [challengePoints, setChallengePoints] = useState<IChallengePointsState[]>([]);
+    const [correctAnswersPoints, setCorrectAnswersPoints] = useState(sessionData?.user?.points);
     const [currentQuestion, setCurrentQuestion] = useState(0);
 
+    async function fetchChallenges() {
+        const { data } = await getChallenges()
+
+        const challengeQuestions = data.flatMap(challenge => challenge.challengeQuestions);
+        const challengePoints = data.map(challenge => ({ id: challenge.id, points: challenge.points }));
+
+        setQuestions(challengeQuestions)
+        setChallengePoints(challengePoints)
+        setCurrentQuestion(getRandomNumber(0,challengeQuestions.length));
+    }
+
+    function getCurrentChallengePoints(currentQuestionIndex: number): number {
+        const { challengeId } = questions[currentQuestionIndex];
+        return challengePoints.find(item => item.id === challengeId)?.points ?? 0;
+    }
+    
+    async function updateUserPoints() {
+        if(correctAnswersPoints === undefined || !sessionData?.user) {
+            return;
+        }
+        
+        const newUser: IUser = { 
+            ...sessionData?.user,
+            points: correctAnswersPoints,
+            gamesCount: sessionData.user.gamesCount + correctAnswersQntity
+        }
+
+        await updateUser(newUser)
+        await sessionUpdate((data: Session) => ({ ...data, user: newUser}))
+
+        router.push('/');
+
+        toast({
+            variant: "success",
+            title: "Desafios finalizados.",
+            description: "Parabéns, você completou os desafios! Se desejar enfrentar novos desafios, clique em 'Jogar' novamente",
+            forceMount: true,
+            duration: 2000
+        });
+    }
+
+    function handleOnNext(isCorrect: boolean, points: number) {
+        if (isCorrect) {
+            setCorrectAnswersQntity(correctAnswersQntity + 1);
+
+            if (correctAnswersPoints !== undefined) {
+                setCorrectAnswersPoints(correctAnswersPoints + points)
+            }
+        }
+
+        setCurrentQuestion(getRandomNumber(0, questions.length));
+    }
+
+    function getRandomNumber(min: number, max: number) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    useEffect(() => {
+        fetchChallenges()
+    }, [])
+
     return (
-        <div className="flex bg-gray-500 items-center flex-col p-6 rounded-lg shadow-lg mt-[100px]">
-            {
-                currentQuestion < data.length ? (
-                    <TriviaQuestion
+        <div>
+            <div className="flex bg-gray-500 items-center flex-col p-6 rounded-lg shadow-lg mt-[100px]">
+                {
+                    currentQuestion < questions.length ? (
+                        <TriviaQuestion
                         correctAnswers={correctAnswersQntity}
                         currentQuestion={currentQuestion}
-                        totalQuestions={data.length}
-                        question={data[currentQuestion]}
-                        onNext={(isCorrect) => {
-                            if (isCorrect) {
-                                setCorrectAnswersQntity(correctAnswersQntity + 1);
-                            }
-                            setCurrentQuestion(currentQuestion + 1);
-                        }}
-                    />
-                ) : (
-                    <TriviaResult correctAnswersQntity={correctAnswersQntity} />
-                )
-            }
-
+                        questionPoints={getCurrentChallengePoints(currentQuestion)}
+                        question={questions[currentQuestion]}
+                        updateUserPoints={updateUserPoints}
+                        onNext={handleOnNext}
+                        />
+                    ) : (
+                        <TriviaResult correctAnswersQntity={correctAnswersQntity} />
+                    )
+                }
+            </div>
         </div>
     )
 }
