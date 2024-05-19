@@ -3,7 +3,7 @@ import { IsPassword } from '@middlewares/IsPassword.decorator';
 import { IsValidEmail } from '@middlewares/IsValidEmail.decorator';
 import { faker } from '@faker-js/faker';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsOptional, ValidateIf } from 'class-validator';
 
 export class CreateUserPayload {
     @IsValidEmail({ example: 'johndoe@nobody.com' })
@@ -33,35 +33,18 @@ export class UserLessonLinkPayload {
 }
 
 export class UpdateUserPayload {
-    @IsValidEmail({ example: faker.internet.email() })
-    email: string;
-
-    @IsText({ example: 'John Doe' })
-    name: string;
-
     @IsNumber()
-    @ApiProperty({ example: 1 })
+    @IsOptional()
+    @ApiProperty({ example: 1, nullable: true })
     points: number;
 
     @IsNumber()
-    @ApiProperty({ example: 1 })
-    level: number;
-
-    @IsNumber()
-    @ApiProperty({ example: 10 })
+    @IsOptional()
+    @ApiProperty({ example: 10, nullable: true })
     gamesCount: number;
 }
 
 export class UserLessonPayload {
-    @ApiProperty({ example: 1 })
-    id: number;
-
-    @ApiProperty({ example: 2 })
-    userId: number;
-
-    @ApiProperty({ example: 3 })
-    lessonId: number;
-
     @ApiProperty({ example: false })
     challengeCompleted: boolean;
 }
