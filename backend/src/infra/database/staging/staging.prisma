@@ -25,16 +25,16 @@ model User {
 }
 
 model Lesson {
-    id                  Int    @id @default(autoincrement()) @db.Integer
-    subject             String @db.Text
-    content             String @db.Text
-    description         String @db.Text
-    imageUrl            String @map("image_url") @db.Text
-    challengeQuestionId Int    @map("challenge_question_id") @db.Integer
+    id          Int    @id @default(autoincrement()) @db.Integer
+    subject     String @db.Text
+    content     String @db.Text
+    description String @db.Text
+    imageUrl    String @map("image_url") @db.Text
+    challengeId Int    @map("challenge_id") @db.Integer
 
-    lessonLinks       LessonLink[]
-    challengeQuestion ChallengeQuestion @relation(fields: [challengeQuestionId], references: [id])
-    userLessons       UserLesson[]
+    lessonLinks LessonLink[]
+    challenge   Challenge    @relation(fields: [challengeId], references: [id])
+    userLessons UserLesson[]
 
     @@map("lesson")
 }
@@ -105,6 +105,7 @@ model Challenge {
 
     userChallenges     UserChallenge[]
     challengeQuestions ChallengeQuestion[]
+    Lesson             Lesson[]
 
     @@map("challenge")
 }
@@ -130,7 +131,6 @@ model ChallengeQuestion {
 
     challenge       Challenge         @relation(fields: [challengeId], references: [id])
     questionOptions QuestionOptions[]
-    Lesson          Lesson[]
 
     @@map("challenge_question")
 }

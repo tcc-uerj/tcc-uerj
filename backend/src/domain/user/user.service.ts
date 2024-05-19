@@ -34,11 +34,23 @@ export class UserService {
     }
 
     public async update(id: number, body: UpdateUserPayload) {
-        const { password } = await this.userRepository.findById(id);
+        const persistedUser = await this.userRepository.findById(id);
 
-        this.updateGameAchievement(id, body);
+        const newUser = {
+            id,
+            ...persistedUser,
+            ...body,
+        };
 
-        return this.userRepository.update(id, { id, password, ...body });
+        if (body.gamesCount) {
+            this.updateGameAchievement(id, body);
+        }
+
+        if (body.points) {
+            newUser.level = body.points / 2000;
+        }
+
+        return this.userRepository.update(id, newUser);
     }
 
     public async login(body: LoginUserPayload) {
@@ -75,8 +87,11 @@ export class UserService {
         ];
 
         for (const achievementType of achievements) {
-            const achievement = await this.findAchievementByType(achievementType);
-            const userAchievement = await this.findUserAchievement(id, achievement.id);
+            const achievement = await this.achievementRepository.findByType(achievementType);
+            const userAchievement = await this.userAchievementRepository.findAchievementByUserId(
+                id,
+                achievement.id,
+            );
 
             if (!userAchievement && body.gamesCount >= this.getAchievementGoal(achievementType)) {
                 await this.createUserAchievement(id, achievement.id);
@@ -95,24 +110,7 @@ export class UserService {
         }
     }
 
-    private async findAchievementByType(type: AchievementType) {
-        return this.achievementRepository.findByType(type);
-    }
-
-    private async findUserAchievement(userId: number, achievementId: number) {
-        return this.userAchievementRepository.findAchievementByUserId(userId, achievementId);
-    }
-
     private async createUserAchievement(userId: number, achievementId: number) {
-        const userAchievement = await this.userAchievementRepository.findAchievementByUserId(
-            userId,
-            achievementId,
-        );
-
-        if (userAchievement) {
-            throw new ConflictException('Esta conquista já está cadastra para este usuário');
-        }
-
         const newUserAchievement = { userId, achievementId } as UserAchievement;
         await this.userAchievementRepository.create(newUserAchievement);
     }

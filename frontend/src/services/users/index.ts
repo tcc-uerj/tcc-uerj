@@ -15,10 +15,6 @@ export async function getRanking(): Promise<IGetRankingResponse> {
     return await api.get(`${BACKEND_BASE_URL}/users/ranking`);
 }
 
-export async function updateUser(user: IUser): Promise<IPatchUserResponse> {
-    return await api.patch(`${BACKEND_BASE_URL}/users`, user);
-}
-
 export async function getUserLessonLinks(): Promise<IGetUserLessonLinksResponse> {
     return await api.get(`${BACKEND_BASE_URL}/users/lessons-links`);
 }
@@ -33,4 +29,21 @@ export async function getUserAchievements(): Promise<IGetUserAchievementsRespons
 
 export async function associateUserLesson(lessonId: number) {
     return await api.post(`${BACKEND_BASE_URL}/users/${lessonId}/lesson`);
+}
+
+export async function updateUser(body: {
+    email?: string;
+    name?: string;
+    points?: number;
+    level?: number;
+    gamesCount?: number;
+}) {
+    return await api.patch(`${BACKEND_BASE_URL}/users`, body);
+}
+
+export async function updateUserLesson(
+    userLessonId: number,
+    body: {id?: number; userId?: number; lessonId?: number; challengeCompleted?: boolean}
+) {
+    return await api.patch(`${BACKEND_BASE_URL}/users/${userLessonId}/lesson`, body);
 }

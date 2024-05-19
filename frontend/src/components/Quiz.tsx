@@ -6,7 +6,7 @@ import IChallengeQuestion from "@/interfaces/IChallengeQuestion";
 import IQuestionOptions from "@/interfaces/IQuestionQuiz";
 
 export default function Quiz({ question, options, handleCorrectAnswer, handleWrongAnswer }: {
-    question: IChallengeQuestion | undefined,
+    question: IChallengeQuestion | null,
     options: IQuestionOptions[] | undefined,
     handleCorrectAnswer?: () => void,
     handleWrongAnswer?: () => void,
@@ -51,8 +51,8 @@ export default function Quiz({ question, options, handleCorrectAnswer, handleWro
     return (
         <div className="border border-gray-700 rounded p-5">
             <h1 className="text-3xl font-bold mb-4">Questão</h1>
-            <h2 className="text-1xl font-bold mb-4">Objetivo: {question?.statementTitle}</h2>
-            <h2 className="text-1xl font-bold mb-4">Pergunta: {String(question?.statementCode)}</h2>
+            <h2 className="text-1xl font-bold mb-4">Tema: {question?.statementTitle}</h2>
+            <h2 className="text-1xl font-bold mb-4">Responda: {String(question?.statementCode)}</h2>
             <h1 className="text-2xl font-bold mb-4">Selecione a resposta correta:</h1>
             <div className="grid grid-cols-1 gap-4">
                 {options && options.map((option, index) => (
