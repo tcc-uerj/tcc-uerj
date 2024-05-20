@@ -21,7 +21,7 @@ export default function TriviaGameHome() {
     const router = useRouter();
     const session = useSession();
 
-    const { data: sessionData, update: sessionUpdate } = session
+    const { data: sessionData, updateUserSession } = session
 
     const [questions, setQuestions] = useState<IChallengeQuestion[]>([]);
     const [correctAnswersQntity, setCorrectAnswersQntity] = useState(0);
@@ -57,7 +57,7 @@ export default function TriviaGameHome() {
         }
 
         await updateUser(newUser)
-        await sessionUpdate((data: Session) => ({ ...data, user: newUser}))
+        await updateUserSession();
 
         router.push('/');
 
