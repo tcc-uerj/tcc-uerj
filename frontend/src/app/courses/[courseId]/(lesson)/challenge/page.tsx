@@ -4,6 +4,7 @@ import Quiz from "@/components/Quiz";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { LessonContext, LessonContextType } from "@/contexts/LessonContext";
+import { useSession } from "@/hooks/useSession";
 import IChallengeQuestion from "@/interfaces/IChallengeQuestion";
 import { updateUser, updateUserLesson } from "@/services/users";
 import { useContext, useState } from "react";
@@ -15,6 +16,8 @@ export default function Challenge() {
     const CHALLENGE_ATTEMPTS = 3;
     const [challengeQuestionAttempts, setChallengeQuestionAttempts] = useState(CHALLENGE_ATTEMPTS);
     const [isChallengeQuestionStarted, setIsChallengeQuestionStarted] = useState(false);
+
+    const session = useSession();
     const { toast } = useToast();
 
     if (userLesson?.challengeCompleted) {
@@ -41,7 +44,9 @@ export default function Challenge() {
     }
 
     async function handleUpdateUser() {
-        await updateUser({ points: lesson?.challenge.points });
+        if (!session?.data || !lesson?.challenge) return;
+
+        await updateUser({ points: session.data?.user.points + lesson?.challenge.points });
     }
 
     async function handleUpdateUserLesson() {
@@ -54,6 +59,8 @@ export default function Challenge() {
         try {
             Promise.all([ handleUpdateUser(), handleUpdateUserLesson() ]);
     
+            await session.updateUserSession();
+
             toast({
                 variant: "success",
                 title: `Você concluiu o curso de ${lesson?.subject.split("_").join(" ").toLowerCase()}!`,

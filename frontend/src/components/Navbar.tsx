@@ -18,8 +18,8 @@ import {
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { logout } from "@/actions/logout";
+import { useSession } from "@/hooks/useSession";
 
 const data = [
     {

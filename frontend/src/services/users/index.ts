@@ -2,8 +2,13 @@ import {IGetAllUserLessonsResponse} from "@/interfaces/responses/IGetAllUserLess
 import {IGetRankingResponse} from "@/interfaces/responses/IGetRankingResponse";
 import {IGetUserAchievementsResponse} from "@/interfaces/responses/IGetUserAchievementsResponse";
 import {IGetUserLessonsLinksResponse} from "@/interfaces/responses/IGetUserLessonsLinksResponse";
+import {IGetUserResponse} from "@/interfaces/responses/IGetUserResponse";
 import {BACKEND_BASE_URL} from "@/lib/consts";
 import {api} from "@/services/api";
+
+export async function getUser(): Promise<IGetUserResponse> {
+    return await api.get(`${BACKEND_BASE_URL}/users`);
+}
 
 export async function getAllUserLessons(): Promise<IGetAllUserLessonsResponse> {
     return await api.get(`${BACKEND_BASE_URL}/users/lesson`);
