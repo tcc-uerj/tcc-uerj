@@ -6,7 +6,13 @@ const games = [
       href: "/games/trivia",
       name: "Trivia",
       description: "Desafie seus conhecimentos respondendo a perguntas do universo da Engenharia de Software, e em troca ganhe pontos e experiências."
-  }
+  },
+  {
+    id: 2,
+    href: "/games/hangman",
+    name: "Jogo da Forca",
+    description: "Adivinhe as palavras do universo da Engenharia de Software antes que o boneco da forca seja completado, e em troca ganhe pontos e experiências."
+}
 ];
 
 export default function Games() {
