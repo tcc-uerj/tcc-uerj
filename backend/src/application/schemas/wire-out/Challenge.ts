@@ -22,8 +22,6 @@ export class ChallengeQuestionResponse {
     @ApiProperty({ example: 'Title' })
     statementTitle: string;
 
-    // TODO: Verificar como vai ficar o tipo deste campo (Tipo BLOB no banco)
-    // Este campo ficará vazio quando o tipo for GAP_GAME
     @ApiProperty({ example: 'código do enunciado.', nullable: true })
     statementCode: string;
 

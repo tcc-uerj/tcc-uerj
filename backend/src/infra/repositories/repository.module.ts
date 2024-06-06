@@ -7,6 +7,7 @@ import { UserAchievementRepositoryModule } from './user-achievement/user-achieve
 import { ChallengeRepositoryModule } from './challenge/challenge.module';
 import { UserChallengeRepositoryModule } from './user-challenge/user-challenge.module';
 import { UserLessonRepositoryModule } from './user-lesson/user-lesson.module';
+import { HangmanRepositoryModule } from './hangman/hangman.module';
 
 @Module({
     imports: [
@@ -18,6 +19,7 @@ import { UserLessonRepositoryModule } from './user-lesson/user-lesson.module';
         ChallengeRepositoryModule,
         UserChallengeRepositoryModule,
         UserLessonRepositoryModule,
+        HangmanRepositoryModule,
     ],
     exports: [
         UserRepositoryModule,
@@ -28,6 +30,7 @@ import { UserLessonRepositoryModule } from './user-lesson/user-lesson.module';
         ChallengeRepositoryModule,
         UserChallengeRepositoryModule,
         UserLessonRepositoryModule,
+        HangmanRepositoryModule,
     ],
 })
 export class RepositoryModule {}

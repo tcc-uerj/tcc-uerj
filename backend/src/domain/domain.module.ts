@@ -6,6 +6,7 @@ import { UserAchievementServiceModule } from './user-achievement/user-achievemen
 import { ChallengeServiceModule } from './challenge/challenge.module';
 import { UserChallengeServiceModule } from './user-challenge/user-challenge.module';
 import { UserLessonServiceModule } from './user-lesson/user-lesson.module';
+import { HangmanServiceModule } from './hangman/hangman.module';
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import { UserLessonServiceModule } from './user-lesson/user-lesson.module';
         ChallengeServiceModule,
         UserChallengeServiceModule,
         UserLessonServiceModule,
+        HangmanServiceModule,
     ],
     exports: [
         UserServiceModule,
@@ -25,6 +27,7 @@ import { UserLessonServiceModule } from './user-lesson/user-lesson.module';
         ChallengeServiceModule,
         UserChallengeServiceModule,
         UserLessonServiceModule,
+        HangmanServiceModule,
     ],
 })
 export class DomainModule {}

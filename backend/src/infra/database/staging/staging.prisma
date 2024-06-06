@@ -145,3 +145,13 @@ model QuestionOptions {
 
     @@map("question_options")
 }
+
+model HangmanQuestions {
+    id      Int    @id @default(autoincrement()) @db.Integer
+    answer  String @db.Text
+    hint    String @db.Text
+    subject String @db.Text
+    points  Int    @db.SmallInt
+
+    @@map("hangman_questions")
+}
