@@ -10,7 +10,7 @@ const games = [
   {
     id: 2,
     href: "/games/hangman",
-    name: "Jogo da Forca",
+    name: "Hangman",
     description: "Adivinhe as palavras do universo da Engenharia de Software antes que o boneco da forca seja completado, e em troca ganhe pontos e experiências."
 }
 ];

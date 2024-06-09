@@ -11,7 +11,7 @@ const HangmanKeyboard = ({ handleGuess, guessedLetters, word }: {
 
     const isLetterSelected = (letter: string) => guessedLetters.includes(letter);
 
-    const isLetterInWord = (letter: string) => word.includes(letter);
+    const isLetterInWord = (letter: string) => word?.includes(letter);
 
     return (
         <div className="grid grid-cols-10 gap-4">
