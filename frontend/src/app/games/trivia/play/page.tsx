@@ -9,7 +9,6 @@ import { useSession } from '@/hooks/useSession';
 import { updateUser } from '@/services/users';
 import IUser from '@/interfaces/IUser';
 import { useRouter } from 'next/navigation';
-import { Session } from 'next-auth';
 import { toast } from '@/components/ui/use-toast';
 
 interface IChallengePointsState {
@@ -46,14 +45,14 @@ export default function TriviaGameHome() {
     }
     
     async function updateUserPoints() {
-        if(correctAnswersPoints === undefined || !sessionData?.user) {
+        if (correctAnswersPoints === undefined || !sessionData?.user) {
             return;
         }
         
         const newUser: IUser = { 
             ...sessionData?.user,
             points: correctAnswersPoints,
-            gamesCount: sessionData.user.gamesCount + correctAnswersQntity
+            gamesCount: sessionData.user.gamesCount + 1
         }
 
         await updateUser(newUser)
