@@ -2,7 +2,6 @@ export const publicRoutes = [
     "/",
     "/courses",
     "/games",
-    "/ranking"
 ];
 
 export const authRoutes = [
