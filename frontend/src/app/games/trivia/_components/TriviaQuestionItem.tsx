@@ -8,7 +8,7 @@ interface TriviaQuestionItemProps {
     onNext: (isCorrect: boolean, points: number) => void;
 }
 
-export default function TriviaQuestionItem({ triviaQuestion, questionPoints ,onNext }: TriviaQuestionItemProps) {
+export default function TriviaQuestionItem({ triviaQuestion, questionPoints, onNext }: TriviaQuestionItemProps) {
     const [selectedAnswer, setSelectedAnswer] = React.useState<IQuestionOptions | null>(null);
 
     function submitAnswer(answer: IQuestionOptions) {
@@ -37,15 +37,16 @@ export default function TriviaQuestionItem({ triviaQuestion, questionPoints ,onN
             {triviaQuestion.questionOptions.map((option) => (
                 <button
                     key={option.id}
-                    className={`bg-gray-200 p-5 text-black font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-1000 ${
+                    className={`p-5 text-black font-bold rounded-lg ${
                         selectedAnswer && selectedAnswer === option
                         ? selectedAnswer.isCorrectAnswer
                             ? 'bg-green-400'
                             : 'bg-red-400'
                         : selectedAnswer && option.isCorrectAnswer
                         ? 'bg-green-400'
-                        : 'bg-gray-200'
+                        : 'bg-indigo-100 hover:bg-indigo-300'
                     }`}
+                    disabled={selectedAnswer !== null}
                     onClick={() => submitAnswer(option)}
                 >
                     {option.quiz}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import TriviaQuestion from '@/app/games/trivia/_components/TriviaQuestion';
 import TriviaResult from '@/app/games/trivia/_components/TriviaResult';
 import { getChallenges } from '@/services/challenges';
@@ -8,7 +8,6 @@ import IChallengeQuestion from '@/interfaces/IChallengeQuestion';
 import { useSession } from '@/hooks/useSession';
 import { updateUser } from '@/services/users';
 import IUser from '@/interfaces/IUser';
-import { useRouter } from 'next/navigation';
 import { toast } from '@/components/ui/use-toast';
 
 interface IChallengePointsState {
@@ -17,16 +16,20 @@ interface IChallengePointsState {
 }
 
 export default function TriviaGameHome() {
-    const router = useRouter();
-    const session = useSession();
-
-    const { data: sessionData, updateUserSession } = session
-
+    const MAX_QUESTIONS = 7;
+    const MAX_TIMER_SECONDS = 10;
+    
+    const { data: sessionData, updateUserSession } = useSession();
     const [questions, setQuestions] = useState<IChallengeQuestion[]>([]);
     const [correctAnswersQntity, setCorrectAnswersQntity] = useState(0);
+    const [selectedAnswersQuantity, setSelectedAnswersQuantity] = useState(1);
     const [challengePoints, setChallengePoints] = useState<IChallengePointsState[]>([]);
-    const [correctAnswersPoints, setCorrectAnswersPoints] = useState(sessionData?.user?.points);
+    const [correctAnswersPoints, setCorrectAnswersPoints] = useState(0);
     const [currentQuestion, setCurrentQuestion] = useState(0);
+    const [timer, setTimer] = useState<number>(MAX_TIMER_SECONDS);
+    const [isPending, startTransition] = useTransition();
+
+    const isGameFinished = selectedAnswersQuantity > MAX_QUESTIONS;
 
     async function fetchChallenges() {
         const { data } = await getChallenges()
@@ -36,7 +39,7 @@ export default function TriviaGameHome() {
 
         setQuestions(challengeQuestions)
         setChallengePoints(challengePoints)
-        setCurrentQuestion(getRandomNumber(0,challengeQuestions.length));
+        setCurrentQuestion(getRandomNumber(challengeQuestions.length));
     }
 
     function getCurrentChallengePoints(currentQuestionIndex: number): number {
@@ -51,25 +54,32 @@ export default function TriviaGameHome() {
         
         const newUser: IUser = { 
             ...sessionData?.user,
-            points: correctAnswersPoints,
+            points: sessionData.user.points + correctAnswersPoints,
             gamesCount: sessionData.user.gamesCount + 1
         }
 
         await updateUser(newUser)
         await updateUserSession();
 
-        router.push('/');
-
         toast({
             variant: "success",
-            title: "Desafios finalizados.",
-            description: "Parabéns, você completou os desafios! Se desejar enfrentar novos desafios, clique em 'Jogar' novamente",
-            forceMount: true,
+            title: "Jogo finalizado!",
+            description: `Parabéns, você acabou de ganhar ${correctAnswersPoints} pontos! Se desejar jogar novamente, clique em 'Jogar de novo'`,
             duration: 2000
         });
     }
 
-    function handleOnNext(isCorrect: boolean, points: number) {
+    function handleReset() {
+        setCorrectAnswersQntity(0);
+        setSelectedAnswersQuantity(1);
+        setCorrectAnswersPoints(0);
+        setCurrentQuestion(getRandomNumber(questions.length));
+    }
+
+    function handleOnNext(isCorrect: boolean = false, points: number = 0) {
+        setSelectedAnswersQuantity(selectedAnswersQuantity + 1);
+        setTimer(MAX_TIMER_SECONDS);
+
         if (isCorrect) {
             setCorrectAnswersQntity(correctAnswersQntity + 1);
 
@@ -78,35 +88,60 @@ export default function TriviaGameHome() {
             }
         }
 
-        setCurrentQuestion(getRandomNumber(0, questions.length));
+        const randomQuestionIndex = getRandomNumber(questions.length);
+        console.log(randomQuestionIndex, questions);
+        setCurrentQuestion(randomQuestionIndex);
     }
 
-    function getRandomNumber(min: number, max: number) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+    function getRandomNumber(max: number) {
+        return Math.floor(Math.random() * max);
     }
 
     useEffect(() => {
-        fetchChallenges()
+        startTransition(() => {
+            fetchChallenges()
+        })
     }, [])
 
-    return (
-        <div>
-            <div className="flex bg-gray-500 items-center flex-col p-6 rounded-lg shadow-lg mt-[100px]">
-                {
-                    currentQuestion < questions.length ? (
-                        <TriviaQuestion
+    useEffect(() => {
+        if (isGameFinished) {
+            updateUserPoints();
+        }
+    }, [isGameFinished])
+
+    if (isGameFinished) {
+        return (
+            <div>
+                <div className="flex bg-indigo-500 items-center flex-col p-5 m-5 rounded-lg shadow-lg mt-[100px]">
+                    <TriviaResult 
+                        correctAnswersQntity={correctAnswersQntity} 
+                        maxQuestions={MAX_QUESTIONS}
+                        points={correctAnswersPoints}
+                        onReset={handleReset}
+                    />
+                </div>
+            </div>
+        )
+    }
+
+    if (!isPending && questions && currentQuestion && selectedAnswersQuantity <= MAX_QUESTIONS) {
+        return (
+            <div>
+                <div className="flex bg-indigo-500 items-center flex-col p-5 m-5 rounded-lg shadow-lg mt-[100px]">
+                    <TriviaQuestion
+                        maxQuestions={MAX_QUESTIONS}
                         correctAnswers={correctAnswersQntity}
+                        selectedAnswersQuantity={selectedAnswersQuantity}
                         currentQuestion={currentQuestion}
                         questionPoints={getCurrentChallengePoints(currentQuestion)}
                         question={questions[currentQuestion]}
                         updateUserPoints={updateUserPoints}
                         onNext={handleOnNext}
-                        />
-                    ) : (
-                        <TriviaResult correctAnswersQntity={correctAnswersQntity} />
-                    )
-                }
+                        timer={timer}
+                        setTimer={setTimer}
+                    />
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
