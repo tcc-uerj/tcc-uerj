@@ -21,9 +21,9 @@ export default function Lecture() {
 
     return (
         <div className="flex">
-            <div className="m-8">
+            <div className="mx-8 lg:w-fit xl:w-2/3">
                 <h1 className="font-bold text-4xl">{lesson?.subject.split("_").join(" ")}</h1>
-                <div className="text-lg mt-5">{lesson?.content}</div>
+                <div className="md:text-md lg:text-lg text-justify mt-5">{lesson?.content}</div>
                 <div className="flex flex-col gap-2 mt-5">
                     <h1 className="font-bold text-2xl">Leituras recomendadas:</h1>
                     {lesson?.lessonLinks
@@ -32,7 +32,7 @@ export default function Lecture() {
                             <div 
                                 key={lessonLink.id}
                                 className={cn(
-                                    'flex items-center space-x-2 w-[800px] p-2 rounded border border-spacing-10 border-gray-700 bg-indigo-100', 
+                                    'flex items-center space-x-2 p-2 rounded border border-spacing-10 border-gray-700 bg-indigo-100', 
                                     isUserCompletedLessonLink(lessonLink.id) && 'bg-green-200'
                                 )}
                             >
@@ -64,7 +64,7 @@ export default function Lecture() {
                             <div 
                                 key={lessonLink.id}
                                 className={cn(
-                                    'flex items-center space-x-2 w-[800px] p-2 rounded border border-spacing-10 border-gray-700 bg-indigo-100', 
+                                    'flex items-center space-x-2 p-2 rounded border border-spacing-10 border-gray-700 bg-indigo-100', 
                                     isUserCompletedLessonLink(lessonLink.id) && 'bg-green-200'
                                 )}
                             >
