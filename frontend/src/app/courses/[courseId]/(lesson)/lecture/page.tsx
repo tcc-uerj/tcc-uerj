@@ -22,10 +22,10 @@ export default function Lecture() {
     return (
         <div className="flex">
             <div className="mx-8 lg:w-fit xl:w-2/3">
-                <h1 className="font-bold text-4xl">{lesson?.subject.split("_").join(" ")}</h1>
-                <div className="md:text-md lg:text-lg text-justify mt-5">{lesson?.content}</div>
+                <h1 className="font-bold text-lg md:text-4xl">{lesson?.subject.split("_").join(" ")}</h1>
+                <div className="w-full overflow-x-hidden break-words whitespace-normal text-xs sm:text-sm md:text-md lg:text-lg text-justify mt-5">{lesson?.content}</div>
                 <div className="flex flex-col gap-2 mt-5">
-                    <h1 className="font-bold text-2xl">Leituras recomendadas:</h1>
+                    <h1 className="font-bold text-md md:text-2xl">Leituras recomendadas:</h1>
                     {lesson?.lessonLinks
                         .filter(lessonLink => lessonLink.type === "WRITTEN")
                         .map((lessonLink, index) => (
@@ -45,7 +45,7 @@ export default function Lecture() {
                                 />
                                 <a 
                                     className={cn(
-                                        'hover:underline text-indigo-800', 
+                                        'hover:underline text-indigo-800 text-xs sm:text-sm md:text-md lg:text-lg', 
                                         isUserCompletedLessonLink(lessonLink.id) && 'line-through pointer-events-none cursor-not-allowed'
                                     )}
                                     href={lessonLink.link} 
@@ -57,7 +57,7 @@ export default function Lecture() {
                     ))}
                 </div>
                 <div className="flex flex-col gap-2 mt-5">
-                    <h1 className="font-bold text-2xl">Videos recomendados:</h1>
+                    <h1 className="font-bold text-md md:text-2xl">Videos recomendados:</h1>
                     {lesson?.lessonLinks
                         .filter(lessonLink => lessonLink.type === "VIDEO")
                         .map((lessonLink, index) => (
@@ -77,7 +77,7 @@ export default function Lecture() {
                                 />
                                 <a
                                     className={cn(
-                                        'hover:underline text-indigo-800', 
+                                        'hover:underline text-indigo-800 text-xs sm:text-sm md:text-md lg:text-lg', 
                                         isUserCompletedLessonLink(lessonLink.id) && 'line-through pointer-events-none cursor-not-allowed'
                                     )}
                                     href={lessonLink.link} 
@@ -92,7 +92,7 @@ export default function Lecture() {
                     <div className="flex justify-center flex-col mt-10 space-y-5">
                         <Link 
                             href={`/courses/${lesson?.id}/challenge`}
-                            className="bg-indigo-500 p-5 rounded w-fit font-bold"
+                            className="bg-indigo-500 p-5 rounded w-fit font-bold text-xs sm:text-sm md:text-md"
                         >
                             Teste seus conhecimentos →
                         </Link>
