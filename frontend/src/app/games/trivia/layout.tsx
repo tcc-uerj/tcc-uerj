@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-    title: 'TCC Project',
-    description: 'TCC Project',
+    title: 'Codewise - Trivia Game',
+    description: 'Codewise - Trivia Game',
 }
 
 export default function TriviaLayout({

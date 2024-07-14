@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-    title: 'TCC Project',
-    description: 'TCC Project',
+    title: 'Codewise - Hangman Game',
+    description: 'Codewise - Hangman Game',
 }
 
 export default function HangmanLayout({

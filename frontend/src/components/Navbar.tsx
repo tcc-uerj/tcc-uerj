@@ -36,7 +36,7 @@ const data = [
     },
 ];
 
-const logoTitle = "TCC";
+const logoTitle = "CODEWISE";
 
 export default function Navbar() {
     const [openSidebar, setOpenSidebar] = useState(false);

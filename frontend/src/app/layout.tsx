@@ -8,8 +8,8 @@ import { auth } from '@/auth'
 import { SessionProvider } from 'next-auth/react'
 
 export const metadata: Metadata = {
-  title: 'TCC Project',
-  description: 'TCC Project',
+  title: 'Codewise',
+  description: 'Codewise',
 }
 
 export default async function RootLayout({
