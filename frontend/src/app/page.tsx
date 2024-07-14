@@ -13,14 +13,14 @@ export default function Home() {
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link
-              href="#"
+              href="/courses"
               className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Comece agora
             </Link>
-            <Link href="#" className="text-sm font-semibold leading-6 text-white-500">
+            {/* <Link href="#" className="text-sm font-semibold leading-6 text-white-500">
               Saiba mais <span aria-hidden="true">→</span>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
