@@ -1,5 +1,4 @@
 -- Insert initial data
--- Insert initial data
 insert into challenge (id, subject, level, points)
 values
     (nextval('challenge_id_seq'), 'CLEAN_CODE', 'LEVEL_1', 100),
