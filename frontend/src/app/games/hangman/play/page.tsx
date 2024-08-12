@@ -56,7 +56,7 @@ export default function HangmanGame() {
         
         const newUser: IUser = { 
             ...sessionData?.user,
-            points: points,
+            points: sessionData.user.points + points,
             gamesCount: sessionData.user.gamesCount + 1
         }
 
