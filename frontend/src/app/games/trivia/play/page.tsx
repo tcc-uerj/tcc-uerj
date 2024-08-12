@@ -89,7 +89,6 @@ export default function TriviaGameHome() {
         }
 
         const randomQuestionIndex = getRandomNumber(questions.length);
-        console.log(randomQuestionIndex, questions);
         setCurrentQuestion(randomQuestionIndex);
     }
 

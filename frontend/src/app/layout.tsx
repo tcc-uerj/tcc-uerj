@@ -20,7 +20,7 @@ export default async function RootLayout({
   const session = await auth();
 
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={session} refetchOnWindowFocus={false}>
       <html lang="en">
         <body className="h-screen bg-background">
           <Providers>
