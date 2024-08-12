@@ -13,7 +13,7 @@ model User {
     password   String @db.Text
     name       String @db.Text
     points     Int    @default(0) @db.SmallInt
-    level      Int    @default(1) @db.SmallInt
+    level      Int    @default(0) @db.SmallInt
     gamesCount Int    @default(0) @map("games_count") @db.SmallInt
 
     userLessonLinks  UserLessonLink[]
