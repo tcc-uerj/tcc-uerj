@@ -64,7 +64,7 @@ export default function Challenge() {
             toast({
                 variant: "success",
                 title: `Você concluiu o curso de ${lesson?.subject.split("_").join(" ").toLowerCase()}!`,
-                description: `Como recompensa recebeu ${lesson?.challenge.points} Pontos e desbloqueou uma nova conquista!`,
+                description: `Como recompensa desbloqueou uma nova conquista!`,
                 duration: 5000, 
             })
     
